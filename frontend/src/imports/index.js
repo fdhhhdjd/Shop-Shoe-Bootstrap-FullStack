@@ -1,0 +1,9 @@
+export { default as Loading } from "../Pages/Loading/Loading";
+export { default as Login } from "../Pages/Authentication/Login";
+export { default as Register } from "../Pages/Authentication/Register";
+export { default as Header } from "../Components/Header/Header";
+export { default as Home } from "../Pages/Home/Home";
+export { default as Forget } from "../Pages/Authentication/Forget";
+export { default as NotFound } from "../Pages/NotFound/NotFound";
+export { default as MetaData } from "../Pages/MetaData/MetaData";
+export { default as Reset } from "../Pages/Authentication/Reset";
