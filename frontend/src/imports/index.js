@@ -7,3 +7,6 @@ export { default as Forget } from "../Pages/Authentication/Forget";
 export { default as NotFound } from "../Pages/NotFound/NotFound";
 export { default as MetaData } from "../Pages/MetaData/MetaData";
 export { default as Reset } from "../Pages/Authentication/Reset";
+export { default as Profile } from "../Components/Profile/Profile";
+export { default as ProfileTabs } from "../Components/Profile/ProfileTabs";
+export { default as ChangePassword } from "../Components/Profile/ChangePassword";

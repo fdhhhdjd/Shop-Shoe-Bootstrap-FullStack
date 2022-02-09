@@ -7,7 +7,7 @@ import { useEffect } from "react";
 const Header = () => {
   const [keyword, setKeyword] = useState();
   const dispatch = useDispatch();
-  const { refreshToken } = useSelector((state) => ({ ...state.data }));
+  const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
   const logoutHandler = (e) => {
     e.preventDefault();
     dispatch(LogoutInitiate());
@@ -16,11 +16,7 @@ const Header = () => {
   const submitHandler = (e) => {
     e.preventDefault();
   };
-  useEffect(() => {
-    if (refreshToken.status === 200) {
-      toast.success(refreshToken.msg);
-    }
-  }, []);
+
   return (
     <div>
       <div className="Announcement ">
@@ -185,7 +181,7 @@ const Header = () => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      Hi, Tai Dep trai
+                      Hi, {profile.user && profile.user.name}
                     </button>
                     <div className="dropdown-menu">
                       <Link className="dropdown-item" to="/profile">

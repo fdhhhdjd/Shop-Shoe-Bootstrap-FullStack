@@ -6,8 +6,9 @@ export const GlobalState = createContext();
 export const DataProvider = ({ children }) => {
   const [callback, setCallback] = useState(false);
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => ({ ...state.data }));
+  const { auth, refreshToken } = useSelector((state) => ({ ...state.data }));
   const token = auth.accessToken;
+  const refreshTokens = refreshToken.accessToken;
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     if (firstLogin) {
@@ -22,7 +23,7 @@ export const DataProvider = ({ children }) => {
   }, [callback]);
   const data = {
     // callback: [callback, setCallback],
-    // UserApi: UserApi(refreshTokens),
+    UserApi: UserApi(refreshTokens),
   };
   return <GlobalState.Provider value={data}>{children}</GlobalState.Provider>;
 };

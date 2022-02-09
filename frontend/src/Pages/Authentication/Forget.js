@@ -1,21 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Header, Loading, MetaData } from "../../imports/index";
+import { ForgetInitiate, reset } from "../../Redux/AuthenticationSlice";
 import Message from "../Error/Message";
+import swal from "sweetalert";
+const initialState = {
+  email: "",
+};
 const Login = () => {
   window.scrollTo(0, 0);
-  const [email, setEmail] = useState("");
+  const [state, setState] = useState(initialState);
   const [password, setPassword] = useState("");
   const error = true;
-  const submitHandler = () => {};
+  const dispatch = useDispatch();
+  const { email } = state;
+  const { loading, forget } = useSelector((state) => ({ ...state.data }));
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (!email) {
+      return toast.error("Please Enter A Valid Email 🥲");
+    }
+    dispatch(ForgetInitiate({ email }));
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
+  useEffect(() => {
+    if (forget.status === 200) {
+      swal(`${forget.msg}`, {
+        icon: "success",
+      });
+      setState({ email: "" });
+      dispatch(reset());
+    }
+  }, [forget]);
   return (
     <>
       <MetaData title="Forget-ShoeShop" />
       <Header />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-        {error && <Message variant="alert-danger">hello</Message>}
-        {/* {loading && <Loading />} */}
+        {forget && forget.status === 400 && (
+          <Message variant="alert-danger">{forget.msg}</Message>
+        )}
         <form
           className="Login col-md-8 col-lg-4 col-11"
           onSubmit={submitHandler}
@@ -24,9 +53,10 @@ const Login = () => {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            onChange={handleChange}
           />
-          <button type="submit">Forget</button>
+          {loading ? <Loading /> : <button type="submit">Forget</button>}
           <p>
             <Link to="/login">Back Login ?</Link>
           </p>

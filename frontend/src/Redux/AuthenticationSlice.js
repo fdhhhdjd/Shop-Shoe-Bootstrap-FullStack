@@ -36,6 +36,50 @@ export const RegisterInitiate = createAsyncThunk(
     return response.data;
   }
 );
+export const ForgetInitiate = createAsyncThunk(
+  "auth/Forget",
+  async ({ email }) => {
+    const response = await axios.post("/api/auth/forget", {
+      email,
+    });
+    return response.data;
+  }
+);
+export const ResetInitiate = createAsyncThunk(
+  "auth/Reset",
+  async ({ token, password, confirmPassword }) => {
+    const response = await axios.put(`/api/auth/password/reset/${token}`, {
+      password,
+      confirmPassword,
+    });
+    return response.data;
+  }
+);
+export const ProfileInitiate = createAsyncThunk(
+  "auth/Profile",
+  async ({ token }) => {
+    const response = await axios.get("/api/auth/profile", {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  }
+);
+export const ChangePasswordInitiate = createAsyncThunk(
+  "auth/ChangePassword",
+  async ({ token }, { ...state }) => {
+    const response = await axios.patch(
+      "/api/auth/changePassword",
+      {
+        headers: { Authorization: token },
+      },
+      {
+        ...state,
+      }
+    );
+    return response.data;
+  }
+);
+
 const initialState = {
   loading: false,
   error: null,
@@ -43,6 +87,10 @@ const initialState = {
   auth: [],
   logout: false,
   authRegister: [],
+  forget: [],
+  resetForget: [],
+  profile: [],
+  changePassword: [],
 };
 const AuthenticationSlice = createSlice({
   name: "auth",
@@ -50,11 +98,13 @@ const AuthenticationSlice = createSlice({
   reducers: {
     reset: (state) => {
       state.authRegister = [];
+      state.forget = [];
+      state.changePassword = [];
     },
   },
   //! Get all Cocktail
   extraReducers: {
-    //Login
+    //? Login
     [LoginInitial.pending]: (state, action) => {
       state.loading = true;
     },
@@ -66,7 +116,7 @@ const AuthenticationSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    // Refresh_token
+    //? Refresh_token
     [RefreshTokenInitiate.pending]: (state, action) => {
       state.loading = true;
     },
@@ -78,7 +128,7 @@ const AuthenticationSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    //Logout
+    //? Logout
     [LogoutInitiate.pending]: (state, action) => {
       state.logout = false;
     },
@@ -88,7 +138,7 @@ const AuthenticationSlice = createSlice({
     [LogoutInitiate.rejected]: (state, action) => {
       state.logout = false;
     },
-    //Register
+    //? Register
     [RegisterInitiate.pending]: (state, action) => {
       state.loading = true;
     },
@@ -97,6 +147,54 @@ const AuthenticationSlice = createSlice({
       state.authRegister = action.payload;
     },
     [RegisterInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Forget
+    [ForgetInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ForgetInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.forget = action.payload;
+    },
+    [ForgetInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Reset
+    [ResetInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ResetInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.resetForget = action.payload;
+    },
+    [ResetInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Profile
+    [ProfileInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ProfileInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.profile = action.payload;
+    },
+    [ProfileInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Change Password
+    [ChangePasswordInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ChangePasswordInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.changePassword = action.payload;
+    },
+    [ChangePasswordInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
