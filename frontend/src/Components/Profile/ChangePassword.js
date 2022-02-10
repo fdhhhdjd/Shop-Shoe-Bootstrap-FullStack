@@ -2,32 +2,42 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Message from "../../Pages/Error/Message";
+import swal from "sweetalert";
+import { Loading, MetaData } from "../../imports/index";
 import { ChangePasswordInitiate } from "../../Redux/AuthenticationSlice";
 const initialState = {
   oldPassword: "",
   password: "",
   confirmPassword: "",
 };
+
 const ChangePassword = () => {
   const [state, setState] = useState(initialState);
-  const { loading, changePassword, refreshToken } = useSelector((state) => ({
+  const { loading, changePass, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
+  const { oldPassword, password, confirmPassword } = state;
   const token = refreshToken.accessToken;
   const dispatch = useDispatch();
-  const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(ChangePasswordInitiate({ token }, { ...state }));
-  };
-  const { oldPassword, password, confirmPassword } = state;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(ChangePasswordInitiate({ token, ...state }));
+  };
+  useEffect(() => {
+    if (changePass.status === 200) {
+      swal(`${changePass.msg}`, {
+        icon: "success",
+      });
+    }
+  }, [changePass]);
   return (
     <>
-      {changePassword.status === 400 && (
-        <Message variant="alert-danger">{changePassword.msg}</Message>
+      {changePass.status === 400 && (
+        <Message variant="alert-danger">{changePass.msg}</Message>
       )}
       <form className="row  form-container" onSubmit={submitHandler}>
         <div className="col-md-6">
@@ -67,7 +77,7 @@ const ChangePassword = () => {
             />
           </div>
         </div>
-        <button type="submit">Update Password</button>
+        {loading ? <Loading /> : <button type="submit">Update Password</button>}
       </form>
     </>
   );

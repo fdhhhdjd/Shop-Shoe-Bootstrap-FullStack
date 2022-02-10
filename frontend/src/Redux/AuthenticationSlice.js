@@ -66,20 +66,17 @@ export const ProfileInitiate = createAsyncThunk(
 );
 export const ChangePasswordInitiate = createAsyncThunk(
   "auth/ChangePassword",
-  async ({ token }, { ...state }) => {
-    const response = await axios.patch(
-      "/api/auth/changePassword",
+  async ({ token, ...state }) => {
+    const { data } = await axios.patch(
+      `/api/auth/changePassword`,
+      { ...state },
       {
         headers: { Authorization: token },
-      },
-      {
-        ...state,
       }
     );
-    return response.data;
+    return data;
   }
 );
-
 const initialState = {
   loading: false,
   error: null,
@@ -90,7 +87,7 @@ const initialState = {
   forget: [],
   resetForget: [],
   profile: [],
-  changePassword: [],
+  changePass: [],
 };
 const AuthenticationSlice = createSlice({
   name: "auth",
@@ -99,7 +96,7 @@ const AuthenticationSlice = createSlice({
     reset: (state) => {
       state.authRegister = [];
       state.forget = [];
-      state.changePassword = [];
+      state.changePass = [];
     },
   },
   //! Get all Cocktail
@@ -192,7 +189,7 @@ const AuthenticationSlice = createSlice({
     },
     [ChangePasswordInitiate.fulfilled]: (state, action) => {
       state.loading = false;
-      state.changePassword = action.payload;
+      state.changePass = action.payload;
     },
     [ChangePasswordInitiate.rejected]: (state, action) => {
       state.loading = false;
