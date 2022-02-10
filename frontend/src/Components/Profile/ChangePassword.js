@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import Message from "../../Pages/Error/Message";
 import swal from "sweetalert";
 import { Loading, MetaData } from "../../imports/index";
-import { ChangePasswordInitiate } from "../../Redux/AuthenticationSlice";
+import { ChangePasswordInitiate, reset } from "../../Redux/AuthenticationSlice";
 const initialState = {
   oldPassword: "",
   password: "",
@@ -32,6 +32,11 @@ const ChangePassword = () => {
       swal(`${changePass.msg}`, {
         icon: "success",
       });
+      dispatch(reset());
+    } else if (changePass.status === 400) {
+      setTimeout(() => {
+        dispatch(reset());
+      }, 3000);
     }
   }, [changePass]);
   return (

@@ -22,7 +22,7 @@ export const DataProvider = ({ children }) => {
     }
   }, [callback]);
   const data = {
-    // callback: [callback, setCallback],
+    callback: [callback, setCallback],
     UserApi: UserApi(refreshTokens),
   };
   return <GlobalState.Provider value={data}>{children}</GlobalState.Provider>;

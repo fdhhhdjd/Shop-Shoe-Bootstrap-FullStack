@@ -38,16 +38,17 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+
             <div className="wizard pt-3 ">
-              <div class="d-flex align-items-start">
+              <div className="d-flex align-items-start">
                 <div
-                  class="nav align-items-start flex-column col-12 nav-pills me-3 "
+                  className="nav align-items-start flex-column col-12 nav-pills me-3 "
                   id="v-pills-tab"
                   role="tablist"
                   aria-orientation="vertical"
                 >
                   <button
-                    class="nav-link active"
+                    className="nav-link active"
                     id="v-pills-home-tab"
                     data-bs-toggle="pill"
                     data-bs-target="#v-pills-home"
@@ -90,11 +91,11 @@ const Profile = () => {
 
           {/* panels */}
           <div
-            class="tab-content col-lg-8 pb-5 pt-lg-0 pt-3"
+            className="tab-content col-lg-8 pb-5 pt-lg-0 pt-3"
             id="v-pills-tabContent"
           >
             <div
-              class="tab-pane fade show active"
+              className="tab-pane fade show active"
               id="v-pills-home"
               role="tabpanel"
               aria-labelledby="v-pills-home-tab"
@@ -102,7 +103,7 @@ const Profile = () => {
               <ProfileTabs />
             </div>
             <div
-              class="tab-pane fade show "
+              className="tab-pane fade show "
               id="v-pills-home1"
               role="tabpanel"
               aria-labelledby="v-pills-home-tab1"
@@ -110,7 +111,7 @@ const Profile = () => {
               <ChangePassword />
             </div>
             <div
-              class="tab-pane fade"
+              className="tab-pane fade"
               id="v-pills-profile"
               role="tabpanel"
               aria-labelledby="v-pills-profile-tab"
