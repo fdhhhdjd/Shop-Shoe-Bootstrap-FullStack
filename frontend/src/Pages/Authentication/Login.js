@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Header, Loading, MetaData } from "../../imports/index";
-import { LoginInitial } from "../../Redux/AuthenticationSlice";
+import {
+  LoginGoogleInitiate,
+  LoginInitial,
+} from "../../Redux/AuthenticationSlice";
 import Message from "../Error/Message";
+import GoogleLogin from "react-google-login";
 import { toast } from "react-toastify";
 const initialState = {
   email: "",
@@ -25,6 +29,9 @@ const Login = () => {
     }
     dispatch(LoginInitial({ email, password }));
   };
+  const HandleGoogle = (response) => {
+    dispatch(LoginGoogleInitiate(response));
+  };
   useEffect(() => {
     if (auth.status === 200) {
       window.location.href = "/";
@@ -45,6 +52,13 @@ const Login = () => {
           className="Login col-md-8 col-lg-4 col-11"
           onSubmit={submitHandler}
         >
+          <GoogleLogin
+            clientId="1083950083676-fr9m6jsgig4aalf6mj81t8rlgl9v45bd.apps.googleusercontent.com"
+            buttonText="Login Google +"
+            onSuccess={HandleGoogle}
+            onFailure={HandleGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
           <input
             type="email"
             placeholder="Email"

@@ -77,6 +77,19 @@ export const ChangePasswordInitiate = createAsyncThunk(
     return data;
   }
 );
+export const LoginGoogleInitiate = createAsyncThunk(
+  "auth/LoginGoogle",
+  async (response) => {
+    const res = await axios
+      .post("/api/auth/loginGoogle", { tokenId: response.tokenId })
+      .then((user) => user.data)
+      .catch((error) => {
+        console.log(error.data);
+      });
+    console.log(res);
+    return res;
+  }
+);
 const initialState = {
   loading: false,
   error: null,
@@ -192,6 +205,18 @@ const AuthenticationSlice = createSlice({
       state.changePass = action.payload;
     },
     [ChangePasswordInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Change Password
+    [LoginGoogleInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [LoginGoogleInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.auth = action.payload;
+    },
+    [LoginGoogleInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

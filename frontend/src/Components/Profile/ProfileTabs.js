@@ -121,7 +121,6 @@ const ProfileTabs = () => {
   console.log(images);
   return (
     <>
-      {<Message variant="alert-danger">12312321</Message>}
       <form className="row  form-container" onSubmit={submitHandler}>
         <div className="col-md-12 img-thumbnail">
           <div className="author-card pb-0 pb-md-3">
