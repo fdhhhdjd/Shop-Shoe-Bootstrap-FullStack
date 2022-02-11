@@ -326,72 +326,9 @@ const userCtrl = {
 
     await user.save({ validateBeforeSave: false });
 
-    // const resetPasswordUrl = `${req.protocol}://${req.get(
-    //   "host"
-    // )}/password/reset/${resetToken}`;
-    const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
-    //const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
-    try {
-      await sendEmail({
-        email: user.email,
-        subject: `Forgot Password`,
-        template: "forgot-password",
-        attachments: [
-          {
-            filename: "netflix.jpg",
-            path: path.resolve("./views", "images", "netflix.jpg"),
-            cid: "netflix_logo",
-          },
-          {
-            filename: "question.png",
-            path: path.resolve("./views", "images", "question.png"),
-            cid: "question_img",
-          },
-        ],
-        context: {
-          resetPasswordUrl,
-        },
-      });
-
-      return res.status(200).json({
-        status: 200,
-        success: true,
-        msg: `Email sent to ${user.email} successfully`,
-      });
-    } catch (error) {
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-
-      await user.save({ validateBeforeSave: true });
-      console.log(error);
-    }
-  },
-
-  //quên mật khẩu tài khoản admin
-  forgetPasswordAdmin: async (req, res) => {
-    const user = await Users.findOne({ email: req.body.email, role: 1 });
-    const { email } = req.body;
-    if (!email) {
-      res.status(400).json({
-        status: 400,
-        success: false,
-        msg: "Email are not empty. ",
-      });
-    }
-    if (!user) {
-      res.status(400).json({
-        status: 400,
-        success: false,
-        msg: "Account Not Exit",
-      });
-    }
-    const resetToken = user.getResetPasswordToken();
-
-    await user.save({ validateBeforeSave: false });
-
     const resetPasswordUrl = `${req.protocol}://${req.get(
       "host"
-    )}/admin/password/reset/${resetToken}`;
+    )}/password/reset/${resetToken}`;
     // const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
     //const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
     try {
@@ -510,7 +447,7 @@ const userCtrl = {
   },
 
   //đăng nhập gg chưa sửa
-  LoginGoogleCustomer: async (req, res) => {
+  LoginGoogle: async (req, res) => {
     const { tokenId } = req.body;
     client
       .verifyIdToken({
@@ -521,7 +458,7 @@ const userCtrl = {
         const { email_verified, name, email, picture } = response.payload;
         console.log(response.payload);
         if (email_verified) {
-          Users.findOne({ email, role: 0 }).exec((error, user) => {
+          Users.findOne({ email }).exec((error, user) => {
             if (error) {
               return res.status(400).json({
                 status: 400,
@@ -532,16 +469,14 @@ const userCtrl = {
               if (user) {
                 const accesstoken = createAccessToken({
                   id: user._id,
-                  role: user.role,
                 });
                 const refreshtoken = createRefreshToken({
                   id: user._id,
-                  role: user.role,
                 });
 
                 res.cookie("refreshtoken", refreshtoken, {
                   httpOnly: true,
-                  path: "/api/auth/customer/refresh_token",
+                  path: "/api/auth/refresh_token",
                   maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
                 });
                 const { _id, name, email, image } = user;
@@ -549,7 +484,7 @@ const userCtrl = {
                   status: 200,
                   success: true,
                   msg: "Login successfully",
-                  accesstoken,
+                  accessToken: accesstoken,
                   user: { _id, name, email, image },
                 });
               } else {
@@ -573,16 +508,14 @@ const userCtrl = {
                   }
                   const accesstoken = createAccessToken({
                     id: data._id,
-                    role: data.role,
                   });
                   const refreshtoken = createRefreshToken({
                     id: data._id,
-                    role: data.role,
                   });
 
                   res.cookie("refreshtoken", refreshtoken, {
                     httpOnly: true,
-                    path: "/api/auth/customer/refresh_token",
+                    path: "/api/auth/refresh_token",
                     maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
                   });
                   const { _id, name, email, image } = newUser;
@@ -590,101 +523,7 @@ const userCtrl = {
                     status: 200,
                     success: true,
                     msg: "Register successfully",
-                    accesstoken,
-                    user: { _id, name, email, image },
-                  });
-                  console.log(user);
-                });
-              }
-            }
-          });
-        }
-      });
-  },
-
-  //đăng nhập gg tài khoản admin
-  LoginGoogleAdmin: async (req, res) => {
-    const { tokenId } = req.body;
-    client
-      .verifyIdToken({
-        idToken: tokenId,
-        audience: process.env.CLIENT_ID,
-      })
-      .then((response) => {
-        const { email_verified, name, email, picture } = response.payload;
-        console.log(response.payload);
-        if (email_verified) {
-          Users.findOne({ email, role: 1 }).exec((error, user) => {
-            if (error) {
-              return res.status(400).json({
-                status: 400,
-                success: false,
-                msg: "Invalid Authentication",
-              });
-            } else {
-              if (user) {
-                const accesstoken = createAccessToken({
-                  id: user._id,
-                  role: user.role,
-                });
-                const refreshtoken = createRefreshToken({
-                  id: user._id,
-                  role: user.role,
-                });
-
-                res.cookie("refreshtoken", refreshtoken, {
-                  httpOnly: true,
-                  path: "/api/auth/admin/refresh_token",
-                  maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
-                });
-                const { _id, name, email, image } = user;
-                res.status(200).json({
-                  status: 200,
-                  success: true,
-                  msg: "Login successfully",
-                  accesstoken,
-                  user: { _id, name, email, image },
-                });
-              } else {
-                let password = email + process.env.ACCESS_TOKEN_SECRET;
-                let newUser = new Users({
-                  name: name,
-                  email,
-                  password,
-                  image: {
-                    public_id: password,
-                    url: picture,
-                  },
-                  role: 1,
-                });
-                newUser.save((err, data) => {
-                  if (err) {
-                    return res.status(400).json({
-                      status: 400,
-                      success: false,
-                      msg: "Invalid Authentication",
-                    });
-                  }
-                  const accesstoken = createAccessToken({
-                    id: data._id,
-                    role: data.role,
-                  });
-                  const refreshtoken = createRefreshToken({
-                    id: data._id,
-                    role: data.role,
-                  });
-
-                  res.cookie("refreshtoken", refreshtoken, {
-                    httpOnly: true,
-                    path: "/api/auth/admin/refresh_token",
-                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
-                  });
-                  const { _id, name, email, image } = newUser;
-                  res.json({
-                    status: 200,
-                    success: true,
-                    msg: "Register successfully",
-                    accesstoken,
+                    accessToken: accesstoken,
                     user: { _id, name, email, image },
                   });
                   console.log(user);

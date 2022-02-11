@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Header, Loading, MetaData } from "../../imports/index";
 import {
   LoginGoogleInitiate,
@@ -15,6 +15,8 @@ const initialState = {
 };
 const Login = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [state, setState] = useState(initialState);
   const { email, password } = state;
   const { loading, auth } = useSelector((state) => ({ ...state.data }));
@@ -34,7 +36,12 @@ const Login = () => {
   };
   useEffect(() => {
     if (auth.status === 200) {
-      window.location.href = "/";
+      if (location.state?.from) {
+        navigate(location.state.from);
+        window.location.reload();
+      } else {
+        window.location.href = "/";
+      }
       localStorage.setItem("firstLogin", true);
     }
   }, [auth]);

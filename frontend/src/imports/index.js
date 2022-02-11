@@ -10,3 +10,5 @@ export { default as Reset } from "../Pages/Authentication/Reset";
 export { default as Profile } from "../Components/Profile/Profile";
 export { default as ProfileTabs } from "../Components/Profile/ProfileTabs";
 export { default as ChangePassword } from "../Components/Profile/ChangePassword";
+export { default as Footer } from "../Components/Footer/Footer";
+export { default as ContactInfo } from "../Components/ContactInfo/ContactInfo";

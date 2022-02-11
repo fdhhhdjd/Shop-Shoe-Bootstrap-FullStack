@@ -13,6 +13,7 @@ import {
   Reset,
   Profile,
 } from "./imports/index";
+import PrivateRouter from "./Pages/PrivateRouter/PrivateRouter";
 function App() {
   return (
     <>
@@ -23,7 +24,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forget" element={<Forget />} />
           <Route path="/password/reset/:token" element={<Reset />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route element={<PrivateRouter />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -29,6 +29,6 @@ router.post("/forget", userCtrl.forgetPassword);
 router.put("/password/reset/:token", userCtrl.resetPassword);
 
 //Login Google
-router.post("/loginGoogle", userCtrl.LoginGoogleCustomer);
+router.post("/loginGoogle", userCtrl.LoginGoogle);
 
 module.exports = router;
