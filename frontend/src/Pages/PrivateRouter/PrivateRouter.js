@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 function PrivateRouter({ element: Element, ...rest }) {
   const location = useLocation();

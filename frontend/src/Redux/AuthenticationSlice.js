@@ -112,7 +112,6 @@ const AuthenticationSlice = createSlice({
       state.changePass = [];
     },
   },
-  //! Get all Cocktail
   extraReducers: {
     //? Login
     [LoginInitial.pending]: (state, action) => {
