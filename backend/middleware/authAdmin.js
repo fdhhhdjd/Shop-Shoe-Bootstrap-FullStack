@@ -1,4 +1,4 @@
-const Users = require('../Model/userModel');
+const Users = require("../Model/userModel");
 
 const authAdmin = async (req, res, next) => {
   try {
@@ -9,7 +9,7 @@ const authAdmin = async (req, res, next) => {
     if (user.role === 0)
       return res.status(400).json({
         status: 400,
-        msg: 'Admin resources access denied',
+        msg: "Admin resources access denied",
       });
 
     next();

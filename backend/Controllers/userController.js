@@ -112,7 +112,7 @@ const userCtrl = {
     try {
       const { email, password } = req.body;
 
-      const user = await Users.findOne({ email: email, role: 0 });
+      const user = await Users.findOne({ email: email });
       if (!user)
         return res.json({
           status: 400,
@@ -129,8 +129,8 @@ const userCtrl = {
         });
 
       // If login success , create access token and refresh token
-      const accessToken = createAccessToken({ id: user._id, role: 0 });
-      const refreshtoken = createRefreshToken({ id: user._id, role: 0 });
+      const accessToken = createAccessToken({ id: user._id });
+      const refreshtoken = createRefreshToken({ id: user._id });
 
       res.cookie("refreshtoken", refreshtoken, {
         httpOnly: true,

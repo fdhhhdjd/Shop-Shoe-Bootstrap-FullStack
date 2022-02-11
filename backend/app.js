@@ -18,12 +18,14 @@ app.use(
 
 //!router import
 const customer = require("./Routes/customerRoute.js");
+const product = require("./Routes/ProductRoute.js");
 const upload = require("./Routes/UploadCloud.js");
 
 //!Link router Main
 
 //Auhthenticate customer
 app.use("/api/auth", customer);
+app.use("/api/product", product);
 
 //!upload
 app.use("/api", upload);
