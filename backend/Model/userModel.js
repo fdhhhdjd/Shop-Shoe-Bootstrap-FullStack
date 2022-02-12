@@ -30,6 +30,10 @@ const UserSchema = new mongoose.Schema(
         url: "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png",
       },
     },
+    cart: {
+      type: Array,
+      default: [],
+    },
     phone_number: {
       type: String,
       required: false,

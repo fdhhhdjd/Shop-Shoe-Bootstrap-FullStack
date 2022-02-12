@@ -8,11 +8,21 @@ const rootReducer = (state, action) => {
   }
   return AuthenticationSlice(state, action);
 };
+const cartItemsFromLocalStorage = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : [];
+
+const initialState = {
+  cart: {
+    cartItems: cartItemsFromLocalStorage,
+  },
+};
 const store = configureStore({
   reducer: {
     data: AuthenticationSlice,
     products: ProductSlice,
     reducer: rootReducer,
+    initialState,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   devTools: process.env.NODE_ENV !== "production",

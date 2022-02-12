@@ -36,6 +36,7 @@ const initialState = {
   product: [],
   productDetail: [],
   reviews: [],
+  cartItems: [],
 };
 const ProductSlice = createSlice({
   name: "product",

@@ -15,6 +15,7 @@ import {
   DetailProduct,
 } from "./imports/index";
 import PrivateRouter from "./Pages/PrivateRouter/PrivateRouter";
+import CartScreen from "./Components/CartScreen/CartScreen";
 function App() {
   return (
     <>
@@ -30,6 +31,7 @@ function App() {
           </Route>
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<DetailProduct />} />
+          <Route path="/cart" element={<CartScreen />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

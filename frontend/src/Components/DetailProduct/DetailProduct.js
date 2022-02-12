@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../../imports/index";
 import {
+  AddToCartInitial,
   GetProductDetailInitial,
   ReviewProductDetailInitial,
 } from "../../Redux/ProductSlice";
@@ -13,10 +14,13 @@ import moment from "moment";
 import { GlobalState } from "../../Context/GlobalState";
 const DetailProduct = () => {
   const { id } = useParams();
+  const [qty, setQty] = useState(1);
+  const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const state = useContext(GlobalState);
+  const addCart = state.UserApi.addCart;
   const [callbacks, setCallbacks] = state.ProductApi.callbacks;
   const { loadings, productDetail, error, reviews } = useSelector((state) => ({
     ...state.products,
@@ -30,7 +34,9 @@ const DetailProduct = () => {
       dispatch(GetProductDetailInitial(id));
     }
   }, [id, reviews]);
-  const AddToCartHandle = () => {};
+  const AddToCartHandle = (e) => {
+    e.preventDefault();
+  };
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(ReviewProductDetailInitial({ id, token, rating, comment }));
@@ -93,8 +99,8 @@ const DetailProduct = () => {
                           <div className="flex-box d-flex justify-content-between align-items-center">
                             <h6>Quantity</h6>
                             <select
-                            // value={qty}
-                            // onChange={(e) => setQty(e.target.value)}
+                              value={qty}
+                              onChange={(e) => setQty(e.target.value)}
                             >
                               {[
                                 ...Array(
@@ -108,7 +114,7 @@ const DetailProduct = () => {
                             </select>
                           </div>
                           <button
-                            onClick={AddToCartHandle}
+                            onClick={() => addCart(productDetail.product)}
                             className="round-black-btn"
                           >
                             Add To Cart

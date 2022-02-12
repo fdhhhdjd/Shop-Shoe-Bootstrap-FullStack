@@ -22,6 +22,7 @@ export const DataProvider = ({ children }) => {
       refreshToken();
     }
   }, [callback]);
+  ProductApi();
   const data = {
     callback: [callback, setCallback],
     UserApi: UserApi(refreshTokens),
