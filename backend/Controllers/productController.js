@@ -1,4 +1,6 @@
+const asyncHandler = require("express-async-handler");
 const Products = require("../Model/ProductModel.js");
+const Users = require("../Model/userModel");
 class APIfeatures {
   constructor(query, queryString) {
     this.query = query;
@@ -90,7 +92,8 @@ const productCtrl = {
       const products = await features.query;
 
       res.json({
-        status: "success",
+        status: 200,
+        success: true,
         result: products.length,
         products: products,
       });
@@ -98,5 +101,116 @@ const productCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  //Get Product Id
+  getIdProducts: async (req, res) => {
+    const product = await Products.findById(req.params.id);
+    try {
+      if (!product) {
+        return res.status(404).json({
+          status: 400,
+          success: false,
+          msg: "Product not found !!!",
+        });
+      }
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Get Products Detail Successfully !",
+        product,
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  //Update a product
+  updateProduct: async (req, res) => {
+    try {
+      const {
+        name,
+        image,
+        description,
+        rating,
+        price,
+        countInStock,
+        numReviews,
+      } = req.body;
+      if (!image) return res.status(400).json({ msg: "No image upload" });
+      await Products.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          name,
+          image,
+          description,
+          rating,
+          price,
+          countInStock,
+          numReviews,
+        }
+      );
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Updated a Product",
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  //Delete Product
+  deleteProduct: async (req, res) => {
+    try {
+      await Products.findByIdAndDelete(req.params.id);
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Deleted a Product",
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  //Review Product
+  reviewProduct: async (req, res) => {
+    const { rating, comment } = req.body;
+    const product = await Products.findById(req.params.id);
+
+    if (product) {
+      const alreadyReviewed = await product.reviews.find(
+        (r) => r.user.toString() === req.user.id.toString()
+      );
+
+      if (alreadyReviewed) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Product already Reviewed",
+        });
+      }
+      const data = await Users.find({ _id: req.user.id });
+
+      const review = {
+        name: data[0].name,
+        rating: Number(rating),
+        comment,
+        user: req.user.id,
+      };
+      product.reviews.push(review);
+      product.numReviews = product.reviews.length;
+      product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length;
+
+      await product.save();
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "Reviewed Added Successfully 😁",
+      });
+    }
+  },
+
+  //Review Product
+  deleteReviewProduct: async (req, res) => {},
 };
+
 module.exports = productCtrl;

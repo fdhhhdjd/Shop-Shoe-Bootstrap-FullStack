@@ -12,3 +12,7 @@ export { default as ProfileTabs } from "../Components/Profile/ProfileTabs";
 export { default as ChangePassword } from "../Components/Profile/ChangePassword";
 export { default as Footer } from "../Components/Footer/Footer";
 export { default as ContactInfo } from "../Components/ContactInfo/ContactInfo";
+export { default as CalltoActionSection } from "../Components/CalltoActionSection/CalltoActionSection";
+export { default as ShopSection } from "../Components/ShopSection/ShopSection";
+export { default as Rating } from "../Components/Rating/Rating";
+export { default as DetailProduct } from "../Components/DetailProduct/DetailProduct";

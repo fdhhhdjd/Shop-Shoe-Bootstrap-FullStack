@@ -12,6 +12,7 @@ import {
   Forget,
   Reset,
   Profile,
+  DetailProduct,
 } from "./imports/index";
 import PrivateRouter from "./Pages/PrivateRouter/PrivateRouter";
 function App() {
@@ -27,8 +28,8 @@ function App() {
           <Route element={<PrivateRouter />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
-
           <Route path="/" element={<Home />} />
+          <Route path="/products/:id" element={<DetailProduct />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
