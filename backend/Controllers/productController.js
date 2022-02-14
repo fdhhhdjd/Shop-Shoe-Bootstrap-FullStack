@@ -103,7 +103,12 @@ const productCtrl = {
   },
   //Get Product Id
   getIdProducts: async (req, res) => {
-    const product = await Products.findById(req.params.id);
+    const product = await Products.findById(req.params.id).populate({
+      path: "reviews",
+      populate: {
+        path: "user",
+      },
+    });
     try {
       if (!product) {
         return res.status(404).json({
@@ -189,7 +194,6 @@ const productCtrl = {
       const data = await Users.find({ _id: req.user.id });
 
       const review = {
-        name: data[0].name,
         rating: Number(rating),
         comment,
         user: req.user.id,
@@ -209,8 +213,78 @@ const productCtrl = {
     }
   },
 
-  //Review Product
-  deleteReviewProduct: async (req, res) => {},
+  updateReviewProduct: async (req, res) => {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+    const commentId = req.params.commentId;
+    const { comment } = req.body;
+    const product = await Products.findById({ _id: productId });
+
+    try {
+      if (product) {
+        for (var i = 0; i < product.reviews.length; i++) {
+          if (
+            product.reviews[i]._id == commentId &&
+            product.reviews[i].user == userId
+          ) {
+            product.reviews[i].comment = comment;
+          }
+        }
+      }
+      await Products.findByIdAndUpdate(
+        { _id: req.params.productId },
+        {
+          updatedAt: Date.now,
+        }
+      );
+      await product.save();
+      return res.json({
+        status: 200,
+        success: true,
+        msg: "Update Comment Successfully 😅",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  //Delete Product
+  deleteReviewProduct: async (req, res) => {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+    const commentId = req.params.commentId;
+    const product = await Products.findById({ _id: productId });
+
+    try {
+      if (product) {
+        for (var i = 0; i < product.reviews.length; i++) {
+          if (
+            product.reviews[i]._id == commentId &&
+            product.reviews[i].user == userId
+          ) {
+            product.reviews.splice(i, 1);
+          }
+        }
+
+        product.numReviews = product.reviews.length;
+
+        if (product.reviews.length === 0) {
+          product.rating = 0;
+        } else {
+          product.rating =
+            product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+            product.reviews.length;
+        }
+      }
+      await product.save();
+      return res.json({
+        status: 200,
+        success: true,
+        msg: "Delete Comment Successfully 😅",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 module.exports = productCtrl;

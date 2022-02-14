@@ -1,47 +1,86 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  Fragment,
+  useCallback,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../../imports/index";
 import {
   AddToCartInitial,
+  DeleteProductDetailInitial,
   GetProductDetailInitial,
+  reset,
   ReviewProductDetailInitial,
+  updateReviewProductDetailInitial,
 } from "../../Redux/ProductSlice";
 import { Loading, Rating, MetaData } from "../../imports/index";
 import { Link } from "react-router-dom";
 import Message from "../../Pages/Error/Message";
 import moment from "moment";
 import { GlobalState } from "../../Context/GlobalState";
+import Comments from "./Comments";
+const initialState = {
+  comment: "",
+  rating: 0,
+};
 const DetailProduct = () => {
   const { id } = useParams();
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
+  const [reviewState, setReviewState] = useState(initialState);
+  const [commentId, setCommentId] = useState();
+  const [user, setUser] = useState();
+  const [onEdit, setOnEdit] = useState(false);
   const dispatch = useDispatch();
   const state = useContext(GlobalState);
   const addCart = state.UserApi.addCart;
-  const [callbacks, setCallbacks] = state.ProductApi.callbacks;
+  const [callback, setCallback] = state.callback;
   const { loadings, productDetail, error, reviews } = useSelector((state) => ({
     ...state.products,
   }));
   const { loading, profile, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
+  const { comment, rating } = reviewState;
   const token = refreshToken.accessToken;
   useEffect(() => {
     if (id) {
       dispatch(GetProductDetailInitial(id));
+      getReplies();
     }
-  }, [id, reviews]);
-  const AddToCartHandle = (e) => {
-    e.preventDefault();
+    return () => {
+      dispatch(reset());
+    };
+  }, [id, callback]);
+
+  const getReplies = (commentId) => {
+    return (
+      productDetail.product &&
+      productDetail.product.reviews.filter(
+        (backendComments) => backendComments._id === commentId
+      )
+    );
+  };
+  const productId = id;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setReviewState({ ...reviewState, [name]: value });
   };
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(ReviewProductDetailInitial({ id, token, rating, comment }));
-    setCallbacks(!callbacks);
+    setCallback(!callback);
+    setReviewState({ comment: "", rating: 0 });
   };
+  useEffect(() => {
+    profile.user && setUser(profile.user._id);
+  }, [profile]);
+  useEffect(() => {
+    dispatch(reset());
+  }, [dispatch, id]);
   return (
     <>
       <Header />
@@ -126,28 +165,38 @@ const DetailProduct = () => {
                 </div>
               </div>
             )}
-
             {/* RATING */}
-            {productDetail.product && (
+            {productDetail.status === 200 && (
               <div className="row my-5">
                 <div className="col-md-6">
                   <h6 className="mb-3">REVIEWS</h6>
                   {productDetail.product.reviews.length === 0 && (
                     <Message variant={"alert-info mt-3"}>No Reviews</Message>
                   )}
-                  {productDetail.product.reviews.map((review) => (
-                    <div
-                      key={review._id}
-                      className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded"
-                    >
-                      <strong>{review.name}</strong>
-                      <Rating value={review.rating} />
-                      <span>{moment(review.createdAt).calendar()}</span>
-                      <div className="alert alert-info mt-3">
-                        {review.comment}
-                      </div>
-                    </div>
-                  ))}
+                  {productDetail.product &&
+                    productDetail.product.reviews.map((review) => {
+                      return (
+                        <Comments
+                          keys={review._id}
+                          replies={getReplies(review._id)}
+                          setCallback={setCallback}
+                          callback={callback}
+                          user={user}
+                          productId={productId}
+                          token={token}
+                          reviewState={reviewState}
+                          setReviewState={setReviewState}
+                          id={id}
+                          setOnEdit={setOnEdit}
+                          onEdit={onEdit}
+                          productDetail={productDetail}
+                          rating={rating}
+                          comment={comment}
+                          handleChange={handleChange}
+                          initialState={initialState}
+                        />
+                      );
+                    })}
                 </div>
                 <div className="col-md-6">
                   <h6>WRITE A CUSTOMER REVIEW</h6>
@@ -164,7 +213,8 @@ const DetailProduct = () => {
                         <strong>Rating</strong>
                         <select
                           value={rating}
-                          onChange={(e) => setRating(e.target.value)}
+                          name="rating"
+                          onChange={handleChange}
                           className="col-12 bg-light p-3 mt-2 border-0 rounded"
                         >
                           <option value="">Select...</option>
@@ -180,7 +230,8 @@ const DetailProduct = () => {
                         <textarea
                           row="3"
                           value={comment}
-                          onChange={(e) => setComment(e.target.value)}
+                          name="comment"
+                          onChange={handleChange}
                           className="col-12 bg-light p-3 mt-2 border-0 rounded"
                         ></textarea>
                       </div>

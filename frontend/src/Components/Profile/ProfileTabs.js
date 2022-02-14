@@ -61,7 +61,6 @@ const ProfileTabs = () => {
       }
     }
   }, [profile]);
-  console.log(images);
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
@@ -118,7 +117,6 @@ const ProfileTabs = () => {
   const styleUpload = {
     display: images ? "block" : "none",
   };
-  console.log(images);
   return (
     <>
       <form className="row  form-container" onSubmit={submitHandler}>

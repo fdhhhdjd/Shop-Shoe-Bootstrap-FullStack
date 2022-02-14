@@ -8,6 +8,13 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+textarea:focus,.editInput:focus{
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline:none;
+}
+
 a {
   text-decoration: none;
   color: black;

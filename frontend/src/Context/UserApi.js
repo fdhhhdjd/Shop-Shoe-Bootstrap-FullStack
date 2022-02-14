@@ -68,7 +68,6 @@ const UserApi = (token) => {
       });
     }
   };
-  console.log("cart", cart);
   return {
     cart: [cart, setCart],
     addCart: addCart,

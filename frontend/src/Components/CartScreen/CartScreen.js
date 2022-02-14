@@ -12,6 +12,15 @@ const CartScreen = () => {
   const [total, setTotal] = useState(0);
   const cartItems = cart;
   const removeFromCartHandle = (id) => {};
+  useEffect(() => {
+    const getTotal = () => {
+      const total = cart.reduce((prev, item) => {
+        return prev + item.price * item.quantity;
+      }, 0);
+      setTotal(total);
+    };
+    getTotal();
+  }, [cart]);
   return (
     <>
       <>
