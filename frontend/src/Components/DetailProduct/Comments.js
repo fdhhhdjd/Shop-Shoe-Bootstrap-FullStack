@@ -7,6 +7,7 @@ import {
 } from "../../Redux/ProductSlice";
 import { useDispatch } from "react-redux";
 import { reset } from "../../Redux/AuthenticationSlice";
+import swal from "sweetalert";
 const initialState = {
   comment: "",
 };
@@ -20,7 +21,6 @@ const Comments = ({
   id,
   setOnEdit,
   onEdit,
-  productDetail,
 }) => {
   const dispatch = useDispatch();
   const [commentReview, setCommentReview] = useState(initialState);
@@ -36,8 +36,6 @@ const Comments = ({
       setCommentId(item._id);
       setReview(item.user._id);
     });
-  }, [replies, id]);
-  useEffect(() => {
     if (onEdit) {
       if (user === Review) {
         replies.map((item) => {
@@ -47,13 +45,27 @@ const Comments = ({
         setCommentReview(initialState);
       }
     }
-  }, [id, onEdit, callback]);
+  }, [id, onEdit]);
 
-  const deleteReviewProduct = (e) => {
-    e.preventDefault();
-    dispatch(DeleteProductDetailInitial({ productId, token, commentId }));
-    setCallback(!callback);
+  const deleteReviewProduct = async (e) => {
+    return await swal({
+      title: "Are you sure you want delete ?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        dispatch(DeleteProductDetailInitial({ productId, token, commentId }));
+        setCallback(!callback);
+        swal("Delete Comments successfully 😉 !", {
+          icon: "success",
+        });
+      } else {
+        swal("Thank you for 😆'!");
+      }
+    });
   };
+
   const updateReviewProduct = (e) => {
     e.preventDefault();
     dispatch(

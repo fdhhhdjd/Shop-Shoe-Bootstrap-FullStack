@@ -22,6 +22,7 @@ import Message from "../../Pages/Error/Message";
 import moment from "moment";
 import { GlobalState } from "../../Context/GlobalState";
 import Comments from "./Comments";
+import swal from "sweetalert";
 const initialState = {
   comment: "",
   rating: 0,
@@ -29,19 +30,19 @@ const initialState = {
 const DetailProduct = () => {
   const { id } = useParams();
   const [qty, setQty] = useState(1);
-  const navigate = useNavigate();
   const [reviewState, setReviewState] = useState(initialState);
-  const [commentId, setCommentId] = useState();
   const [user, setUser] = useState();
   const [onEdit, setOnEdit] = useState(false);
   const dispatch = useDispatch();
   const state = useContext(GlobalState);
   const addCart = state.UserApi.addCart;
   const [callback, setCallback] = state.callback;
-  const { loadings, productDetail, error, reviews } = useSelector((state) => ({
-    ...state.products,
-  }));
-  const { loading, profile, refreshToken } = useSelector((state) => ({
+  const { loadings, productDetail, error, reviews, product } = useSelector(
+    (state) => ({
+      ...state.products,
+    })
+  );
+  const { profile, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
   const { comment, rating } = reviewState;
@@ -54,8 +55,7 @@ const DetailProduct = () => {
     return () => {
       dispatch(reset());
     };
-  }, [id, callback]);
-
+  }, [id, product, callback]);
   const getReplies = (commentId) => {
     return (
       productDetail.product &&
@@ -71,6 +71,11 @@ const DetailProduct = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
+    if (!comment) {
+      return swal("Please Content Comment 🤗 ", {
+        icon: "error",
+      });
+    }
     dispatch(ReviewProductDetailInitial({ id, token, rating, comment }));
     setCallback(!callback);
     setReviewState({ comment: "", rating: 0 });
@@ -78,9 +83,6 @@ const DetailProduct = () => {
   useEffect(() => {
     profile.user && setUser(profile.user._id);
   }, [profile]);
-  useEffect(() => {
-    dispatch(reset());
-  }, [dispatch, id]);
   return (
     <>
       <Header />

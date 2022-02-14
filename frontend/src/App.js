@@ -31,7 +31,9 @@ function App() {
           </Route>
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<DetailProduct />} />
-          <Route path="/cart" element={<CartScreen />} />
+          <Route element={<PrivateRouter />}>
+            <Route path="/cart" element={<CartScreen />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

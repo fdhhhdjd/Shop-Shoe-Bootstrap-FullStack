@@ -7,7 +7,7 @@ const ProductApi = (callback) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetProductInitial());
-  }, [callback]);
+  }, [callback, callbacks]);
 
   return {
     callbacks: [callbacks, setCallbacks],

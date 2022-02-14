@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { GlobalState } from "../../Context/GlobalState";
 const Header = () => {
   const [keyword, setKeyword] = useState();
   const dispatch = useDispatch();
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
+  const state = useContext(GlobalState);
+  const [cart, setCart] = state.UserApi.cart;
+  const cartItems = cart;
   const logoutHandler = (e) => {
     e.preventDefault();
     dispatch(LogoutInitiate());
@@ -208,7 +212,7 @@ const Header = () => {
 
                 <Link to="/cart">
                   <i className="fas fa-shopping-bag"></i>
-                  <span className="badge">0</span>
+                  <span className="badge">{cartItems.length}</span>
                 </Link>
               </div>
             </div>

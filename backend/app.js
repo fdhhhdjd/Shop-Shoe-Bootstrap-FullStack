@@ -19,6 +19,7 @@ app.use(
 //!router import
 const customer = require("./Routes/customerRoute.js");
 const product = require("./Routes/ProductRoute.js");
+const payment = require("./Routes/paymentRoute.js");
 const upload = require("./Routes/UploadCloud.js");
 
 //!Link router Main
@@ -26,6 +27,7 @@ const upload = require("./Routes/UploadCloud.js");
 //Auhthenticate customer
 app.use("/api/auth", customer);
 app.use("/api/product", product);
+app.use("/api/payment,", payment);
 
 //!upload
 app.use("/api", upload);
