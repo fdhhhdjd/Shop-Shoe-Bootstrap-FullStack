@@ -13,6 +13,7 @@ import {
   Reset,
   Profile,
   DetailProduct,
+  OrderScreen,
 } from "./imports/index";
 import PrivateRouter from "./Pages/PrivateRouter/PrivateRouter";
 import CartScreen from "./Components/CartScreen/CartScreen";
@@ -33,6 +34,9 @@ function App() {
           <Route path="/products/:id" element={<DetailProduct />} />
           <Route element={<PrivateRouter />}>
             <Route path="/cart" element={<CartScreen />} />
+          </Route>
+          <Route element={<PrivateRouter />}>
+            <Route path="/order/:id" element={<OrderScreen />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

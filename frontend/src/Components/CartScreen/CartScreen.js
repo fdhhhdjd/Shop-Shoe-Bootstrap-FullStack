@@ -6,7 +6,6 @@ import { Header, Paypal } from "../../imports/index";
 import { GlobalState } from "../../Context/GlobalState";
 import swal from "sweetalert";
 import axios from "axios";
-
 const CartScreen = () => {
   const state = useContext(GlobalState);
   const [cart, setCart] = state.UserApi.cart;
@@ -89,12 +88,13 @@ const CartScreen = () => {
     const { paymentID, address } = payment;
 
     await axios.post(
-      "/api/payment/payments",
+      "/api/payment",
       { cart, paymentID, address },
       {
         headers: { Authorization: refreshTokens },
       }
     );
+
     setCart([]);
     addToCart([]);
     swal("You have successfully placed an order.", {
@@ -102,7 +102,6 @@ const CartScreen = () => {
     });
     console.log(payment);
   };
-  console.log(cart, "cart");
   return (
     <>
       <>
@@ -133,11 +132,11 @@ const CartScreen = () => {
               {/* cartiterm */}
               {cartItems.map((item) => (
                 <div className="cart-iterm row">
-                  <div className="remove-button d-flex justify-content-center align-items-center">
-                    <i
-                      className="fas fa-times"
-                      onClick={() => removeFromCartHandle(item._id)}
-                    ></i>
+                  <div
+                    className="remove-button d-flex justify-content-center align-items-center"
+                    onClick={() => removeFromCartHandle(item._id)}
+                  >
+                    <i className="fas fa-times"></i>
                   </div>
                   <div className="cart-image col-md-3">
                     {item.image && <img src={item.image.url} alt={item.name} />}
@@ -198,13 +197,13 @@ const CartScreen = () => {
                 <Link to="/" className="col-md-6 ">
                   <button>Continue To Shopping</button>
                 </Link>
-                {total > 0 && (
-                  <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
-                    <button className="paypal">
-                      <Paypal total={total} tranSuccess={tranSuccess} />
-                    </button>
-                  </div>
-                )}
+                {/* {total > 0 && ( */}
+                <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
+                  <button className="paypal">
+                    <Paypal total={total} tranSuccess={tranSuccess} />
+                  </button>
+                </div>
+                {/* )} */}
               </div>
             </>
           )}

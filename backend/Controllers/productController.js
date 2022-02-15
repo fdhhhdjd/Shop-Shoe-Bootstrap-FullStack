@@ -233,6 +233,7 @@ const productCtrl = {
       }
       await Products.findByIdAndUpdate(
         { _id: req.params.productId },
+
         {
           updatedAt: Date.now,
         }

@@ -4,25 +4,16 @@ const Products = require("../Model/ProductModel");
 const paymentCtrl = {
   getPayments: async (req, res) => {
     try {
-      const payments = await Payments.find();
-      res.json({
-        status: 200,
-        success: true,
-        payments,
-      });
+      const payments = await Payments.find().populate("user_id");
+      res.json(payments);
     } catch (err) {
-      return res.status(400).json({ msg: err.message });
+      return res.status(500).json({ msg: err.message });
     }
   },
   createPayment: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select("name email");
-      if (!user)
-        return res.status(400).json({
-          status: 400,
-          success: false,
-          msg: "User does not exist.",
-        });
+      if (!user) return res.status(400).json({ msg: "User does not exist." });
 
       const { cart, paymentID, address } = req.body;
 
@@ -35,6 +26,7 @@ const paymentCtrl = {
         cart,
         paymentID,
         address,
+        status: true,
       });
 
       cart.filter((item) => {
@@ -42,11 +34,7 @@ const paymentCtrl = {
       });
 
       await newPayment.save();
-      res.json({
-        status: 200,
-        success: true,
-        msg: "Payment Success!",
-      });
+      res.json({ msg: "Payment Succes!" });
       console.log({ newPayment });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -61,6 +49,7 @@ const sold = async (id, quantity, oldSold) => {
       sold: quantity + oldSold,
     }
   );
+  console.log();
 };
 
 module.exports = paymentCtrl;

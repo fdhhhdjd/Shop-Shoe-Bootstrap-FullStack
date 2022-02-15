@@ -11,6 +11,8 @@ const UserApi = (token) => {
   const [cart, setCart] = useState([]);
   const [history, setHistory] = useState([]);
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
+  const { order } = useSelector((state) => ({ ...state.products }));
+  const orders = order.history && order.history;
   useEffect(() => {
     if (token) {
       dispatch(ProfileInitiate({ token }));

@@ -32,5 +32,7 @@ router.put("/password/reset/:token", userCtrl.resetPassword);
 router.post("/loginGoogle", userCtrl.LoginGoogle);
 //Add To Cart
 router.patch("/addcart", auth, userCtrl.addCart);
+//History to Payment And Cart
+router.get("/history", auth, userCtrl.historyCart);
 
 module.exports = router;

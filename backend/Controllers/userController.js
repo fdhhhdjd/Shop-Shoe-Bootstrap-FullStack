@@ -1,4 +1,5 @@
 const Users = require("../Model/userModel");
+const Payments = require("../Model/PaymentModel");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
@@ -537,7 +538,12 @@ const userCtrl = {
   addCart: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id);
-      if (!user) return res.status(400).json({ msg: "User does not exist." });
+      if (!user)
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          msg: "User does not exist.",
+        });
 
       await Users.findOneAndUpdate(
         { _id: req.user.id },
@@ -550,6 +556,19 @@ const userCtrl = {
         .json({ status: 200, success: true, msg: "Added to cart" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
+    }
+  },
+  historyCart: async (req, res) => {
+    try {
+      const history = await Payments.find({ user_id: req.user.id });
+      res.json({
+        status: 200,
+        success: true,
+        msg: "Get History Successfully",
+        history,
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
     }
   },
 };

@@ -1,11 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Header, ProfileTabs, ChangePassword } from "../../imports/index";
+import {
+  Header,
+  ProfileTabs,
+  ChangePassword,
+  Order,
+} from "../../imports/index";
 import moment from "moment";
-
 const Profile = () => {
-  const { loading, profile } = useSelector((state) => ({ ...state.data }));
+  const { profile } = useSelector((state) => ({ ...state.data }));
+  const { order } = useSelector((state) => ({
+    ...state.products,
+  }));
+  const [total, setTotal] = useState(0);
+  const orders = order.history && order.history;
+  console.log(orders);
+  useEffect(() => {
+    order.history &&
+      order.history.map((item) => {
+        const getTotal = () => {
+          const total = item.cart.reduce((prev, item) => {
+            return prev + item.price * item.quantity;
+          }, 0);
+          console.log(total, "allo");
+          setTotal(total);
+        };
+        getTotal();
+      });
+  }, [orders]);
+
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -23,6 +47,7 @@ const Profile = () => {
                     <img src={profile.user.image.url} alt="userprofileimage" />
                   )}
                 </div>
+
                 <div className="author-card-details col-md-7">
                   <h5 className="author-card-name mb-2">
                     <strong>{profile.user && profile.user.name}</strong>
@@ -82,7 +107,11 @@ const Profile = () => {
                     aria-selected="false"
                   >
                     Orders List
-                    {/* <span className="badge2">{orders ? orders.length : 0}</span> */}
+                    <span className="badge2">
+                      {order.history && order.history
+                        ? order.history.length
+                        : 0}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -115,7 +144,9 @@ const Profile = () => {
               id="v-pills-profile"
               role="tabpanel"
               aria-labelledby="v-pills-profile-tab"
-            ></div>
+            >
+              <Order cartItems={total} />
+            </div>
           </div>
         </div>
       </div>

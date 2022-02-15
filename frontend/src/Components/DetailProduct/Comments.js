@@ -92,7 +92,7 @@ const Comments = ({
                 >
                   <strong>{review.user.name}</strong>
                   <Rating value={review.rating} />
-                  <span>{moment(review.updateAt).calendar()}</span>
+                  <span>{moment(review.updatedAt).calendar()}</span>
                   <div className="flex-box d-flex justify-content-between align-items-center alert alert-info mt-3">
                     {user === review.user._id ? (
                       <>

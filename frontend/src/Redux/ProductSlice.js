@@ -33,17 +33,6 @@ export const ReviewProductDetailInitial = createAsyncThunk(
 export const updateReviewProductDetailInitial = createAsyncThunk(
   "product/updateReview",
   async ({ productId, commentId, token, comment }) => {
-    console.log(
-      productId,
-      "1",
-      commentId,
-      "2",
-      token,
-      "3",
-
-      comment,
-      "5"
-    );
     const response = await axios.put(
       `/api/product/${productId}/update/review/${commentId}`,
       {
@@ -69,6 +58,15 @@ export const DeleteProductDetailInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const HistoryProductDetailInitial = createAsyncThunk(
+  "product/History",
+  async ({ token }) => {
+    const response = await axios.get("/api/auth/history", {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  }
+);
 const initialState = {
   loadings: false,
   error: null,
@@ -78,6 +76,7 @@ const initialState = {
   updateReview: [],
   cartItems: [],
   deleteReview: [],
+  order: [],
 };
 const ProductSlice = createSlice({
   name: "product",
@@ -147,6 +146,18 @@ const ProductSlice = createSlice({
       state.updateReview = action.payload;
     },
     [DeleteProductDetailInitial.rejected]: (state, action) => {
+      state.loadings = false;
+      state.error = action.payload;
+    },
+    // History order
+    [HistoryProductDetailInitial.pending]: (state, action) => {
+      state.loadings = true;
+    },
+    [HistoryProductDetailInitial.fulfilled]: (state, action) => {
+      state.loadings = false;
+      state.order = action.payload;
+    },
+    [HistoryProductDetailInitial.rejected]: (state, action) => {
       state.loadings = false;
       state.error = action.payload;
     },

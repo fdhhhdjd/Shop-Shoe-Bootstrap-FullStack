@@ -129,6 +129,14 @@ const DetailProduct = () => {
                         )}
                       </div>
                       <div className="flex-box d-flex justify-content-between align-items-center">
+                        <h6>Sold</h6>
+                        {productDetail.product.sold > 0 ? (
+                          <span>{productDetail.product.sold} </span>
+                        ) : (
+                          <span>No Yet Has Bought</span>
+                        )}
+                      </div>
+                      <div className="flex-box d-flex justify-content-between align-items-center">
                         <h6>Reviews</h6>
                         <Rating
                           value={productDetail.product.rating}
