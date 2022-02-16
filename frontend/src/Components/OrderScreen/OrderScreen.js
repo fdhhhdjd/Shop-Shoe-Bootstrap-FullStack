@@ -126,11 +126,11 @@ const OrderScreen = () => {
               </div>
             </div>
             {/* aa */}
-            {orderItem.cart &&
-              orderItem.cart.map((item, index) => {
-                return (
-                  <>
-                    <div className="row order-products justify-content-between">
+            <div className="row order-products justify-content-between">
+              {orderItem.cart &&
+                orderItem.cart.map((item, index) => {
+                  return (
+                    <>
                       <div className="col-lg-8">
                         <>
                           <div className="order-product row" key={index}>
@@ -187,10 +187,10 @@ const OrderScreen = () => {
                           </tbody>
                         </table>
                       </div>
-                    </div>
-                  </>
-                );
-              })}
+                    </>
+                  );
+                })}
+            </div>
           </>
         )}
       </div>

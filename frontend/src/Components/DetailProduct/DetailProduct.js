@@ -15,6 +15,7 @@ import {
   reset,
   ReviewProductDetailInitial,
   updateReviewProductDetailInitial,
+  GetProductInitial,
 } from "../../Redux/ProductSlice";
 import { Loading, Rating, MetaData } from "../../imports/index";
 import { Link } from "react-router-dom";
@@ -36,11 +37,16 @@ const DetailProduct = () => {
   const state = useContext(GlobalState);
   const addCart = state.UserApi.addCart;
   const [callback, setCallback] = state.callback;
-  const { loadings, productDetail, error, reviews, product } = useSelector(
-    (state) => ({
-      ...state.products,
-    })
-  );
+  const {
+    loadings,
+    productDetail,
+    error,
+    reviews,
+
+    product,
+  } = useSelector((state) => ({
+    ...state.products,
+  }));
   const { profile, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
@@ -50,6 +56,9 @@ const DetailProduct = () => {
     if (id) {
       dispatch(GetProductDetailInitial(id));
       getReplies();
+      if (reviews.status === 400) {
+        return swal(reviews.msg, { icon: "error" });
+      }
     }
     return () => {
       dispatch(reset());
@@ -82,6 +91,7 @@ const DetailProduct = () => {
   useEffect(() => {
     profile.user && setUser(profile.user._id);
   }, [profile]);
+
   return (
     <>
       <Header />
@@ -124,7 +134,7 @@ const DetailProduct = () => {
                         {productDetail.product.countInStock > 0 ? (
                           <span>In Stock</span>
                         ) : (
-                          <span>unavailable</span>
+                          <span>End In Stock</span>
                         )}
                       </div>
                       <div className="flex-box d-flex justify-content-between align-items-center">
@@ -171,9 +181,13 @@ const DetailProduct = () => {
               <div className="row my-5">
                 <div className="col-md-6">
                   <h6 className="mb-3">REVIEWS</h6>
-                  {productDetail.product.reviews.length === 0 && (
-                    <Message variant={"alert-info mt-3"}>No Reviews</Message>
-                  )}
+
+                  <>
+                    {reviews.status === 400 && (
+                      <Message variant="alert-danger">{reviews.msg}</Message>
+                    )}
+                  </>
+
                   {productDetail.product &&
                     productDetail.product.reviews.map((review) => {
                       return (
