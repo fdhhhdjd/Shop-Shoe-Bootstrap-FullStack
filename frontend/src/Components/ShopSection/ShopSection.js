@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading, Rating } from "../../imports/index";
 import Message from "../../Pages/Error/Message";
 import { Link } from "react-router-dom";
+import { GlobalState } from "../../Context/GlobalState";
 const ShopSection = () => {
   const { loading, product, error } = useSelector((state) => ({
     ...state.products,
   }));
+  const state = useContext(GlobalState);
+  const [search] = state.ProductApi.search;
   return (
     <>
       <div className="container">
@@ -23,39 +26,51 @@ const ShopSection = () => {
                 ) : (
                   <>
                     {product.products &&
-                      product.products.map((product) => (
-                        <div
-                          className="shop col-lg-4 col-md-6 col-sm-6"
-                          key={product._id}
-                        >
-                          <div className="border-product">
-                            <Link to={`/products/${product._id}`}>
-                              <div className="shopBack">
-                                {product.image && (
-                                  <img
-                                    src={product.image.url}
-                                    alt={product.name}
-                                  />
-                                )}
+                      product.products
+                        .filter((value) => {
+                          if (search === "") {
+                            return value;
+                          } else if (
+                            value.name
+                              .toLowerCase()
+                              .includes(search.toLowerCase())
+                          ) {
+                            return value;
+                          }
+                        })
+                        .map((product) => (
+                          <div
+                            className="shop col-lg-4 col-md-6 col-sm-6"
+                            key={product._id}
+                          >
+                            <div className="border-product">
+                              <Link to={`/products/${product._id}`}>
+                                <div className="shopBack">
+                                  {product.image && (
+                                    <img
+                                      src={product.image.url}
+                                      alt={product.name}
+                                    />
+                                  )}
+                                </div>
+                              </Link>
+
+                              <div className="shoptext">
+                                <p>
+                                  <Link to={`/products/${product._id}`}>
+                                    {product.name}
+                                  </Link>
+                                </p>
+
+                                <Rating
+                                  value={product.rating}
+                                  text={`${product.numReviews} reviews`}
+                                />
+                                <h3>${product.price}</h3>
                               </div>
-                            </Link>
-
-                            <div className="shoptext">
-                              <p>
-                                <Link to={`/products/${product._id}`}>
-                                  {product.name}
-                                </Link>
-                              </p>
-
-                              <Rating
-                                value={product.rating}
-                                text={`${product.numReviews} reviews`}
-                              />
-                              <h3>${product.price}</h3>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
                   </>
                 )}
 

@@ -47,7 +47,6 @@ const Profile = () => {
                     <img src={profile.user.image.url} alt="userprofileimage" />
                   )}
                 </div>
-
                 <div className="author-card-details col-md-7">
                   <h5 className="author-card-name mb-2">
                     <strong>{profile.user && profile.user.name}</strong>

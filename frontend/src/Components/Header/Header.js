@@ -11,12 +11,15 @@ const Header = () => {
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
   const state = useContext(GlobalState);
   const [cart, setCart] = state.UserApi.cart;
+  const [search, setSearch] = state.ProductApi.search;
   const cartItems = cart;
+
   const logoutHandler = (e) => {
     e.preventDefault();
     dispatch(LogoutInitiate());
     toast.success("Logout Success Thank You!");
   };
+  console.log(search);
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -143,7 +146,8 @@ const Header = () => {
                       type="search"
                       className="form-control rounded search"
                       placeholder="Search"
-                      onChange={(e) => setKeyword(e.target.value)}
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
                     />
                     <button type="submit" className="search-button">
                       search
@@ -168,7 +172,8 @@ const Header = () => {
                     type="search"
                     className="form-control rounded search"
                     placeholder="Search"
-                    onChange={(e) => setKeyword(e.target.value)}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                   <button type="submit" className="search-button">
                     search

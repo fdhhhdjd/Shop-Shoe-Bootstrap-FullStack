@@ -8,6 +8,7 @@ const OrderScreen = () => {
   const { order, loading } = useSelector((state) => ({ ...state.products }));
   const orders = order.history && order.history;
   const [orderItem, setOrderItem] = useState({});
+  const [total, setTotal] = useState(0);
   const { id } = useParams();
   useEffect(() => {
     if (id) {
@@ -15,11 +16,19 @@ const OrderScreen = () => {
         order.history.forEach((item) => {
           if (item._id === id) {
             setOrderItem(item);
+            const getTotal = () => {
+              const total = item.cart.reduce((prev, item) => {
+                return prev + item.price * item.quantity;
+              }, 0);
+              console.log(total, "allo");
+              setTotal(total);
+            };
+            getTotal();
           }
         });
     }
   }, [id]);
-  console.log(orderItem);
+  console.log(total, "total");
   return (
     <>
       <Header />
@@ -143,6 +152,40 @@ const OrderScreen = () => {
                             </div>
                           </div>
                         </>
+                      </div>
+                      <div className="col-lg-3 d-flex align-items-end flex-column mt-5 subtotal-order">
+                        <table className="table table-bordered">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <strong>Products</strong>
+                              </td>
+                              <td>{orderItem.cart.length}</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Shipping</strong>
+                              </td>
+                              {orderItem.status ? (
+                                <td>Paid on</td>
+                              ) : (
+                                <td>Paid in</td>
+                              )}
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Quantity</strong>
+                              </td>
+                              <td>{item.quantity}</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong>Total</strong>
+                              </td>
+                              <td>${total}</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </>

@@ -94,9 +94,10 @@ const CartScreen = () => {
         headers: { Authorization: refreshTokens },
       }
     );
-
+    window.location.reload();
     setCart([]);
     addToCart([]);
+
     swal("You have successfully placed an order.", {
       icon: "success",
     });

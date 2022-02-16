@@ -64,7 +64,7 @@ const History = ({ cartItems }) => {
                               ? moment(order.paidAt).calendar()
                               : moment(order.createdAt).calendar()}
                           </td>
-                          <td>${cartItems}</td>
+                          <td>${order.total}</td>
                         </tr>
                       ))}
                   </tbody>

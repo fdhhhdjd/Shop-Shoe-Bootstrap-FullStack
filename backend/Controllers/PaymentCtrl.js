@@ -16,7 +16,9 @@ const paymentCtrl = {
       if (!user) return res.status(400).json({ msg: "User does not exist." });
 
       const { cart, paymentID, address } = req.body;
-
+      const total = cart.reduce((prev, item) => {
+        return prev + item.price * item.quantity;
+      }, 0);
       const { _id, name, email } = user;
 
       const newPayment = new Payments({
@@ -24,6 +26,7 @@ const paymentCtrl = {
         name,
         email,
         cart,
+        total,
         paymentID,
         address,
         status: true,
@@ -31,6 +34,9 @@ const paymentCtrl = {
 
       cart.filter((item) => {
         return sold(item._id, item.quantity, item.sold);
+      });
+      cart.filter((item) => {
+        return stock(item._id, item.quantity, item.countInStock);
       });
 
       await newPayment.save();
@@ -41,7 +47,15 @@ const paymentCtrl = {
     }
   },
 };
-
+const stock = async (id, quantity, countInStock) => {
+  await Products.findOneAndUpdate(
+    { _id: id },
+    {
+      countInStock: countInStock - quantity,
+    }
+  );
+  console.log();
+};
 const sold = async (id, quantity, oldSold) => {
   await Products.findOneAndUpdate(
     { _id: id },

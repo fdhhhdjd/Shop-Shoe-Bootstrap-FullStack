@@ -27,6 +27,10 @@ const paymentSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    total: {
+      type: Number,
+      required: true,
+    },
     status: {
       type: Boolean,
       default: false,

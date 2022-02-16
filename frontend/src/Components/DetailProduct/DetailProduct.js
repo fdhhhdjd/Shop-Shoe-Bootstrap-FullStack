@@ -29,7 +29,6 @@ const initialState = {
 };
 const DetailProduct = () => {
   const { id } = useParams();
-  const [qty, setQty] = useState(1);
   const [reviewState, setReviewState] = useState(initialState);
   const [user, setUser] = useState();
   const [onEdit, setOnEdit] = useState(false);
@@ -146,21 +145,8 @@ const DetailProduct = () => {
                       {productDetail.product.countInStock > 0 ? (
                         <>
                           <div className="flex-box d-flex justify-content-between align-items-center">
-                            <h6>Quantity</h6>
-                            <select
-                              value={qty}
-                              onChange={(e) => setQty(e.target.value)}
-                            >
-                              {[
-                                ...Array(
-                                  productDetail.product.countInStock
-                                ).keys(),
-                              ].map((x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              ))}
-                            </select>
+                            <h6>CountIn Stock</h6>
+                            <span>{productDetail.product.countInStock}</span>
                           </div>
                           <button
                             onClick={() => addCart(productDetail.product)}
@@ -169,7 +155,12 @@ const DetailProduct = () => {
                             Add To Cart
                           </button>
                         </>
-                      ) : null}
+                      ) : (
+                        <div className="flex-box d-flex justify-content-between align-items-center">
+                          <h6>CountIn Stock</h6>
+                          <span>Out Of Stock</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -17,8 +17,6 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, authRegister } = useSelector((state) => ({ ...state.data }));
-
-  const error = true;
   const { name, email, password } = state;
   const submitHandler = (e) => {
     e.preventDefault();

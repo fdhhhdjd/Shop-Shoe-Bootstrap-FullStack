@@ -10,6 +10,7 @@ export const DataProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { auth, refreshToken } = useSelector((state) => ({ ...state.data }));
   const token = auth.accessToken;
+
   const refreshTokens = refreshToken.accessToken;
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
