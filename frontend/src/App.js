@@ -14,6 +14,8 @@ import {
   Profile,
   DetailProduct,
   OrderScreen,
+  HomeAdmin,
+  LoginAdmin,
 } from "./imports/index";
 import PrivateRouter from "./Pages/PrivateRouter/PrivateRouter";
 import CartScreen from "./Components/CartScreen/CartScreen";
@@ -38,6 +40,10 @@ function App() {
           <Route element={<PrivateRouter />}>
             <Route path="/order/:id" element={<OrderScreen />} />
           </Route>
+          {/* Admin */}
+          <Route path="/loginAdmin" element={<LoginAdmin />} />
+          <Route path="/homeAdmin" element={<HomeAdmin />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

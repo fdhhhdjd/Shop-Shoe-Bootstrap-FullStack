@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { ProfileInitiate } from "../Redux/AuthenticationSlice";
-const UserApi = (token) => {
+import { ProfileAdminInitiate } from "../Redux/AuthenticationAdminSlice";
+const UserApi = (token, refreshTokensAdmin) => {
   const dispatch = useDispatch();
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -14,7 +15,7 @@ const UserApi = (token) => {
   const { order } = useSelector((state) => ({ ...state.products }));
   const orders = order.history && order.history;
   useEffect(() => {
-    if (token) {
+    if (token && token.length > 0) {
       dispatch(ProfileInitiate({ token }));
 
       const getUser = async () => {
@@ -32,6 +33,12 @@ const UserApi = (token) => {
     }
     profile.user && setCart(profile.user);
   }, [token]);
+  //!Admin
+  useEffect(() => {
+    if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
+      dispatch(ProfileAdminInitiate({ refreshTokensAdmin }));
+    }
+  }, [refreshTokensAdmin]);
   const addCart = async (product) => {
     if (refreshToken.accessToken === undefined)
       return swal({

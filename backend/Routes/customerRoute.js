@@ -1,6 +1,8 @@
 const userCtrl = require("../Controllers/userController");
 const auth = require("../middleware/auth");
+const admin = require("../middleware/authAdmin");
 const router = require("express").Router();
+//!User
 //Register
 router.post("/register", userCtrl.register);
 
@@ -17,7 +19,7 @@ router.get("/logout", userCtrl.logout);
 router.get("/profile", auth, userCtrl.profile);
 
 //Update Profile
-router.patch("/profile/update", auth, userCtrl.updateProfile);
+router.patch("/profile/update", auth, admin, userCtrl.updateProfile);
 
 //Change Password
 router.patch("/changePassword", auth, userCtrl.ChangePassword);
@@ -34,5 +36,20 @@ router.post("/loginGoogle", userCtrl.LoginGoogle);
 router.patch("/addcart", auth, userCtrl.addCart);
 //History to Payment And Cart
 router.get("/history", auth, userCtrl.historyCart);
+//!Admin
+//Register Admin
+router.post("/registerAdmin", userCtrl.registerAdmin);
+
+//RefreshToken Admin
+router.get("/refreshTokenAdmin", userCtrl.refreshTokenAdmin);
+
+//Login Admin
+router.post("/loginAdmin", userCtrl.loginAdmin);
+
+//Logout Admin
+router.get("/logoutAdmin", userCtrl.LogoutAdmin);
+
+//Forget Admin
+router.post("/ForgetAdmin", userCtrl.ForgetAdmin);
 
 module.exports = router;

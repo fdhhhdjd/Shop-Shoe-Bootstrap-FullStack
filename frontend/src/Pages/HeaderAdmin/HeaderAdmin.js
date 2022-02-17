@@ -5,10 +5,12 @@ import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { GlobalState } from "../../Context/GlobalState";
-const Header = () => {
+const HeaderAdmin = () => {
   const [keyword, setKeyword] = useState();
   const dispatch = useDispatch();
-  const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
+  const { refreshTokenAdmin, profileAdmin } = useSelector((state) => ({
+    ...state.admin,
+  }));
   const state = useContext(GlobalState);
   const [cart, setCart] = state.UserApi.cart;
   const [search, setSearch] = state.ProductApi.search;
@@ -46,7 +48,7 @@ const Header = () => {
             </div>
             <div className=" col-12 col-lg-6 justify-content-center justify-content-lg-end d-flex align-items-center">
               <a
-                href="https://www.facebook.com/profile.php?id=100006139249437"
+                href="https://www.facebook.com/profileAdmin.php?id=100006139249437"
                 target="_blank"
               >
                 <i className="fab fa-facebook-f"></i>
@@ -64,10 +66,10 @@ const Header = () => {
               >
                 <i className="fab fa-linkedin-in"></i>
               </a>
-              <a href="https://profile-forme.surge.sh/" target="_blank">
+              <a href="https://profileAdmin-forme.surge.sh/" target="_blank">
                 <i className="far fa-id-badge"></i>
               </a>
-              <a href="https://profile-forme.surge.sh/" target="_blank">
+              <a href="https://profileAdmin-forme.surge.sh/" target="_blank">
                 <i className="fab fa-pinterest-p"></i>
               </a>
             </div>
@@ -87,7 +89,7 @@ const Header = () => {
                   </Link>
                 </div>
                 <div className="col-6 d-flex align-items-center justify-content-end Login-Register">
-                  {refreshToken && refreshToken.success ? (
+                  {refreshTokenAdmin && refreshTokenAdmin.success ? (
                     <div className="btn-group">
                       <button
                         type="button"
@@ -99,8 +101,8 @@ const Header = () => {
                         <i className="fas fa-user"></i>
                       </button>
                       <div className="dropdown-menu">
-                        <Link className="dropdown-item" to="/profile">
-                          Profile
+                        <Link className="dropdown-item" to="/profileAdmin">
+                          profileAdmin
                         </Link>
 
                         <Link
@@ -162,8 +164,8 @@ const Header = () => {
           <div className="pc-header">
             <div className="row">
               <div className="col-md-3 col-4 d-flex align-items-center">
-                <Link className="navbar-brand" to="/">
-                  <img alt="logo" src="/images/logo.png" />
+                <Link className="navbar-brand" to="/homeAdmin">
+                  <img alt="logo" src="/images/logo1.png" />
                 </Link>
               </div>
               <div className="col-md-6 col-8 d-flex align-items-center">
@@ -181,39 +183,10 @@ const Header = () => {
                 </form>
               </div>
               <div className="col-md-3 d-flex align-items-center justify-content-end Login-Register">
-                {refreshToken && refreshToken.success ? (
-                  <div className="btn-group">
-                    <button
-                      type="button"
-                      className="name-button dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      Hi, {profile.user && profile.user.name}
-                    </button>
-                    <div className="dropdown-menu">
-                      <Link className="dropdown-item" to="/profile">
-                        Profile
-                      </Link>
-                      <Link className="dropdown-item" to="/cart ">
-                        Payment
-                      </Link>
-                      <Link
-                        className="dropdown-item"
-                        to="#"
-                        onClick={logoutHandler}
-                      >
-                        Logout
-                      </Link>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <Link to="/register">Register</Link>
-                    <Link to="/login">Login</Link>
-                  </>
-                )}
+                <>
+                  <Link to="/register">Register</Link>
+                  <Link to="/login">Login</Link>
+                </>
 
                 <Link to="/cart">
                   <i className="fas fa-shopping-bag"></i>
@@ -228,4 +201,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderAdmin;

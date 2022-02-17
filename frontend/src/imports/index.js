@@ -19,3 +19,6 @@ export { default as DetailProduct } from "../Components/DetailProduct/DetailProd
 export { default as Paypal } from "../Components/Paypal/Paypal";
 export { default as Order } from "../Components/Order/Order";
 export { default as OrderScreen } from "../Components/OrderScreen/OrderScreen";
+export { default as HomeAdmin } from "../Components/HomeAdmin/HomeAdmin";
+export { default as LoginAdmin } from "../Pages/AuthenticationAdmin/LoginAdmin";
+export { default as HeaderAdmin } from "../Pages/HeaderAdmin/HeaderAdmin";

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Header, Loading, MetaData } from "../../imports/index";
-import {
-  LoginGoogleInitiate,
-  LoginInitial,
-} from "../../Redux/AuthenticationSlice";
+import { HeaderAdmin, Loading, MetaData } from "../../imports/index";
+import { LoginAdminInitial } from "../../Redux/AuthenticationAdminSlice";
 import Message from "../Error/Message";
 import GoogleLogin from "react-google-login";
 import { toast } from "react-toastify";
@@ -13,15 +10,14 @@ const initialState = {
   email: "",
   password: "",
 };
-const Login = () => {
+const LoginAdmin = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const [state, setState] = useState(initialState);
   const { email, password } = state;
-  const { loading, auth } = useSelector((state) => ({ ...state.data }));
+  const { loading, admin } = useSelector((state) => ({ ...state.admin }));
   const { profile } = useSelector((state) => ({ ...state.data }));
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -31,31 +27,31 @@ const Login = () => {
     if (!email || !password) {
       return toast.error("Please Enter Input 🥲");
     }
-    dispatch(LoginInitial({ email, password }));
+    dispatch(LoginAdminInitial({ email, password }));
   };
   const HandleGoogle = (response) => {
-    dispatch(LoginGoogleInitiate(response));
+    // dispatch(LoginGoogleInitiate(response));
   };
   useEffect(() => {
-    if (auth.status === 200) {
+    if (admin.status === 200) {
       if (location.state?.from) {
         navigate(location.state.from);
         window.location.reload();
       } else {
-        window.location.href = "/";
+        window.location.href = "/homeAdmin";
       }
-      localStorage.setItem("firstLogin", true);
+      localStorage.setItem("firstLoginAdmin", true);
     }
-  }, [auth]);
+  }, [admin]);
 
   window.scrollTo(0, 0);
   return (
     <>
-      <MetaData title="Login-ShoeShop" />
-      <Header />
+      <MetaData title="ShoeShop-Dev" />
+      <HeaderAdmin />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-        {auth.status === 400 && (
-          <Message variant="alert-danger">{auth.msg}</Message>
+        {admin.status === 400 && (
+          <Message variant="alert-danger">{admin.msg}</Message>
         )}
 
         <form
@@ -95,4 +91,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginAdmin;
