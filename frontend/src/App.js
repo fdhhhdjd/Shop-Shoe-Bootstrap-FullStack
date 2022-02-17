@@ -6,28 +6,39 @@ import { ToastContainer } from "react-toastify";
 import {
   Login,
   NotFound,
-  Loading,
   Register,
-  Home,
   Forget,
   Reset,
   Profile,
   DetailProduct,
   OrderScreen,
-  HomeAdmin,
   LoginAdmin,
+  Products,
+  PrivateRouterAdmin,
+  PrivateRouter,
+  CartScreen,
+  RegisterAdmin,
+  ForgetAdmin,
+  Loadings,
+  PrivateRouterAuthAdmin,
+  PrivateRouterAuth,
 } from "./imports/index";
-import PrivateRouter from "./Pages/PrivateRouter/PrivateRouter";
-import CartScreen from "./Components/CartScreen/CartScreen";
+import { HomeAdmin, Home } from "./imports/LazyRouter";
 function App() {
   return (
     <>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loadings />}>
         <ToastContainer position="top-center" />
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forget" element={<Forget />} />
+          <Route element={<PrivateRouterAuth />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
+          <Route element={<PrivateRouterAuth />}>
+            <Route path="/register" element={<Register />} />
+          </Route>
+          <Route element={<PrivateRouterAuth />}>
+            <Route path="/forget" element={<Forget />} />
+          </Route>
           <Route path="/password/reset/:token" element={<Reset />} />
           <Route element={<PrivateRouter />}>
             <Route path="/profile" element={<Profile />} />
@@ -41,9 +52,21 @@ function App() {
             <Route path="/order/:id" element={<OrderScreen />} />
           </Route>
           {/* Admin */}
-          <Route path="/loginAdmin" element={<LoginAdmin />} />
-          <Route path="/homeAdmin" element={<HomeAdmin />} />
-
+          <Route element={<PrivateRouterAuthAdmin />}>
+            <Route path="/loginAdmin" element={<LoginAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAuthAdmin />}>
+            <Route path="/registerAdmin" element={<RegisterAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAuthAdmin />}>
+            <Route path="/forgetAdmin" element={<ForgetAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/homeAdmin" element={<HomeAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/products" element={<Products />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

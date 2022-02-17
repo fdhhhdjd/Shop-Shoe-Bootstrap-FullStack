@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Header, Loading, MetaData } from "../../imports/index";
+import { Loading, MetaData, HeaderLoginAdmin } from "../../imports/index";
 import { ForgetInitiate, reset } from "../../Redux/AuthenticationSlice";
 import Message from "../Error/Message";
 import swal from "sweetalert";
 const initialState = {
   email: "",
 };
-const Forget = () => {
+const ForgetAdmin = () => {
   window.scrollTo(0, 0);
   const [state, setState] = useState(initialState);
   const [password, setPassword] = useState("");
@@ -36,16 +36,11 @@ const Forget = () => {
       setState({ email: "" });
       dispatch(reset());
     }
-    if (forget.status === 400) {
-      setTimeout(() => {
-        dispatch(reset());
-      }, 3000);
-    }
   }, [forget]);
   return (
     <>
       <MetaData title="Forget-ShoeShop" />
-      <Header />
+      <HeaderLoginAdmin />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {forget && forget.status === 400 && (
           <Message variant="alert-danger">{forget.msg}</Message>
@@ -63,7 +58,7 @@ const Forget = () => {
           />
           {loading ? <Loading /> : <button type="submit">Forget</button>}
           <p>
-            <Link to="/login">Back Login ?</Link>
+            <Link to="/loginAdmin">Back Login ?</Link>
           </p>
         </form>
       </div>
@@ -71,4 +66,4 @@ const Forget = () => {
   );
 };
 
-export default Forget;
+export default ForgetAdmin;

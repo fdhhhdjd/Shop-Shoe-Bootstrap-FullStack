@@ -5,6 +5,7 @@ import { Header, Loading, MetaData } from "../../imports/index";
 import {
   LoginGoogleInitiate,
   LoginInitial,
+  reset,
 } from "../../Redux/AuthenticationSlice";
 import Message from "../Error/Message";
 import GoogleLogin from "react-google-login";
@@ -45,6 +46,11 @@ const Login = () => {
         window.location.href = "/";
       }
       localStorage.setItem("firstLogin", true);
+    }
+    if (auth.status === 400) {
+      setTimeout(() => {
+        dispatch(reset());
+      }, 3000);
     }
   }, [auth]);
 

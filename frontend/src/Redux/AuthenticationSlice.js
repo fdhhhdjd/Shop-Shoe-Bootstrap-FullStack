@@ -107,6 +107,7 @@ const AuthenticationSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
+      state.auth = [];
       state.authRegister = [];
       state.forget = [];
       state.changePass = [];

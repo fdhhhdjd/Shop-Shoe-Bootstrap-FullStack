@@ -3,51 +3,56 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { Header, Loading, MetaData } from "../../imports/index";
-import { RegisterInitiate, reset } from "../../Redux/AuthenticationSlice";
+import { HeaderLoginAdmin, Loading, MetaData } from "../../imports/index";
+import {
+  RegisterAdminInitial,
+  reset,
+} from "../../Redux/AuthenticationAdminSlice";
 import Message from "../Error/Message";
 const initialState = {
   name: "",
   email: "",
   password: "",
 };
-const Register = () => {
+const RegisterAdmin = () => {
   window.scrollTo(0, 0);
   const [state, setState] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, authRegister } = useSelector((state) => ({ ...state.data }));
+  const { loading, registerAdmin } = useSelector((state) => ({
+    ...state.admin,
+  }));
   const { name, email, password } = state;
   const submitHandler = (e) => {
     e.preventDefault();
     if (!name || !email || !password) {
       return toast.error("Please Enter Input 🥲");
     }
-    dispatch(RegisterInitiate({ name, email, password }));
+    dispatch(RegisterAdminInitial({ name, email, password }));
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
   useEffect(() => {
-    if (authRegister.status === 200) {
-      navigate("/login");
-      toast.success(authRegister.msg);
+    if (registerAdmin.status === 200) {
+      navigate("/loginAdmin");
+      toast.success(registerAdmin.msg);
       dispatch(reset());
     }
-    if (authRegister.status === 400) {
+    if (registerAdmin.status === 400) {
       setTimeout(() => {
         dispatch(reset());
-      }, 3000);
+      }, [3000]);
     }
-  }, [authRegister]);
+  }, [registerAdmin]);
   return (
     <>
       <MetaData title="Register-ShoeShop" />
-      <Header />
+      <HeaderLoginAdmin />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-        {authRegister.status === 400 && (
-          <Message variant="alert-danger">{authRegister.msg}</Message>
+        {registerAdmin.status === 400 && (
+          <Message variant="alert-danger">{registerAdmin.msg}</Message>
         )}
         <form
           className="Login col-md-8 col-lg-4 col-11"
@@ -76,7 +81,7 @@ const Register = () => {
           />
           {loading ? <Loading /> : <button type="submit">Register</button>}
           <p>
-            <Link to="/login">Back Login</Link>
+            <Link to="/loginAdmin">Back Login</Link>
           </p>
         </form>
       </div>
@@ -84,4 +89,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterAdmin;

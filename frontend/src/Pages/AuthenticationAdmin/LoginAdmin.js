@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HeaderAdmin, Loading, MetaData } from "../../imports/index";
-import { LoginAdminInitial } from "../../Redux/AuthenticationAdminSlice";
+import { Loading, MetaData, HeaderLoginAdmin } from "../../imports/index";
+import { LoginAdminInitial, reset } from "../../Redux/AuthenticationAdminSlice";
 import Message from "../Error/Message";
 import GoogleLogin from "react-google-login";
 import { toast } from "react-toastify";
@@ -42,13 +42,18 @@ const LoginAdmin = () => {
       }
       localStorage.setItem("firstLoginAdmin", true);
     }
+    if (admin.status === 400) {
+      setTimeout(() => {
+        dispatch(reset());
+      }, 3000);
+    }
   }, [admin]);
 
   window.scrollTo(0, 0);
   return (
     <>
       <MetaData title="ShoeShop-Dev" />
-      <HeaderAdmin />
+      <HeaderLoginAdmin />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {admin.status === 400 && (
           <Message variant="alert-danger">{admin.msg}</Message>
@@ -81,9 +86,9 @@ const LoginAdmin = () => {
           />
           {loading ? <Loading /> : <button type="submit">Login</button>}
           <p>
-            <Link to="/register">Create Account </Link>
+            <Link to="/registerAdmin">Create Account </Link>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <Link to="/Forget">Forget ?</Link>
+            <Link to="/ForgetAdmin">Forget ?</Link>
           </p>
         </form>
       </div>

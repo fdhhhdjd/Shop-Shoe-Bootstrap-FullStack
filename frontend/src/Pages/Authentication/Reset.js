@@ -34,6 +34,11 @@ const Login = () => {
       setState({ password: "", confirmPassword: "" });
       dispatch(reset());
     }
+    if (resetForget.status === 400) {
+      setTimeout(() => {
+        dispatch(reset());
+      }, 3000);
+    }
   }, [resetForget]);
   const handleChangeInput = (e) => {
     const { name, value } = e.target;

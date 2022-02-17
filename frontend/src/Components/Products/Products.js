@@ -1,15 +1,15 @@
 import React from "react";
-import { HeaderAdmin, Sidebar, MainHomeAdmin } from "../../imports/index";
-const HomeAdmin = () => {
+import { Sidebar, HeaderAdmin, MainProduct } from "../../imports/index";
+const Products = () => {
   return (
     <>
       <Sidebar />
       <main className="main-wrap">
         <HeaderAdmin />
-        <MainHomeAdmin />
+        <MainProduct />
       </main>
     </>
   );
 };
 
-export default HomeAdmin;
+export default Products;

@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Header } from "../../imports/index";
 const NotFound = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Header />
@@ -13,10 +14,13 @@ const NotFound = () => {
             src="/images/not-found.png"
             alt="Not-found"
           />
-          <button className="col-md-3 col-sm-6 col-12 btn btn-success mt-5">
-            <Link to="/" className="text-white text-decoration-none">
+          <button
+            className="col-md-3 col-sm-6 col-12 btn btn-success mt-5"
+            onClick={() => navigate(-1)}
+          >
+            <span to="/" className="text-white text-decoration-none">
               Home page
-            </Link>
+            </span>
           </button>
         </div>
       </div>

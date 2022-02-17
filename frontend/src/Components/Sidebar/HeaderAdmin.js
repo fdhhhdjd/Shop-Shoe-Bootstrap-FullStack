@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
-import { useDispatch, useSelector } from "react-redux";
-import { LogoutAdminInitiate } from "../../Redux/AuthenticationAdminSlice";
 const HeaderAdmin = () => {
-  const { profileAdmin } = useSelector((state) => ({ ...state.admin }));
   const dispatch = useDispatch();
   useEffect(() => {
     $("[data-trigger]").on("click", function (e) {
@@ -24,10 +21,7 @@ const HeaderAdmin = () => {
       }
     });
   }, []);
-  const logoutHandler = (e) => {
-    e.preventDefault();
-    dispatch(LogoutAdminInitiate());
-  };
+  const logoutHandler = () => {};
   return (
     <>
       <header className="main-header navbar">
@@ -81,13 +75,11 @@ const HeaderAdmin = () => {
                 data-bs-toggle="dropdown"
                 to="#"
               >
-                {profileAdmin.user && (
-                  <img
-                    className="img-xs rounded-circle"
-                    src={profileAdmin.user.image.url}
-                    alt="User"
-                  />
-                )}
+                <img
+                  className="img-xs rounded-circle"
+                  src="/images/favicon.png"
+                  alt="User"
+                />
               </Link>
               <div className="dropdown-menu dropdown-menu-end">
                 <Link className="dropdown-item" to="/">
