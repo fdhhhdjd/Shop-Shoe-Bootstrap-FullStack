@@ -24,7 +24,11 @@ const ShopSection = () => {
     setcurrentPage(Number(event.target.id));
   };
   const pages = [];
-  for (let i = 1; i <= Math.ceil(products.length / itemsPerPage); i++) {
+  for (
+    let i = 1;
+    i <= Math.ceil(products && products.length / itemsPerPage);
+    i++
+  ) {
     pages.push(i);
   }
 
@@ -76,7 +80,7 @@ const ShopSection = () => {
   }
 
   const handleLoadMore = () => {
-    if (itemsPerPage === products.length) {
+    if (itemsPerPage === products && products.length) {
       return swal("It's over, my friend 😄", {
         icon: "error",
       });
