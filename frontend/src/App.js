@@ -22,6 +22,9 @@ import {
   Loadings,
   PrivateRouterAuthAdmin,
   PrivateRouterAuth,
+  AddProduct,
+  EditProduct,
+  ResetAdmin,
 } from "./imports/index";
 import { HomeAdmin, Home } from "./imports/LazyRouter";
 function App() {
@@ -61,11 +64,18 @@ function App() {
           <Route element={<PrivateRouterAuthAdmin />}>
             <Route path="/forgetAdmin" element={<ForgetAdmin />} />
           </Route>
+          <Route path="/password/admin/reset/:token" element={<ResetAdmin />} />
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/homeAdmin" element={<HomeAdmin />} />
           </Route>
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/products" element={<Products />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/addProduct" element={<AddProduct />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/editProduct/:id" element={<EditProduct />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

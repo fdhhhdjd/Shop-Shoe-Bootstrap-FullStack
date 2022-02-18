@@ -39,3 +39,10 @@ export { default as LoadingToRedirectAuth } from "../Pages/PrivateRouterAdmin/Lo
 export { default as LoadingToRedirect } from "../Pages/PrivateRouterUser/LoadingToRedirect";
 export { default as LoadingToRedirects } from "../Pages/PrivateRouterUser/LoadingToRedirects";
 export { default as PrivateRouterAuth } from "../Pages/PrivateRouterUser/PrivateRouterAuth";
+export { default as AddProduct } from "../Components/HomeAdmin/AddProduct";
+export { default as AddProductMain } from "../Components/HomeAdmin/AddProductMain";
+export { default as Product } from "../Components/Products/Product";
+export { default as EditProductMain } from "../Components/HomeAdmin/EditProductMain";
+export { default as EditProduct } from "../Components/HomeAdmin/EditProduct";
+export { default as TopTotal } from "../Components/HomeAdmin/TopTotal";
+export { default as ResetAdmin } from "../Pages/AuthenticationAdmin/ResetAdmin";

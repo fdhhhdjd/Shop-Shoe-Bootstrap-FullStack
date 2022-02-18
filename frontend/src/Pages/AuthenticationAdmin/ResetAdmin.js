@@ -4,17 +4,20 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { Header, Loading, MetaData } from "../../imports/index";
-import { reset, ResetInitiate } from "../../Redux/AuthenticationSlice";
+import {
+  ResetAdminInitiate,
+  reset,
+} from "../../Redux/AuthenticationAdminSlice";
 import Message from "../Error/Message";
 const initialState = {
   password: "",
   confirmPassword: "",
 };
-const Reset = () => {
+const ResetAdmin = () => {
   window.scrollTo(0, 0);
   const [state, setState] = useState(initialState);
-  const { loading, resetForget } = useSelector((state) => ({
-    ...state.data,
+  const { loading, resetAdmin } = useSelector((state) => ({
+    ...state.admin,
   }));
   const { token } = useParams();
   const dispatch = useDispatch();
@@ -24,24 +27,24 @@ const Reset = () => {
     if (!password || !confirmPassword) {
       return toast.error("Please Enter Input 🥲");
     }
-    dispatch(ResetInitiate({ token, password, confirmPassword }));
+    dispatch(ResetAdminInitiate({ token, password, confirmPassword }));
   };
   useEffect(() => {
-    if (resetForget.status === 200) {
-      swal(`${resetForget.msg}`, {
+    if (resetAdmin.status === 200) {
+      swal(`${resetAdmin.msg}`, {
         icon: "success",
       });
       setState({ password: "", confirmPassword: "" });
       setTimeout(() => {
         dispatch(reset());
-      }, 6000);
+      }, 5000);
     }
-    if (resetForget.status === 400) {
+    if (resetAdmin.status === 400) {
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
     }
-  }, [resetForget]);
+  }, [resetAdmin]);
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -51,10 +54,10 @@ const Reset = () => {
       <MetaData title="Reset-ShoeShop" />
       <Header />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-        {resetForget && resetForget.status === 400 && (
-          <Message variant="alert-danger">{resetForget.msg}</Message>
+        {resetAdmin && resetAdmin.status === 400 && (
+          <Message variant="alert-danger">{resetAdmin.msg}</Message>
         )}
-        {resetForget && resetForget.success ? (
+        {resetAdmin && resetAdmin.success ? (
           <form
             className="Login col-md-8 col-lg-4 col-11"
             onSubmit={submitHandler}
@@ -63,7 +66,7 @@ const Reset = () => {
               <Loading />
             ) : (
               <button type="submit">
-                <Link to="/login">Success Please login 😊</Link>
+                <Link to="/loginAdmin">Success Please login 😊</Link>
               </button>
             )}
             <p>Thank You for 😉 !</p>
@@ -98,4 +101,4 @@ const Reset = () => {
   );
 };
 
-export default Reset;
+export default ResetAdmin;

@@ -17,11 +17,19 @@ const userCtrl = {
         req.body;
 
       const user = await Users.findOne({ email });
+      const users = await Users.findOne({ email, role: 1 });
+      if (users) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "The email already exists Admin.",
+        });
+      }
       if (user)
         return res.json({
           status: 400,
           success: false,
-          msg: "The email already exists.",
+          msg: "The email already exists Customer.",
         });
 
       if (password.length < 6)
@@ -594,11 +602,19 @@ const userCtrl = {
         req.body;
 
       const user = await Users.findOne({ email });
+      const users = await Users.findOne({ email, role: 0 });
+      if (users) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "The email already exists Customer.",
+        });
+      }
       if (user)
         return res.json({
           status: 400,
           success: false,
-          msg: "The email already exists.",
+          msg: "The email already exists Admin.",
         });
 
       if (password.length < 6)
@@ -787,10 +803,10 @@ const userCtrl = {
 
     await user.save({ validateBeforeSave: false });
 
-    const resetPasswordUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/password/reset/${resetToken}`;
-    // const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+    // const resetPasswordUrl = `${req.protocol}://${req.get(
+    //   "host"
+    // )}/password/reset/${resetToken}`;
+    const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/admin/reset/${resetToken}`;
     //const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
     try {
       await sendEmail({

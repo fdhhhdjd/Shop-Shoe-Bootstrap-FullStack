@@ -19,7 +19,7 @@ router.get("/logout", userCtrl.logout);
 router.get("/profile", auth, userCtrl.profile);
 
 //Update Profile
-router.patch("/profile/update", auth, admin, userCtrl.updateProfile);
+router.patch("/profile/update", auth, userCtrl.updateProfile);
 
 //Change Password
 router.patch("/changePassword", auth, userCtrl.ChangePassword);

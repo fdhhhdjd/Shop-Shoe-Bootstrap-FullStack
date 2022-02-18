@@ -70,12 +70,24 @@ export const LoginGooglAdminInitiate = createAsyncThunk(
     return res;
   }
 );
+export const ResetAdminInitiate = createAsyncThunk(
+  "admin/ResetAdmin",
+  async ({ token, password, confirmPassword }) => {
+    const response = await axios.put(`/api/auth/password/reset/${token}`, {
+      password,
+      confirmPassword,
+    });
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   admin: [],
   registerAdmin: [],
   refreshTokenAdmin: [],
   profileAdmin: [],
+  resetAdmin: [],
+  forgetAdmin: [],
   logoutAdmin: false,
 };
 const AuthenticationAdminSlice = createSlice({
@@ -85,6 +97,7 @@ const AuthenticationAdminSlice = createSlice({
     reset: (state) => {
       state.registerAdmin = [];
       state.admin = [];
+      state.resetAdmin = [];
     },
   },
   extraReducers: {
@@ -167,9 +180,21 @@ const AuthenticationAdminSlice = createSlice({
     },
     [ForgetAdminInitiate.fulfilled]: (state, action) => {
       state.loading = false;
-      state.logoutAdmin = true;
+      state.forgetAdmin = action.payload;
     },
     [ForgetAdminInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Reset Admin
+    [ResetAdminInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ResetAdminInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.resetAdmin = action.payload;
+    },
+    [ResetAdminInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

@@ -47,8 +47,9 @@ export const DataProvider = ({ children }) => {
 
   const data = {
     callback: [callback, setCallback],
+    callbackAdmin: [callbackAdmin, setCallbackAdmin],
     UserApi: UserApi(refreshTokens, refreshTokensAdmin),
-    ProductApi: ProductApi(callback),
+    ProductApi: ProductApi(callback, callbackAdmin),
     OrderApi: OrderApi(refreshTokens, callback),
   };
   return <GlobalState.Provider value={data}>{children}</GlobalState.Provider>;
