@@ -57,6 +57,19 @@ export const ForgetAdminInitiate = createAsyncThunk(
     return response.data;
   }
 );
+export const LoginGooglAdminInitiate = createAsyncThunk(
+  "admin/LoginGoogleAdmin",
+  async (response) => {
+    const res = await axios
+      .post("/api/auth/loginGoogleAdmin", { tokenId: response.tokenId })
+      .then((user) => user.data)
+      .catch((error) => {
+        console.log(error.data);
+      });
+    console.log(res);
+    return res;
+  }
+);
 const initialState = {
   loading: false,
   admin: [],
@@ -87,6 +100,19 @@ const AuthenticationAdminSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    //?LoginGoogle Admin
+    [LoginGooglAdminInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [LoginGooglAdminInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.admin = action.payload;
+    },
+    [LoginGooglAdminInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     //? Register Admin
     [RegisterAdminInitial.pending]: (state, action) => {
       state.loading = true;

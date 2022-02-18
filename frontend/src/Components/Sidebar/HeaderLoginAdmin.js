@@ -10,16 +10,12 @@ const HeaderLoginAdmin = () => {
   const dispatch = useDispatch();
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
   const state = useContext(GlobalState);
-  const [cart, setCart] = state.UserApi.cart;
-  const [search, setSearch] = state.ProductApi.search;
-  const cartItems = cart;
 
   const logoutHandler = (e) => {
     e.preventDefault();
     dispatch(LogoutInitiate());
     toast.success("Logout Success Thank You!");
   };
-  console.log(search);
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -32,7 +28,7 @@ const HeaderLoginAdmin = () => {
             <div className="col-md-6 d-flex align-items-center display-none">
               <p>
                 <a href="tel:+0798805741" style={{ color: "white" }}>
-                  +255 768 356 890
+                  +079 880 5741
                 </a>
               </p>
               <p>
@@ -68,7 +64,7 @@ const HeaderLoginAdmin = () => {
                 <i className="far fa-id-badge"></i>
               </a>
               <a href="https://profile-forme.surge.sh/" target="_blank">
-                <i className="fab fa-pinterest-p"></i>
+                <i className="fas fa-user"></i>
               </a>
             </div>
           </div>
@@ -82,9 +78,13 @@ const HeaderLoginAdmin = () => {
             <div className="container ">
               <div className="row ">
                 <div className="col-6 d-flex align-items-center">
-                  <Link className="navbar-brand" to="/homeAdmin">
+                  <a
+                    className="navbar-brand"
+                    href="https://profile-forme.surge.sh/"
+                    target="_blank"
+                  >
                     <img alt="logo" src="/images/logo1.png" />
-                  </Link>
+                  </a>
                 </div>
                 <div className="col-6 d-flex align-items-center justify-content-end Login-Register">
                   {refreshToken && refreshToken.success ? (
@@ -135,10 +135,9 @@ const HeaderLoginAdmin = () => {
                     </div>
                   )}
 
-                  <Link to="/cart" className="cart-mobile-icon">
-                    <i className="fas fa-shopping-bag"></i>
-                    <span className="badge">1</span>
-                  </Link>
+                  <span className="cart-mobile-icon">
+                    <i className="fa-solid fa-lock"></i>
+                  </span>
                 </div>
                 <div className="col-12 d-flex align-items-center">
                   <form onSubmit={submitHandler} className="input-group">
@@ -146,8 +145,6 @@ const HeaderLoginAdmin = () => {
                       type="search"
                       className="form-control rounded search"
                       placeholder="Search"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
                     />
                     <button type="submit" className="search-button">
                       search
@@ -161,9 +158,13 @@ const HeaderLoginAdmin = () => {
           <div className="pc-header">
             <div className="row">
               <div className="col-md-3 col-4 d-flex align-items-center">
-                <Link className="navbar-brand" to="/homeAdmin">
+                <a
+                  className="navbar-brand"
+                  href="https://profile-forme.surge.sh/"
+                  target="_blank"
+                >
                   <img alt="logo" src="/images/logo1.png" />
-                </Link>
+                </a>
               </div>
               <div className="col-md-6 col-8 d-flex align-items-center">
                 <form onSubmit={submitHandler} className="input-group">
@@ -171,8 +172,6 @@ const HeaderLoginAdmin = () => {
                     type="search"
                     className="form-control rounded search"
                     placeholder="Search"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
                   />
                   <button type="submit" className="search-button">
                     search
@@ -214,10 +213,9 @@ const HeaderLoginAdmin = () => {
                   </>
                 )}
 
-                <Link to="/cart">
-                  <i className="fas fa-shopping-bag"></i>
-                  <span className="badge">{cartItems.length}</span>
-                </Link>
+                <span>
+                  <i className="fa-solid fa-lock"></i>
+                </span>
               </div>
             </div>
           </div>

@@ -53,7 +53,6 @@ const Login = () => {
       }, 3000);
     }
   }, [auth]);
-
   window.scrollTo(0, 0);
   return (
     <>

@@ -18,9 +18,7 @@ const NotFound = () => {
             className="col-md-3 col-sm-6 col-12 btn btn-success mt-5"
             onClick={() => navigate(-1)}
           >
-            <span to="/" className="text-white text-decoration-none">
-              Home page
-            </span>
+            <span className="text-white text-decoration-none">Back Page</span>
           </button>
         </div>
       </div>

@@ -469,9 +469,9 @@ const userCtrl = {
         const { email_verified, name, email, picture } = response.payload;
         console.log(response.payload);
         if (email_verified) {
-          Users.findOne({ email }).exec((error, user) => {
+          Users.findOne({ email, role: 0 }).exec((error, user) => {
             if (error) {
-              return res.status(400).json({
+              return res.json({
                 status: 400,
                 success: false,
                 msg: "Invalid Authentication",
@@ -480,9 +480,11 @@ const userCtrl = {
               if (user) {
                 const accesstoken = createAccessToken({
                   id: user._id,
+                  role: user.role,
                 });
                 const refreshtoken = createRefreshToken({
                   id: user._id,
+                  role: user.role,
                 });
 
                 res.cookie("refreshtoken", refreshtoken, {
@@ -490,13 +492,13 @@ const userCtrl = {
                   path: "/api/auth/refresh_token",
                   maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
                 });
-                const { _id, name, email, image } = user;
-                res.status(200).json({
+                const { _id, fullname, email, image } = user;
+                res.json({
                   status: 200,
                   success: true,
                   msg: "Login successfully",
-                  accessToken: accesstoken,
-                  user: { _id, name, email, image },
+                  accesstoken,
+                  user: { _id, fullname, email, image },
                 });
               } else {
                 let password = email + process.env.ACCESS_TOKEN_SECRET;
@@ -511,7 +513,7 @@ const userCtrl = {
                 });
                 newUser.save((err, data) => {
                   if (err) {
-                    return res.status(400).json({
+                    return res.json({
                       status: 400,
                       success: false,
                       msg: "Invalid Authentication",
@@ -519,9 +521,11 @@ const userCtrl = {
                   }
                   const accesstoken = createAccessToken({
                     id: data._id,
+                    role: data.role,
                   });
                   const refreshtoken = createRefreshToken({
                     id: data._id,
+                    role: data.role,
                   });
 
                   res.cookie("refreshtoken", refreshtoken, {
@@ -534,7 +538,7 @@ const userCtrl = {
                     status: 200,
                     success: true,
                     msg: "Register successfully",
-                    accessToken: accesstoken,
+                    accesstoken,
                     user: { _id, name, email, image },
                   });
                   console.log(user);
@@ -824,7 +828,98 @@ const userCtrl = {
     }
   },
   //Login Google Admin
-  loginGoogleAdmin: async (req, res) => {},
+  loginGoogleAdmin: async (req, res) => {
+    const { tokenId } = req.body;
+    client
+      .verifyIdToken({
+        idToken: tokenId,
+        audience: process.env.CLIENT_ID,
+      })
+      .then((response) => {
+        const { email_verified, name, email, picture } = response.payload;
+        console.log(response.payload);
+        if (email_verified) {
+          Users.findOne({ email, role: 1 }).exec((error, user) => {
+            if (error) {
+              return res.json({
+                status: 400,
+                success: false,
+                msg: "Invalid Authentication",
+              });
+            } else {
+              if (user) {
+                const accesstoken = createAccessToken({
+                  id: user._id,
+                  role: user.role,
+                });
+                const refreshtoken = createRefreshToken({
+                  id: user._id,
+                  role: user.role,
+                });
+
+                res.cookie("refreshtoken", refreshtoken, {
+                  httpOnly: true,
+                  path: "/api/auth/refreshTokenAdmin",
+                  maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+                });
+                const { _id, name, email, image } = user;
+                res.json({
+                  status: 200,
+                  success: true,
+                  msg: "Login Admin successfully",
+                  accesstoken,
+                  user: { _id, name, email, image },
+                });
+              } else {
+                let password = email + process.env.ACCESS_TOKEN_SECRET;
+                let newUser = new Users({
+                  name: name,
+                  email,
+                  password,
+                  image: {
+                    public_id: password,
+                    url: picture,
+                  },
+                  role: 1,
+                });
+                newUser.save((err, data) => {
+                  if (err) {
+                    return res.json({
+                      status: 400,
+                      success: false,
+                      msg: "Account No Admin invalid",
+                    });
+                  }
+                  const accesstoken = createAccessToken({
+                    id: data._id,
+                    role: data.role,
+                  });
+                  const refreshtoken = createRefreshToken({
+                    id: data._id,
+                    role: data.role,
+                  });
+
+                  res.cookie("refreshtoken", refreshtoken, {
+                    httpOnly: true,
+                    path: "/api/auth/refreshTokenAdmin",
+                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+                  });
+                  const { _id, name, email, image } = newUser;
+                  res.json({
+                    status: 200,
+                    success: true,
+                    msg: "Register Admin successfully",
+                    accesstoken,
+                    user: { _id, name, email, image },
+                  });
+                  console.log(user);
+                });
+              }
+            }
+          });
+        }
+      });
+  },
 };
 
 const createAccessToken = (user) => {

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Loading, MetaData, HeaderLoginAdmin } from "../../imports/index";
-import { LoginAdminInitial, reset } from "../../Redux/AuthenticationAdminSlice";
+import {
+  LoginAdminInitial,
+  LoginGooglAdminInitiate,
+  reset,
+} from "../../Redux/AuthenticationAdminSlice";
 import Message from "../Error/Message";
 import GoogleLogin from "react-google-login";
 import { toast } from "react-toastify";
@@ -30,7 +34,7 @@ const LoginAdmin = () => {
     dispatch(LoginAdminInitial({ email, password }));
   };
   const HandleGoogle = (response) => {
-    // dispatch(LoginGoogleInitiate(response));
+    dispatch(LoginGooglAdminInitiate(response));
   };
   useEffect(() => {
     if (admin.status === 200) {
@@ -65,7 +69,7 @@ const LoginAdmin = () => {
         >
           <GoogleLogin
             clientId="1083950083676-fr9m6jsgig4aalf6mj81t8rlgl9v45bd.apps.googleusercontent.com"
-            buttonText="Login Google +"
+            buttonText="Login Admin Google +"
             onSuccess={HandleGoogle}
             onFailure={HandleGoogle}
             cookiePolicy={"single_host_origin"}

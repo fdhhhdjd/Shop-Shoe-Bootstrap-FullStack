@@ -24,83 +24,51 @@ const Sidebar = () => {
           <nav>
             <ul className="menu-aside">
               <li className="menu-item">
-                <NavLink
-                  activeClassName="active"
-                  className="menu-link"
-                  to="/homeAdmin"
-                  exact={true}
-                >
+                <NavLink to="/homeAdmin" end className="menu-link">
                   <i className="icon fas fa-home"></i>
                   <span className="text">Dashboard</span>
                 </NavLink>
               </li>
               <li className="menu-item">
-                <NavLink
-                  activeClassName="active"
-                  className="menu-link"
-                  to="/products"
-                >
+                <NavLink end to="/products" className="menu-link">
                   <i className="icon fas fa-shopping-bag"></i>
                   <span className="text">Products</span>
                 </NavLink>
               </li>
+
               <li className="menu-item">
-                <NavLink
-                  activeClassName="active"
-                  className="menu-link"
-                  to="/addproduct"
-                >
+                <NavLink end to="/addproduct" className="menu-link">
                   <i className="icon fas fa-cart-plus"></i>
                   <span className="text">Add product</span>
                 </NavLink>
               </li>
               <li className="menu-item">
-                <NavLink
-                  activeClassName="active"
-                  className="menu-link"
-                  to="/category"
-                >
+                <NavLink end to="/category" className="menu-link">
                   <i className="icon fas fa-list"></i>
                   <span className="text">Categories</span>
                 </NavLink>
               </li>
               <li className="menu-item">
-                <NavLink
-                  activeClassName="active"
-                  className="menu-link"
-                  to="/orders"
-                >
+                <NavLink end to="/orders" className="menu-link">
                   <i className="icon fas fa-bags-shopping"></i>
                   <span className="text">Orders</span>
                 </NavLink>
               </li>
               <li className="menu-item">
-                <NavLink
-                  activeClassName="active"
-                  className="menu-link"
-                  to="/users"
-                >
+                <NavLink end to="/users" className="menu-link">
                   <i className="icon fas fa-user"></i>
                   <span className="text">Users</span>
                 </NavLink>
               </li>
               <li className="menu-item">
-                <NavLink
-                  activeClassName="active"
-                  className="menu-link disabled"
-                  to="/sellers"
-                >
+                <NavLink end to="/sellers" className="menu-link disabled">
                   <i className="icon fas fa-store-alt"></i>
                   <span className="text">Sellers</span>
                 </NavLink>
               </li>
 
               <li className="menu-item">
-                <NavLink
-                  activeClassName="active"
-                  className="menu-link disabled"
-                  to="/transaction"
-                >
+                <NavLink end to="/transaction" className="menu-link disabled">
                   <i className="icon fas fa-usd-circle"></i>
                   <span className="text">Transactions</span>
                 </NavLink>

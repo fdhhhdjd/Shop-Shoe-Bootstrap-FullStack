@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
 import { toast } from "react-toastify";
@@ -8,12 +8,15 @@ import { GlobalState } from "../../Context/GlobalState";
 const Header = () => {
   const [keyword, setKeyword] = useState();
   const dispatch = useDispatch();
-  const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
+  const navigate = useNavigate();
+
+  const { refreshToken, profile } = useSelector((state) => ({
+    ...state.data,
+  }));
   const state = useContext(GlobalState);
   const [cart, setCart] = state.UserApi.cart;
   const [search, setSearch] = state.ProductApi.search;
   const cartItems = cart;
-
   const logoutHandler = (e) => {
     e.preventDefault();
     dispatch(LogoutInitiate());
@@ -32,7 +35,7 @@ const Header = () => {
             <div className="col-md-6 d-flex align-items-center display-none">
               <p>
                 <a href="tel:+0798805741" style={{ color: "white" }}>
-                  +255 768 356 890
+                  +079 880 5741
                 </a>
               </p>
               <p>
@@ -68,7 +71,7 @@ const Header = () => {
                 <i className="far fa-id-badge"></i>
               </a>
               <a href="https://profile-forme.surge.sh/" target="_blank">
-                <i className="fab fa-pinterest-p"></i>
+                <i className="fas fa-user"></i>
               </a>
             </div>
           </div>
@@ -102,7 +105,9 @@ const Header = () => {
                         <Link className="dropdown-item" to="/profile">
                           Profile
                         </Link>
-
+                        <Link className="dropdown-item" to="/cart ">
+                          Payment
+                        </Link>
                         <Link
                           className="dropdown-item"
                           to="#"
@@ -137,7 +142,7 @@ const Header = () => {
 
                   <Link to="/cart" className="cart-mobile-icon">
                     <i className="fas fa-shopping-bag"></i>
-                    <span className="badge">1</span>
+                    <span className="badge">{cartItems.length}</span>
                   </Link>
                 </div>
                 <div className="col-12 d-flex align-items-center">

@@ -14,6 +14,7 @@ const UserApi = (token, refreshTokensAdmin) => {
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
   const { order } = useSelector((state) => ({ ...state.products }));
   const orders = order.history && order.history;
+
   useEffect(() => {
     if (token && token.length > 0) {
       dispatch(ProfileInitiate({ token }));
