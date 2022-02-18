@@ -25,7 +25,7 @@ const ResetAdmin = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (!password || !confirmPassword) {
-      return toast.error("Please Enter Input 🥲");
+      return toast.error("Please Enter Input 😇");
     }
     dispatch(ResetAdminInitiate({ token, password, confirmPassword }));
   };
