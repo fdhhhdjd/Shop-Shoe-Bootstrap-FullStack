@@ -661,6 +661,21 @@ textarea:focus {
 .page-item.active .page-link {
   background-color: black;
   border: 1px solid black;
+ 
+}
+.active1{
+  background-color:black !important;
+  color: white !important;
+}
+.pagination #page-link {
+  padding: 10px 30px ;
+  border:none !important;
+  
+}
+.page-item.active #page-link {
+  background-color: black ;
+  border: 1px solid black;
+  
 }
 /* Admin */
 @charset "UTF-8";

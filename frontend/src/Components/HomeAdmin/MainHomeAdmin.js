@@ -1,6 +1,17 @@
 import React from "react";
-import { TopTotal } from "../../imports/index";
+import { useSelector } from "react-redux";
+import {
+  TopTotal,
+  SaleStatistics,
+  LatestOrder,
+  ProductsStatistics,
+} from "../../imports/index";
 const MainHomeAdmin = () => {
+  const { order, loading, error } = useSelector((state) => ({
+    ...state.order,
+  }));
+  const { product } = useSelector((state) => ({ ...state.products }));
+  const products = product.products;
   return (
     <>
       <section className="content-main">
@@ -8,17 +19,17 @@ const MainHomeAdmin = () => {
           <h2 className="content-title"> Dashboard </h2>
         </div>
         {/* Top Total */}
-        {/* <TopTotal orders={orders} products={products} /> */}
+        <TopTotal orders={order} products={products} />
 
         <div className="row">
           {/* STATICS */}
-          {/* <SaleStatistics />
-          <ProductsStatistics /> */}
+          <SaleStatistics />
+          <ProductsStatistics />
         </div>
 
         {/* LATEST ORDER */}
         <div className="card mb-4 shadow-sm">
-          {/* <LatestOrder orders={orders} loading={loading} error={error} /> */}
+          <LatestOrder orders={order} loading={loading} error={error} />
         </div>
       </section>
     </>

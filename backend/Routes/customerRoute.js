@@ -54,4 +54,5 @@ router.post("/ForgetAdmin", userCtrl.ForgetAdmin);
 
 //Login Google
 router.post("/loginGoogleAdmin", userCtrl.loginGoogleAdmin);
+
 module.exports = router;

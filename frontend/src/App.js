@@ -25,6 +25,8 @@ import {
   AddProduct,
   EditProduct,
   ResetAdmin,
+  ScrollTop,
+  ProfileAdmins,
 } from "./imports/index";
 import { HomeAdmin, Home } from "./imports/LazyRouter";
 function App() {
@@ -32,6 +34,7 @@ function App() {
     <>
       <Suspense fallback={<Loadings />}>
         <ToastContainer position="top-center" />
+        <ScrollTop />
         <Routes>
           <Route element={<PrivateRouterAuth />}>
             <Route path="/login" element={<Login />} />
@@ -67,6 +70,9 @@ function App() {
           <Route path="/password/admin/reset/:token" element={<ResetAdmin />} />
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/homeAdmin" element={<HomeAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/profileAdmin" element={<ProfileAdmins />} />
           </Route>
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/products" element={<Products />} />

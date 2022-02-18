@@ -3,6 +3,7 @@ import logger from "redux-logger";
 import AuthenticationSlice from "./AuthenticationSlice";
 import ProductSlice from "./ProductSlice";
 import AuthenticationAdminSlice from "../Redux/AuthenticationAdminSlice";
+import OrderSlice from "../Redux/OrderSlice";
 const rootReducer = (state, action) => {
   if (action.type === "counter/clear") {
     state = undefined;
@@ -13,6 +14,7 @@ const store = configureStore({
   reducer: {
     data: AuthenticationSlice,
     admin: AuthenticationAdminSlice,
+    order: OrderSlice,
     products: ProductSlice,
     reducer: rootReducer,
   },

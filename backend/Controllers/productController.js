@@ -37,14 +37,6 @@ class APIfeatures {
 
     return this;
   }
-
-  paginating() {
-    const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 9;
-    const skip = (page - 1) * limit;
-    this.query = this.query.skip(skip).limit(limit);
-    return this;
-  }
 }
 const productCtrl = {
   //Create Product
@@ -86,8 +78,7 @@ const productCtrl = {
     try {
       const features = new APIfeatures(Products.find(), req.query)
         .filtering()
-        .sorting()
-        .paginating();
+        .sorting();
 
       const products = await features.query;
 

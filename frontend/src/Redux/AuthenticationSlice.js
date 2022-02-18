@@ -110,6 +110,7 @@ const AuthenticationSlice = createSlice({
       state.auth = [];
       state.authRegister = [];
       state.forget = [];
+      state.resetForget = [];
       state.changePass = [];
     },
   },

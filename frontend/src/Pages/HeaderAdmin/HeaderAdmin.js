@@ -90,7 +90,7 @@ const HeaderAdmin = () => {
                 )}
               </Link>
               <div className="dropdown-menu dropdown-menu-end">
-                <Link className="dropdown-item" to="/">
+                <Link className="dropdown-item" to="/profileAdmin">
                   My profile
                 </Link>
                 <Link className="dropdown-item" to="#">

@@ -55,10 +55,7 @@ const Reset = () => {
           <Message variant="alert-danger">{resetForget.msg}</Message>
         )}
         {resetForget && resetForget.success ? (
-          <form
-            className="Login col-md-8 col-lg-4 col-11"
-            onSubmit={submitHandler}
-          >
+          <form className="Login col-md-8 col-lg-4 col-11">
             {loading ? (
               <Loading />
             ) : (

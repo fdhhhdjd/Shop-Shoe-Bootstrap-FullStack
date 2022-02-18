@@ -5,16 +5,28 @@ import {
   GetProductInitial,
   HistoryProductDetailInitial,
 } from "../Redux/ProductSlice";
-const OrderApi = (refreshTokens, callback) => {
+import { GetOrderInitial } from "../Redux/OrderSlice";
+const OrderApi = (
+  refreshTokens,
+  refreshTokensAdmin,
+  callback,
+  callbackAdmin
+) => {
   const [callbacks, setCallbacks] = useState(false);
   const dispatch = useDispatch();
   const token = refreshTokens;
+  const tokens = refreshTokensAdmin;
 
   useEffect(() => {
     if (token) {
       dispatch(HistoryProductDetailInitial({ token }));
     }
-  }, [callback, token]);
+  }, [callback, token, callbackAdmin]);
+  useEffect(() => {
+    if (tokens) {
+      dispatch(GetOrderInitial({ tokens }));
+    }
+  }, [callback, tokens, callbackAdmin]);
 
   return {
     callbacks: [callbacks, setCallbacks],

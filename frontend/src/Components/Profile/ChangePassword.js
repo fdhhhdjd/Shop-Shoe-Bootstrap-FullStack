@@ -33,6 +33,7 @@ const ChangePassword = () => {
         icon: "success",
       });
       dispatch(reset());
+      setState({ oldPassword: "", password: "", confirmPassword: "" });
     } else if (changePass.status === 400) {
       setTimeout(() => {
         dispatch(reset());
