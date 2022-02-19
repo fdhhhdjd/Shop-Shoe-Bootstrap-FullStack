@@ -28,6 +28,7 @@ const HeaderAdmin = () => {
     e.preventDefault();
     dispatch(LogoutAdminInitiate());
   };
+
   return (
     <>
       <header className="main-header navbar">
@@ -71,9 +72,9 @@ const HeaderAdmin = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="#">
-                English
-              </Link>
+              <a className="nav-link" to="#">
+                Vietnamese
+              </a>
             </li>
             <li className="dropdown nav-item">
               <Link

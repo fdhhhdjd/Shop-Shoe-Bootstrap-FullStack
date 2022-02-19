@@ -52,3 +52,5 @@ export { default as ResetAdmin } from "../Pages/AuthenticationAdmin/ResetAdmin";
 export { default as ScrollTop } from "../Components/ScrollTop/ScrollTop";
 export { default as ProfileAdmins } from "../Pages/AuthenticationAdmin/ProfileAdmins";
 export { default as ProfileAdmin } from "../Pages/AuthenticationAdmin/ProfileAdmin";
+export { default as ProfileTabAdmin } from "../Pages/AuthenticationAdmin/ProfileTabAdmin";
+export { default as ChangePasswordAdmin } from "../Pages/AuthenticationAdmin/ChangePasswordAdmin";

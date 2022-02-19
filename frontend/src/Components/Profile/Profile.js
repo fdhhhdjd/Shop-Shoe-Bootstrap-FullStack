@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import {
   Header,
   ProfileTabs,
@@ -23,16 +22,11 @@ const Profile = () => {
           const total = item.cart.reduce((prev, item) => {
             return prev + item.price * item.quantity;
           }, 0);
-          console.log(total, "allo");
           setTotal(total);
         };
         getTotal();
       });
   }, [orders]);
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-  };
   return (
     <>
       <Header />

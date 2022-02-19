@@ -80,11 +80,25 @@ export const ResetAdminInitiate = createAsyncThunk(
     return response.data;
   }
 );
+export const ChangePasswordAdminInitiate = createAsyncThunk(
+  "admin/ChangePassword",
+  async ({ token, ...state }) => {
+    const { data } = await axios.patch(
+      `/api/auth/changePassword`,
+      { ...state },
+      {
+        headers: { Authorization: token },
+      }
+    );
+    return data;
+  }
+);
 const initialState = {
   loading: false,
   admin: [],
   registerAdmin: [],
   refreshTokenAdmin: [],
+  changePasswordAdmin: [],
   profileAdmin: [],
   resetAdmin: [],
   forgetAdmin: [],
@@ -98,6 +112,7 @@ const AuthenticationAdminSlice = createSlice({
       state.registerAdmin = [];
       state.admin = [];
       state.resetAdmin = [];
+      state.changePasswordAdmin = [];
     },
   },
   extraReducers: {
@@ -195,6 +210,18 @@ const AuthenticationAdminSlice = createSlice({
       state.resetAdmin = action.payload;
     },
     [ResetAdminInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Reset Admin
+    [ChangePasswordAdminInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ChangePasswordAdminInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.changePasswordAdmin = action.payload;
+    },
+    [ChangePasswordAdminInitiate.refective]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
