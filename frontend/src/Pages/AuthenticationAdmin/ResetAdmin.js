@@ -36,7 +36,7 @@ const ResetAdmin = () => {
       });
       setState({ password: "", confirmPassword: "" });
       setTimeout(() => {
-        window.location.href = "/loginAdmin";
+        window.close();
       }, 1500);
       dispatch(reset());
     }

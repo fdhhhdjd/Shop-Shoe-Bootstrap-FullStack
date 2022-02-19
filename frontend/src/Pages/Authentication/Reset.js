@@ -33,7 +33,7 @@ const Reset = () => {
       });
       setState({ password: "", confirmPassword: "" });
       setTimeout(() => {
-        window.location.href = "/login";
+        window.close();
       }, 1500);
       dispatch(reset());
     }
