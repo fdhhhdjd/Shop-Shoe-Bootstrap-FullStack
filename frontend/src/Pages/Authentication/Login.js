@@ -30,7 +30,7 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (!email || !password) {
-      return toast.error("Please Enter Input 🥲");
+      return toast.error("Please Enter Input 🥲 !");
     }
     dispatch(LoginInitial({ email, password }));
   };
@@ -62,11 +62,7 @@ const Login = () => {
         {auth.status === 400 && (
           <Message variant="alert-danger">{auth.msg}</Message>
         )}
-
-        <form
-          className="Login col-md-8 col-lg-4 col-11"
-          onSubmit={submitHandler}
-        >
+        <div className="Login col-md-8 col-lg-4 col-11">
           <GoogleLogin
             clientId="1083950083676-fr9m6jsgig4aalf6mj81t8rlgl9v45bd.apps.googleusercontent.com"
             buttonText="Login Google +"
@@ -74,6 +70,12 @@ const Login = () => {
             onFailure={HandleGoogle}
             cookiePolicy={"single_host_origin"}
           />
+        </div>
+
+        <form
+          className="Login col-md-8 col-lg-4 col-11"
+          onSubmit={submitHandler}
+        >
           <input
             type="email"
             placeholder="Email"
