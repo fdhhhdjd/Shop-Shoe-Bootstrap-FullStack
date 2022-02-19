@@ -32,6 +32,10 @@ const Reset = () => {
         icon: "success",
       });
       setState({ password: "", confirmPassword: "" });
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+      dispatch(reset());
     }
     if (resetForget.status === 400) {
       setTimeout(() => {
@@ -56,9 +60,7 @@ const Reset = () => {
             {loading ? (
               <Loading />
             ) : (
-              <button type="submit">
-                <Link to="/login">Success Please login 😊</Link>
-              </button>
+              <button type="submit">Success Please login 😊</button>
             )}
             <p>Thank You for 😉 !</p>
           </div>

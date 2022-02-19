@@ -12,7 +12,6 @@ const ShopSection = () => {
   const products = product.products && product.products;
   const state = useContext(GlobalState);
   const [search] = state.ProductApi.search;
-  console.log(products);
   //Pagination
   const [currentPage, setcurrentPage] = useState(1);
   const [itemsPerPage, setitemsPerPage] = useState(6);
@@ -34,7 +33,8 @@ const ShopSection = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems =
+    products && products.slice(indexOfFirstItem, indexOfLastItem);
   const renderPageNumbers = pages.map((number) => {
     if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
       return (
@@ -176,7 +176,7 @@ const ShopSection = () => {
                   <ul className="pagination  justify-content-center">
                     <li className="page-item">
                       <button className="page-link" onClick={handleLoadMore}>
-                        {itemsPerPage === products.length
+                        {itemsPerPage === products && products.length
                           ? "it's over"
                           : "Load More"}
                       </button>

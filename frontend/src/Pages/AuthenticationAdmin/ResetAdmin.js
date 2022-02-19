@@ -35,6 +35,10 @@ const ResetAdmin = () => {
         icon: "success",
       });
       setState({ password: "", confirmPassword: "" });
+      setTimeout(() => {
+        window.location.href = "/loginAdmin";
+      }, 1500);
+      dispatch(reset());
     }
     if (resetAdmin.status === 400) {
       setTimeout(() => {
@@ -59,9 +63,7 @@ const ResetAdmin = () => {
             {loading ? (
               <Loading />
             ) : (
-              <button type="submit">
-                <Link to="/loginAdmin">Success Please login 😊</Link>
-              </button>
+              <button type="submit">Success Please login 😊</button>
             )}
             <p>Thank You for 😉 !</p>
           </div>
