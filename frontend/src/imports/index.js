@@ -54,3 +54,8 @@ export { default as ProfileAdmins } from "../Pages/AuthenticationAdmin/ProfileAd
 export { default as ProfileAdmin } from "../Pages/AuthenticationAdmin/ProfileAdmin";
 export { default as ProfileTabAdmin } from "../Pages/AuthenticationAdmin/ProfileTabAdmin";
 export { default as ChangePasswordAdmin } from "../Pages/AuthenticationAdmin/ChangePasswordAdmin";
+export { default as MainOrder } from "../Components/OrderAdmin/MainOrder";
+export { default as OrderAdmin } from "../Components/OrderAdmin/OrderAdmin";
+export { default as OderDetailAdmin } from "../Components/OrderAdmin/OderDetailAdmin";
+export { default as OrderDetailMain } from "../Components/OrderAdmin/OrderDetailMain";
+export { default as OrderDetailInfo } from "../Components/OrderAdmin/OrderDetailInfo";

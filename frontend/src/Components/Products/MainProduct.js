@@ -3,12 +3,107 @@ import { Link } from "react-router-dom";
 import Message from "../../Pages/Error/Message";
 import { useSelector } from "react-redux";
 import { Loading, Product } from "../../imports/index";
+import swal from "sweetalert";
 const MainProduct = () => {
   const { loading, product } = useSelector((state) => ({
     ...state.products,
   }));
   const products = product.products;
   const [search, setSearch] = useState("");
+  //
+  const [currentPage, setcurrentPage] = useState(1);
+  const [itemsPerPage, setitemsPerPage] = useState(8);
+
+  const [pageNumberLimit, setpageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
+  const handleClick = (event) => {
+    setcurrentPage(Number(event.target.id));
+  };
+  const pages = [];
+  for (
+    let i = 1;
+    i <= Math.ceil(products && products.length / itemsPerPage);
+    i++
+  ) {
+    pages.push(i);
+  }
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems =
+    products && products.slice(indexOfFirstItem, indexOfLastItem);
+  const renderPageNumbers = pages.map((number) => {
+    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={handleClick}
+          className={` page-link  ${currentPage == number ? "active1" : null}`}
+        >
+          {number}
+        </li>
+      );
+    } else {
+      return null;
+    }
+  });
+  const handleNextbtn = () => {
+    setcurrentPage(currentPage + 1);
+
+    if (currentPage + 1 > maxPageNumberLimit) {
+      setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+
+  const handlePrevbtn = () => {
+    setcurrentPage(currentPage - 1);
+
+    if ((currentPage - 1) % pageNumberLimit == 0) {
+      setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  };
+
+  let pageIncrementBtn = null;
+  if (pages.length > maxPageNumberLimit) {
+    pageIncrementBtn = <li onClick={handleNextbtn}>&hellip;</li>;
+  }
+
+  let pageDecrementBtn = null;
+  if (minPageNumberLimit >= 1) {
+    pageDecrementBtn = <li onClick={handlePrevbtn}> &hellip;</li>;
+  }
+
+  const handleLoadMore = () => {
+    if (itemsPerPage === products && products.length) {
+      return swal("It's over, my friend 😄", {
+        icon: "error",
+      });
+    }
+    setitemsPerPage(itemsPerPage + 3);
+  };
+  const renderData = (data, index) => {
+    return (
+      <>
+        {data
+          .filter((value) => {
+            if (search === "") {
+              return value;
+            } else if (
+              value.name.toLowerCase().includes(search.toLowerCase())
+            ) {
+              return value;
+            }
+          })
+          .map((product) => (
+            <Product product={product} key={product._id} />
+          ))}
+      </>
+    );
+  };
   return (
     <>
       <section className="content-main">
@@ -57,53 +152,49 @@ const MainProduct = () => {
             ) : (
               <div className="row">
                 {/* Products */}
-                {products &&
-                  products
-                    .filter((value) => {
-                      if (search === "") {
-                        return value;
-                      } else if (
-                        value.name.toLowerCase().includes(search.toLowerCase())
-                      ) {
-                        return value;
-                      }
-                    })
-                    .map((product) => (
-                      <Product product={product} key={product._id} />
-                    ))}
+                <>{renderData(currentItems)}</>
               </div>
             )}
 
             <nav className="float-end mt-4" aria-label="Page navigation">
               <ul className="pagination">
                 <li className="page-item disabled">
-                  <Link className="page-link" to="#">
+                  <button
+                    onClick={handlePrevbtn}
+                    disabled={currentPage == pages[0] ? true : false}
+                    id="page-link"
+                  >
                     Previous
-                  </Link>
+                  </button>
                 </li>
-                <li className="page-item active">
-                  <Link className="page-link" to="#">
-                    1
-                  </Link>
-                </li>
+                {pageDecrementBtn}
+                {renderPageNumbers}
+                {pageIncrementBtn}
                 <li className="page-item">
-                  <Link className="page-link" to="#">
-                    2
-                  </Link>
-                </li>
-                <li className="page-item">
-                  <Link className="page-link" to="#">
-                    3
-                  </Link>
-                </li>
-                <li className="page-item">
-                  <Link className="page-link" to="#">
+                  <button
+                    id="page-link"
+                    onClick={handleNextbtn}
+                    disabled={
+                      currentPage == pages[pages.length - 1] ? true : false
+                    }
+                  >
                     Next
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </nav>
           </div>
+          <nav className="float-end mt-4" aria-label="Page navigation">
+            <ul className="pagination  justify-content-center">
+              <li className="page-item">
+                <button className="page-link" onClick={handleLoadMore}>
+                  {itemsPerPage === products && products.length
+                    ? "it's over"
+                    : "Load More"}
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
       </section>
     </>

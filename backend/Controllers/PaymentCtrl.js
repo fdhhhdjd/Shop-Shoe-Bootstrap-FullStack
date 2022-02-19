@@ -10,6 +10,26 @@ const paymentCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  getIdPayment: async (req, res) => {
+    const Payment = await Payments.findById(req.params.id);
+    try {
+      if (!Payment) {
+        return res.status(404).json({
+          status: 400,
+          success: false,
+          msg: "Payments not found !!!",
+        });
+      }
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Get Payments Detail Successfully !",
+        Payment,
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
   createPayment: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select("name email");

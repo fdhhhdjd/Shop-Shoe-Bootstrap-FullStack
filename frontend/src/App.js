@@ -27,6 +27,8 @@ import {
   ResetAdmin,
   ScrollTop,
   ProfileAdmins,
+  OrderAdmin,
+  OderDetailAdmin,
 } from "./imports/index";
 import { HomeAdmin, Home } from "./imports/LazyRouter";
 function App() {
@@ -77,6 +79,13 @@ function App() {
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/products" element={<Products />} />
           </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/orders" element={<OrderAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/orders/:id" element={<OderDetailAdmin />} />
+          </Route>
+
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/addProduct" element={<AddProduct />} />
           </Route>
