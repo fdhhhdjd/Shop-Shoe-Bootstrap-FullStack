@@ -32,9 +32,6 @@ const Reset = () => {
         icon: "success",
       });
       setState({ password: "", confirmPassword: "" });
-      setTimeout(() => {
-        dispatch(reset());
-      }, 6000);
     }
     if (resetForget.status === 400) {
       setTimeout(() => {
@@ -55,7 +52,7 @@ const Reset = () => {
           <Message variant="alert-danger">{resetForget.msg}</Message>
         )}
         {resetForget && resetForget.success ? (
-          <form className="Login col-md-8 col-lg-4 col-11">
+          <div className="Login col-md-8 col-lg-4 col-11">
             {loading ? (
               <Loading />
             ) : (
@@ -64,7 +61,7 @@ const Reset = () => {
               </button>
             )}
             <p>Thank You for 😉 !</p>
-          </form>
+          </div>
         ) : (
           <form
             className="Login col-md-8 col-lg-4 col-11"

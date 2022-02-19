@@ -35,9 +35,6 @@ const ResetAdmin = () => {
         icon: "success",
       });
       setState({ password: "", confirmPassword: "" });
-      setTimeout(() => {
-        dispatch(reset());
-      }, 5000);
     }
     if (resetAdmin.status === 400) {
       setTimeout(() => {
@@ -58,10 +55,7 @@ const ResetAdmin = () => {
           <Message variant="alert-danger">{resetAdmin.msg}</Message>
         )}
         {resetAdmin && resetAdmin.success ? (
-          <form
-            className="Login col-md-8 col-lg-4 col-11"
-            onSubmit={submitHandler}
-          >
+          <div className="Login col-md-8 col-lg-4 col-11">
             {loading ? (
               <Loading />
             ) : (
@@ -70,7 +64,7 @@ const ResetAdmin = () => {
               </button>
             )}
             <p>Thank You for 😉 !</p>
-          </form>
+          </div>
         ) : (
           <form
             className="Login col-md-8 col-lg-4 col-11"
