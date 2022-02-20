@@ -32,8 +32,10 @@ router.put("/password/reset/:token", userCtrl.resetPassword);
 
 //Login Google
 router.post("/loginGoogle", userCtrl.LoginGoogle);
+
 //Add To Cart
 router.patch("/addcart", auth, userCtrl.addCart);
+
 //History to Payment And Cart
 router.get("/history", auth, userCtrl.historyCart);
 //!Admin
@@ -57,6 +59,17 @@ router.post("/loginGoogleAdmin", userCtrl.loginGoogleAdmin);
 
 //Get All Users
 router.get("/getAllUser", auth, admin, userCtrl.GetAllUser);
+
+//Update User or Admin
+router.patch("/updateUserAdmin/:id", auth, admin, userCtrl.updateUserOrAdmin);
+
+//Delete User or Admin
+router.delete("/deleteUserAdmin/:id", auth, admin, userCtrl.deleteUserOrAdmin);
+
+//Get New User 3 Day
+router.get("/getUserDay", auth, admin, userCtrl.getUserAllday);
+
 //Get All Admin
 router.get("/getAllAdmin", auth, admin, userCtrl.GetAllAdmin);
+
 module.exports = router;

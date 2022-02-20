@@ -2,6 +2,7 @@ const Payments = require("../Model/PaymentModel");
 const Users = require("../Model/userModel");
 const Products = require("../Model/ProductModel");
 const paymentCtrl = {
+  //Get All Payment
   getPayments: async (req, res) => {
     try {
       const payments = await Payments.find().populate("user_id");
@@ -10,6 +11,8 @@ const paymentCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  //Get Id Payment
   getIdPayment: async (req, res) => {
     const Payment = await Payments.findById(req.params.id);
     try {
@@ -30,6 +33,8 @@ const paymentCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  //Create Payment Paypal
   createPayment: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select("name email");
@@ -66,7 +71,42 @@ const paymentCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  //New User Buy 3 Day
+  UserNewBuyPayment: async (req, res) => {
+    const GetDayNewUserBuy = (d1, d2) => {
+      let value1 = d1.getTime();
+      let value2 = d2.getTime();
+      return Math.ceil((value2 - value1) / (24 * 60 * 60 * 1000));
+    };
+    let payments = await Payments.find().populate("user_id");
+    var today = new Date();
+    var result = [];
+    for (var i = 0; i < payments.length; i++) {
+      var time = GetDayNewUserBuy(payments[i].createdAt, today);
+      if (time <= 3) {
+        result.push(payments[i]);
+      }
+    }
+    if (result.length === 0) {
+      res.json({
+        status: 200,
+        success: true,
+        msg: "No Account New  !!",
+        result,
+      });
+    } else {
+      res.json({
+        status: 200,
+        success: true,
+        total: result.length,
+        msg: "Get New User Buy Successfully !!",
+        result,
+      });
+    }
+  },
 };
+
 const stock = async (id, quantity, countInStock) => {
   await Products.findOneAndUpdate(
     { _id: id },

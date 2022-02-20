@@ -27,7 +27,7 @@ const upload = require("./Routes/UploadCloud.js");
 //Auhthenticate customer
 app.use("/api/auth", customer);
 app.use("/api/product", product);
-app.use("/api", payment);
+app.use("/api/payment", payment);
 
 //!upload
 app.use("/api", upload);

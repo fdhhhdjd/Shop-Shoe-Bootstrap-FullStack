@@ -386,7 +386,7 @@ const userCtrl = {
     }
   },
 
-  //link đổi mật khẩu khi quên mật khẩu
+  //Reset Password
   resetPassword: async (req, res) => {
     const { password, confirmPassword } = req.body;
 
@@ -465,7 +465,7 @@ const userCtrl = {
     });
   },
 
-  //đăng nhập gg chưa sửa
+  //Login Google
   LoginGoogle: async (req, res) => {
     const { tokenId } = req.body;
     client
@@ -557,6 +557,8 @@ const userCtrl = {
         }
       });
   },
+
+  //Add to Cart
   addCart: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id);
@@ -580,6 +582,8 @@ const userCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  //Get all History
   historyCart: async (req, res) => {
     try {
       const history = await Payments.find({ user_id: req.user.id });
@@ -843,6 +847,7 @@ const userCtrl = {
       console.log(error);
     }
   },
+
   //Login Google Admin
   loginGoogleAdmin: async (req, res) => {
     const { tokenId } = req.body;
@@ -936,6 +941,8 @@ const userCtrl = {
         }
       });
   },
+
+  //Get all User
   GetAllUser: async (req, res) => {
     try {
       const user = await Users.find({ role: 0 }).select("-password");
@@ -948,6 +955,92 @@ const userCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
+
+  //Update User or Admin
+  updateUserOrAdmin: async (req, res) => {
+    try {
+      const { name, image, phone_number, role, sex, date_of_birth } = req.body;
+      if (!image)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "No image upload",
+        });
+
+      await Users.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          name,
+          image,
+          phone_number,
+          role,
+          sex,
+          date_of_birth,
+        }
+      );
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Updated Successfully !",
+      });
+    } catch (err) {
+      return res.json({
+        status: 400,
+        success: false,
+        msg: err.message,
+      });
+    }
+  },
+
+  //Delete User or Admin
+  deleteUserOrAdmin: async (req, res) => {
+    try {
+      await Users.findByIdAndDelete(req.params.id);
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Deleted a Successfully !",
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  //Get New User 3 date
+  getUserAllday: async (req, res) => {
+    const GetDayNewUser = (d1, d2) => {
+      let value1 = d1.getTime();
+      let value2 = d2.getTime();
+      return Math.ceil((value2 - value1) / (24 * 60 * 60 * 1000));
+    };
+    let user = await Users.find({ role: 0 }).select("-password");
+
+    var today = new Date();
+    var result = [];
+    for (var i = 0; i < user.length; i++) {
+      var time = GetDayNewUser(user[i].createdAt, today);
+      if (time <= 3) {
+        result.push(user[i]);
+      }
+    }
+    if (result.length === 0) {
+      res.json({
+        status: 200,
+        success: true,
+        msg: "No Account New  !!",
+        result,
+      });
+    } else {
+      res.json({
+        status: 200,
+        success: true,
+        msg: "Get New User Successfully !!",
+        result,
+      });
+    }
+  },
+
+  //Get all Admin
   GetAllAdmin: async (req, res) => {
     try {
       const user = await Users.find({ role: 1 }).select("-password");
