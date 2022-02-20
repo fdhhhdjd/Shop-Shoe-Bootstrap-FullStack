@@ -88,7 +88,7 @@ const CartScreen = () => {
     const { paymentID, address } = payment;
 
     await axios.post(
-      "/api/payment",
+      "/api/payment/payments",
       { cart, paymentID, address },
       {
         headers: { Authorization: refreshTokens },
