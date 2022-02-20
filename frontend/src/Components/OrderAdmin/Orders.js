@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-
+import CountUp from "react-countup";
 const Orders = (props) => {
   const { orders } = props;
   return (
@@ -26,7 +26,16 @@ const Orders = (props) => {
               <b>{order.name}</b>
             </td>
             <td>{order.email}</td>
-            <td>${order.total}</td>
+            <td>
+              $
+              <CountUp
+                className="count"
+                start={0}
+                end={order.total}
+                duration={2.5}
+                separator=","
+              />
+            </td>
             <td>
               {order.status ? (
                 <span className="badge rounded-pill alert-success">

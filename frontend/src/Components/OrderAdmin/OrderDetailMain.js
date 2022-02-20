@@ -4,13 +4,13 @@ import Message from "../../Pages/Error/Message";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 const OrderDetailMain = () => {
   const { detailOrder, loading, error } = useSelector((state) => ({
     ...state.order,
   }));
 
   const order = detailOrder.Payment && detailOrder.Payment;
-
   return (
     <>
       {detailOrder.Payment && (
@@ -22,8 +22,6 @@ const OrderDetailMain = () => {
           </div>
           {loading ? (
             <Loading />
-          ) : error ? (
-            <Message variant="alert-danger">{error}</Message>
           ) : (
             <div className="card">
               <header className="card-header p-3 Header-green">

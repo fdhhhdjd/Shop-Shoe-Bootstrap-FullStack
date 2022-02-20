@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const GetOrderInitial = createAsyncThunk(
   "order/getAllOrder",
   async ({ tokens }) => {
-    const response = await axios.get("/api/payment", {
+    const response = await axios.get("/api/payment/payments", {
       headers: { Authorization: tokens },
     });
     return response.data;
@@ -12,7 +12,16 @@ export const GetOrderInitial = createAsyncThunk(
 export const GetIdOrderInitial = createAsyncThunk(
   "order/getIdOrder",
   async ({ id, tokens }) => {
-    const response = await axios.get(`/api/payment/${id}`, {
+    const response = await axios.get(`/api/payment/payments/${id}`, {
+      headers: { Authorization: tokens },
+    });
+    return response.data;
+  }
+);
+export const GetOrderNewUserInitial = createAsyncThunk(
+  "order/getOrderNewUser",
+  async ({ tokens }) => {
+    const response = await axios.get("/api/payment/newPayment", {
       headers: { Authorization: tokens },
     });
     return response.data;
@@ -24,6 +33,7 @@ const initialState = {
   error: null,
   order: [],
   detailOrder: [],
+  newUserBuy: [],
 };
 const OrderSlice = createSlice({
   name: "order",
@@ -55,6 +65,18 @@ const OrderSlice = createSlice({
       state.detailOrder = action.payload;
     },
     [GetIdOrderInitial.rejected]: (state, action) => {
+      state.loadings = false;
+      state.error = action.payload;
+    },
+    //Get New User Buy 3 Day
+    [GetOrderNewUserInitial.pending]: (state, action) => {
+      state.loadings = true;
+    },
+    [GetOrderNewUserInitial.fulfilled]: (state, action) => {
+      state.loadings = false;
+      state.newUserBuy = action.payload;
+    },
+    [GetOrderNewUserInitial.rejected]: (state, action) => {
       state.loadings = false;
       state.error = action.payload;
     },

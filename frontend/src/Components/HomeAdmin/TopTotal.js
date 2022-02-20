@@ -1,5 +1,5 @@
 import React from "react";
-
+import CountUp from "react-countup";
 const TopTotal = (props) => {
   const { orders, products } = props;
   let totalSale = 0;
@@ -21,7 +21,16 @@ const TopTotal = (props) => {
             </span>
             <div className="text">
               <h6 className="mb-1">Total Sales</h6>{" "}
-              <span>${totalSale.toFixed(0)}</span>
+              <span>
+                $
+                <CountUp
+                  className="count"
+                  start={0}
+                  end={totalSale.toFixed(0)}
+                  duration={5.75}
+                  separator=","
+                />
+              </span>
             </div>
           </article>
         </div>
@@ -34,7 +43,19 @@ const TopTotal = (props) => {
             </span>
             <div className="text">
               <h6 className="mb-1">Total Orders</h6>
-              {orders ? <span>{orders.length}</span> : <span>0</span>}
+              {orders ? (
+                <span>
+                  <CountUp
+                    className="count"
+                    start={0}
+                    end={orders.length}
+                    duration={2.75}
+                    separator=","
+                  />
+                </span>
+              ) : (
+                <span>0</span>
+              )}
             </div>
           </article>
         </div>
@@ -47,7 +68,19 @@ const TopTotal = (props) => {
             </span>
             <div className="text">
               <h6 className="mb-1">Total Products</h6>
-              {products ? <span>{products.length}</span> : <span>0</span>}
+              {products ? (
+                <span>
+                  <CountUp
+                    className="count"
+                    start={0}
+                    end={products.length}
+                    duration={1.75}
+                    separator=","
+                  />
+                </span>
+              ) : (
+                <span>0</span>
+              )}
             </div>
           </article>
         </div>

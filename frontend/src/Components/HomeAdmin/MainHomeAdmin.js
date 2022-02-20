@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   TopTotal,
   SaleStatistics,
   LatestOrder,
   ProductsStatistics,
+  LatestUser,
 } from "../../imports/index";
 const MainHomeAdmin = () => {
-  const { order, loading, error } = useSelector((state) => ({
+  const { order, newUserBuy, loading, error } = useSelector((state) => ({
     ...state.order,
   }));
+
   const { product } = useSelector((state) => ({ ...state.products }));
+  const [orders, setOrders] = useState();
   const products = product.products;
+  useEffect(() => {
+    if (newUserBuy) {
+      const orders = newUserBuy.result;
+      setOrders(orders);
+    }
+  }, [newUserBuy]);
   return (
     <>
       <section className="content-main">
@@ -29,7 +38,10 @@ const MainHomeAdmin = () => {
 
         {/* LATEST ORDER */}
         <div className="card mb-4 shadow-sm">
-          <LatestOrder orders={order} loading={loading} error={error} />
+          <LatestOrder orders={orders} loading={loading} error={error} />
+        </div>
+        <div className="card mb-4 shadow-sm">
+          <LatestUser />
         </div>
       </section>
     </>

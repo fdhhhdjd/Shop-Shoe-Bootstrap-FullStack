@@ -93,6 +93,15 @@ export const ChangePasswordAdminInitiate = createAsyncThunk(
     return data;
   }
 );
+export const NewUserInitiate = createAsyncThunk(
+  "admin/newUser",
+  async ({ tokens }) => {
+    const { data } = await axios.get("/api/auth/getUserDay", {
+      headers: { Authorization: tokens },
+    });
+    return data;
+  }
+);
 const initialState = {
   loading: false,
   admin: [],
@@ -102,6 +111,7 @@ const initialState = {
   profileAdmin: [],
   resetAdmin: [],
   forgetAdmin: [],
+  newCountUser: [],
   logoutAdmin: false,
 };
 const AuthenticationAdminSlice = createSlice({
@@ -221,7 +231,19 @@ const AuthenticationAdminSlice = createSlice({
       state.loading = false;
       state.changePasswordAdmin = action.payload;
     },
-    [ChangePasswordAdminInitiate.refective]: (state, action) => {
+    [ChangePasswordAdminInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? New User 3 Day
+    [NewUserInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [NewUserInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.newCountUser = action.payload;
+    },
+    [NewUserInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

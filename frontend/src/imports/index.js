@@ -60,3 +60,4 @@ export { default as OderDetailAdmin } from "../Components/OrderAdmin/OderDetailA
 export { default as OrderDetailMain } from "../Components/OrderAdmin/OrderDetailMain";
 export { default as OrderDetailInfo } from "../Components/OrderAdmin/OrderDetailInfo";
 export { default as OrderDetailProducts } from "../Components/OrderAdmin/OrderDetailProducts";
+export { default as LatestUser } from "../Components/HomeAdmin/LatestUser";

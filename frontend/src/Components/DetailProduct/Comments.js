@@ -90,6 +90,21 @@ const Comments = ({
                   key={review._id}
                   className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded"
                 >
+                  <strong>
+                    {review.user && review.user.image && (
+                      <img
+                        src={review.user.image.url}
+                        alt=""
+                        style={{
+                          width: "35px",
+                          height: "35px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
+                  </strong>{" "}
+                  &nbsp;&nbsp;
                   <strong>{review.user.name}</strong>
                   <Rating value={review.rating} />
                   <span>{moment(review.updatedAt).calendar()}</span>
