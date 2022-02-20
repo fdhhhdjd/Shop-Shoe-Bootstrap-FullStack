@@ -7,6 +7,23 @@ router
   .get(auth, authAdmin, paymentCtrl.getPayments)
   .post(auth, paymentCtrl.createPayment);
 
+//Get Delete Payment User Deleted
+
+router.get("/deletePayment", auth, authAdmin, paymentCtrl.getPaymentDeletes);
+//Delete Payment User Deleted
+router.patch(
+  "/deletePayments/:id",
+  auth,
+  authAdmin,
+  paymentCtrl.DeletePaymentSoftErase
+);
+router.patch(
+  "/undoPayments/:id",
+  auth,
+  authAdmin,
+  paymentCtrl.UndoPaymentSoftErase
+);
+
 //Id Payment
 router.get("/payments/:id", auth, authAdmin, paymentCtrl.getIdPayment);
 

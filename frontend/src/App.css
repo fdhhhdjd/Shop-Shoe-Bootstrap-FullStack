@@ -445,12 +445,20 @@ textarea:focus {
 .badge2 {
   width: 20px;
   height: 20px;
-  background-color: red;
+  background-color: red ;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 100px;
   color: #ffffff;
+}
+.badge1 {
+  background-color: red;
+  position: absolute;
+  top: -20px;
+  border-radius: 100px;
+  padding: 5px 7px;
+  font-size: 12px;
 }
 .form {
   padding: 20px 0;

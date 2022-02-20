@@ -5,13 +5,64 @@ const paymentCtrl = {
   //Get All Payment
   getPayments: async (req, res) => {
     try {
-      const payments = await Payments.find().populate("user_id");
+      const payments = await Payments.find({ deleteAt: false }).populate(
+        "user_id"
+      );
       res.json(payments);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
-
+  getPaymentDeletes: async (req, res) => {
+    try {
+      const payments = await Payments.find({ deleteAt: true }).populate(
+        "user_id"
+      );
+      res.json({
+        status: 200,
+        success: true,
+        msg: "Get All User Delete Payment",
+        payments,
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  //Delete Soft Erase
+  DeletePaymentSoftErase: async (req, res) => {
+    try {
+      await Payments.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          deleteAt: true,
+        }
+      );
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Delete Payment Successfully",
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  UndoPaymentSoftErase: async (req, res) => {
+    try {
+      await Payments.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          deleteAt: false,
+        }
+      );
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Undo Payment Successfully",
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
   //Get Id Payment
   getIdPayment: async (req, res) => {
     const Payment = await Payments.findById(req.params.id);

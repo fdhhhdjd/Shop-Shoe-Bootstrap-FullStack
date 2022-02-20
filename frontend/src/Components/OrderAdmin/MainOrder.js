@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Loading } from "../../imports";
 import Message from "../../Pages/Error/Message";
@@ -8,7 +8,11 @@ const MainOrder = () => {
   const { order, loading, error } = useSelector((state) => ({
     ...state.order,
   }));
-
+  const [search, setSearch] = useState("");
+  const [visible, setVisible] = useState(10);
+  const handleLoadMore = () => {
+    setVisible((prev) => prev + 5);
+  };
   return (
     <section className="content-main">
       <div className="content-header">
@@ -23,6 +27,8 @@ const MainOrder = () => {
                 type="text"
                 placeholder="Search..."
                 className="form-control p-2"
+                onChange={(e) => setSearch(e.target.value)}
+                value={search}
               />
             </div>
             <div className="col-lg-2 col-6 col-md-3">
@@ -49,11 +55,22 @@ const MainOrder = () => {
             ) : error ? (
               <Message variant="alert-danger">{error}</Message>
             ) : (
-              <Orders orders={order} />
+              <Orders orders={order} visible={visible} search={search} />
             )}
           </div>
         </div>
       </div>
+      <nav className="float-center mt-4" aria-label="Page navigation">
+        <ul className="pagination  justify-content-center">
+          <li className="page-item">
+            {order && visible < order.length && (
+              <button className="page-link" onClick={handleLoadMore}>
+                Load More <i className="fa-solid fa-angle-down"></i>
+              </button>
+            )}
+          </li>
+        </ul>
+      </nav>
     </section>
   );
 };

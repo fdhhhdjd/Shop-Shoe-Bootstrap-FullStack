@@ -90,41 +90,47 @@ const ShopSection = () => {
   const renderData = (data, index) => {
     return (
       <>
-        {data
-          .filter((value) => {
-            if (search === "") {
-              return value;
-            } else if (
-              value.name.toLowerCase().includes(search.toLowerCase())
-            ) {
-              return value;
-            }
-          })
-          .map((product) => (
-            <div className="shop col-lg-4 col-md-6 col-sm-6" key={product._id}>
-              <div className="border-product">
-                <Link to={`/products/${product._id}`}>
-                  <div className="shopBack">
-                    {product.image && (
-                      <img src={product.image.url} alt={product.name} />
-                    )}
+        {data &&
+          data
+            .filter((value) => {
+              if (search === "") {
+                return value;
+              } else if (
+                value.name.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return value;
+              }
+            })
+            .map((product) => (
+              <div
+                className="shop col-lg-4 col-md-6 col-sm-6"
+                key={product._id}
+              >
+                <div className="border-product">
+                  <Link to={`/products/${product._id}`}>
+                    <div className="shopBack">
+                      {product.image && (
+                        <img src={product.image.url} alt={product.name} />
+                      )}
+                    </div>
+                  </Link>
+
+                  <div className="shoptext">
+                    <p>
+                      <Link to={`/products/${product._id}`}>
+                        {product.name}
+                      </Link>
+                    </p>
+
+                    <Rating
+                      value={product.rating}
+                      text={`${product.numReviews} reviews`}
+                    />
+                    <h3>${product.price}</h3>
                   </div>
-                </Link>
-
-                <div className="shoptext">
-                  <p>
-                    <Link to={`/products/${product._id}`}>{product.name}</Link>
-                  </p>
-
-                  <Rating
-                    value={product.rating}
-                    text={`${product.numReviews} reviews`}
-                  />
-                  <h3>${product.price}</h3>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
       </>
     );
   };

@@ -35,6 +35,10 @@ const paymentSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    deleteAt: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
