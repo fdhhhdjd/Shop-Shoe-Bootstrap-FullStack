@@ -55,4 +55,8 @@ router.post("/ForgetAdmin", userCtrl.ForgetAdmin);
 //Login Google
 router.post("/loginGoogleAdmin", userCtrl.loginGoogleAdmin);
 
+//Get All Users
+router.get("/getAllUser", auth, admin, userCtrl.GetAllUser);
+//Get All Admin
+router.get("/getAllAdmin", auth, admin, userCtrl.GetAllAdmin);
 module.exports = router;

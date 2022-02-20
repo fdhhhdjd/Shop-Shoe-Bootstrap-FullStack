@@ -85,7 +85,6 @@ function App() {
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/orders/:id" element={<OderDetailAdmin />} />
           </Route>
-
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/addProduct" element={<AddProduct />} />
           </Route>

@@ -9,20 +9,32 @@ export const GetOrderInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const GetIdOrderInitial = createAsyncThunk(
+  "order/getIdOrder",
+  async ({ id, tokens }) => {
+    const response = await axios.get(`/api/payment/${id}`, {
+      headers: { Authorization: tokens },
+    });
+    return response.data;
+  }
+);
 
 const initialState = {
   loadings: false,
   error: null,
   order: [],
+  detailOrder: [],
 };
 const OrderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    reset: (state) => {},
+    reset: (state) => {
+      state.detailOrder = [];
+    },
   },
   extraReducers: {
-    //Get All Product
+    //Get All Order
     [GetOrderInitial.pending]: (state, action) => {
       state.loadings = true;
     },
@@ -31,6 +43,18 @@ const OrderSlice = createSlice({
       state.order = action.payload;
     },
     [GetOrderInitial.rejected]: (state, action) => {
+      state.loadings = false;
+      state.error = action.payload;
+    },
+    //Get Id of Order
+    [GetIdOrderInitial.pending]: (state, action) => {
+      state.loadings = true;
+    },
+    [GetIdOrderInitial.fulfilled]: (state, action) => {
+      state.loadings = false;
+      state.detailOrder = action.payload;
+    },
+    [GetIdOrderInitial.rejected]: (state, action) => {
       state.loadings = false;
       state.error = action.payload;
     },

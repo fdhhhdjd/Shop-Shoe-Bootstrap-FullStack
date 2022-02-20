@@ -59,3 +59,4 @@ export { default as OrderAdmin } from "../Components/OrderAdmin/OrderAdmin";
 export { default as OderDetailAdmin } from "../Components/OrderAdmin/OderDetailAdmin";
 export { default as OrderDetailMain } from "../Components/OrderAdmin/OrderDetailMain";
 export { default as OrderDetailInfo } from "../Components/OrderAdmin/OrderDetailInfo";
+export { default as OrderDetailProducts } from "../Components/OrderAdmin/OrderDetailProducts";

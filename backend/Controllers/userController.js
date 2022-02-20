@@ -936,6 +936,30 @@ const userCtrl = {
         }
       });
   },
+  GetAllUser: async (req, res) => {
+    try {
+      const user = await Users.find({ role: 0 }).select("-password");
+      res.json({
+        status: 200,
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  GetAllAdmin: async (req, res) => {
+    try {
+      const user = await Users.find({ role: 1 }).select("-password");
+      res.json({
+        status: 200,
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
 };
 
 const createAccessToken = (user) => {
