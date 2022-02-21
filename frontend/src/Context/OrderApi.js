@@ -5,7 +5,11 @@ import {
   GetProductInitial,
   HistoryProductDetailInitial,
 } from "../Redux/ProductSlice";
-import { GetOrderInitial, GetOrderNewUserInitial } from "../Redux/OrderSlice";
+import {
+  GetDeleteOrderInitial,
+  GetOrderInitial,
+  GetOrderNewUserInitial,
+} from "../Redux/OrderSlice";
 const OrderApi = (
   refreshTokens,
   refreshTokensAdmin,
@@ -25,6 +29,7 @@ const OrderApi = (
   useEffect(() => {
     if (tokens) {
       dispatch(GetOrderInitial({ tokens }));
+      dispatch(GetDeleteOrderInitial({ tokens }));
       dispatch(GetOrderNewUserInitial({ tokens }));
     }
   }, [callback, tokens, callbackAdmin]);

@@ -1,26 +1,15 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  Fragment,
-  useCallback,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Header } from "../../imports/index";
 import {
-  AddToCartInitial,
-  DeleteProductDetailInitial,
   GetProductDetailInitial,
   reset,
   ReviewProductDetailInitial,
-  updateReviewProductDetailInitial,
-  GetProductInitial,
 } from "../../Redux/ProductSlice";
 import { Loading, Rating, MetaData } from "../../imports/index";
 import { Link } from "react-router-dom";
 import Message from "../../Pages/Error/Message";
-import moment from "moment";
 import { GlobalState } from "../../Context/GlobalState";
 import Comments from "./Comments";
 import swal from "sweetalert";
@@ -37,21 +26,20 @@ const DetailProduct = () => {
   const state = useContext(GlobalState);
   const addCart = state.UserApi.addCart;
   const [callback, setCallback] = state.callback;
-  const {
-    loadings,
-    productDetail,
-    error,
-    reviews,
-
-    product,
-  } = useSelector((state) => ({
-    ...state.products,
-  }));
+  const { loadings, productDetail, error, reviews, product } = useSelector(
+    (state) => ({
+      ...state.products,
+    })
+  );
   const { profile, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
   const { comment, rating } = reviewState;
   const token = refreshToken.accessToken;
+  const [visible, setVisible] = useState(4);
+  const handleLoadMore = () => {
+    setVisible((prev) => prev + 4);
+  };
   useEffect(() => {
     if (id) {
       dispatch(GetProductDetailInitial(id));
@@ -67,9 +55,9 @@ const DetailProduct = () => {
   const getReplies = (commentId) => {
     return (
       productDetail.product &&
-      productDetail.product.reviews.filter(
-        (backendComments) => backendComments._id === commentId
-      )
+      productDetail.product.reviews
+        .slice(0, visible)
+        .filter((backendComments) => backendComments._id === commentId)
     );
   };
   const productId = id;
@@ -209,9 +197,31 @@ const DetailProduct = () => {
                           comment={comment}
                           handleChange={handleChange}
                           initialState={initialState}
+                          handleLoadMore={handleLoadMore}
+                          visible={visible}
                         />
                       );
                     })}
+                  <nav
+                    className="float-center mt-4"
+                    aria-label="Page navigation"
+                  >
+                    <ul className="pagination  justify-content-center">
+                      <li className="page-item">
+                        {productDetail.product &&
+                          productDetail.product.reviews &&
+                          visible < productDetail.product.reviews.length && (
+                            <button
+                              className="page-link"
+                              onClick={handleLoadMore}
+                            >
+                              Load Comment{" "}
+                              <i className="fa-solid fa-angle-down"></i>
+                            </button>
+                          )}
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
                 <div className="col-md-6">
                   <h6>WRITE A CUSTOMER REVIEW</h6>

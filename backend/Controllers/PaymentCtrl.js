@@ -31,7 +31,7 @@ const paymentCtrl = {
   //Delete Soft Erase
   DeletePaymentSoftErase: async (req, res) => {
     try {
-      await Payments.findByIdAndUpdate(
+      await Payments.findOneAndUpdate(
         { _id: req.params.id },
         {
           deleteAt: true,
@@ -130,7 +130,7 @@ const paymentCtrl = {
       let value2 = d2.getTime();
       return Math.ceil((value2 - value1) / (24 * 60 * 60 * 1000));
     };
-    let payments = await Payments.find().populate("user_id");
+    let payments = await Payments.find({ deleteAt: false }).populate("user_id");
     var today = new Date();
     var result = [];
     for (var i = 0; i < payments.length; i++) {

@@ -9,6 +9,15 @@ export const GetOrderInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const GetDeleteOrderInitial = createAsyncThunk(
+  "order/getAllDeleteOrder",
+  async ({ tokens }) => {
+    const response = await axios.get("/api/payment/deletePayment", {
+      headers: { Authorization: tokens },
+    });
+    return response.data;
+  }
+);
 export const GetIdOrderInitial = createAsyncThunk(
   "order/getIdOrder",
   async ({ id, tokens }) => {
@@ -27,6 +36,20 @@ export const GetOrderNewUserInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const DeleteOrderNewUserInitial = createAsyncThunk(
+  "order/DeleteOrderNewUser",
+  async ({ id }) => {
+    const response = await axios.patch(`/api/payment/deletePayments/${id}`);
+    return response.data;
+  }
+);
+export const UndoOrderNewUserInitial = createAsyncThunk(
+  "order/undoOrderNewUser",
+  async ({ id }) => {
+    const response = await axios.patch(`/api/payment/undoPayments/${id}`);
+    return response.data;
+  }
+);
 
 const initialState = {
   loadings: false,
@@ -34,6 +57,9 @@ const initialState = {
   order: [],
   detailOrder: [],
   newUserBuy: [],
+  deletePayments: [],
+  orders: [],
+  undoPayments: [],
 };
 const OrderSlice = createSlice({
   name: "order",
@@ -41,6 +67,7 @@ const OrderSlice = createSlice({
   reducers: {
     reset: (state) => {
       state.detailOrder = [];
+      state.undoPayments = [];
     },
   },
   extraReducers: {
@@ -53,6 +80,18 @@ const OrderSlice = createSlice({
       state.order = action.payload;
     },
     [GetOrderInitial.rejected]: (state, action) => {
+      state.loadings = false;
+      state.error = action.payload;
+    },
+    //Get All Delete Order
+    [GetDeleteOrderInitial.pending]: (state, action) => {
+      state.loadings = true;
+    },
+    [GetDeleteOrderInitial.fulfilled]: (state, action) => {
+      state.loadings = false;
+      state.orders = action.payload;
+    },
+    [GetDeleteOrderInitial.rejected]: (state, action) => {
       state.loadings = false;
       state.error = action.payload;
     },
@@ -77,6 +116,30 @@ const OrderSlice = createSlice({
       state.newUserBuy = action.payload;
     },
     [GetOrderNewUserInitial.rejected]: (state, action) => {
+      state.loadings = false;
+      state.error = action.payload;
+    },
+    //User Delete Payment
+    [DeleteOrderNewUserInitial.pending]: (state, action) => {
+      state.loadings = true;
+    },
+    [DeleteOrderNewUserInitial.fulfilled]: (state, action) => {
+      state.loadings = false;
+      state.deletePayments = action.payload;
+    },
+    [DeleteOrderNewUserInitial.rejected]: (state, action) => {
+      state.loadings = false;
+      state.error = action.payload;
+    },
+    //User Delete Payment
+    [UndoOrderNewUserInitial.pending]: (state, action) => {
+      state.loadings = true;
+    },
+    [UndoOrderNewUserInitial.fulfilled]: (state, action) => {
+      state.loadings = false;
+      state.undoPayments = action.payload;
+    },
+    [UndoOrderNewUserInitial.rejected]: (state, action) => {
       state.loadings = false;
       state.error = action.payload;
     },

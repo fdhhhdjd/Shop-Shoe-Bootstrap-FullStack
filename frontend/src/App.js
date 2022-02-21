@@ -29,6 +29,9 @@ import {
   ProfileAdmins,
   OrderAdmin,
   OderDetailAdmin,
+  OrderDeleteAdmin,
+  ManagerUser,
+  ManagerAdmin,
 } from "./imports/index";
 import { HomeAdmin, Home } from "./imports/LazyRouter";
 function App() {
@@ -81,6 +84,15 @@ function App() {
           </Route>
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/orders" element={<OrderAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/users" element={<ManagerUser />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/admins" element={<ManagerAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/DeleteOrders" element={<OrderDeleteAdmin />} />
           </Route>
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/orders/:id" element={<OderDetailAdmin />} />

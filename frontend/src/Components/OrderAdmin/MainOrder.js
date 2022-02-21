@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Loading } from "../../imports";
+import { Loading, Orders } from "../../imports";
 import Message from "../../Pages/Error/Message";
-import Orders from "./Orders";
-
+import { Link } from "react-router-dom";
 const MainOrder = () => {
-  const { order, loading, error } = useSelector((state) => ({
+  const { order, orders, loading, error } = useSelector((state) => ({
     ...state.order,
   }));
   const [search, setSearch] = useState("");
@@ -17,6 +16,14 @@ const MainOrder = () => {
     <section className="content-main">
       <div className="content-header">
         <h2 className="content-title">Orders</h2>
+        <div>
+          <Link to="/deleteOrders" className="btn btn-primary">
+            Remove Order&nbsp;
+            <span className="badge1 badge">
+              {orders.payments && orders.payments.length}
+            </span>
+          </Link>
+        </div>
       </div>
 
       <div className="card mb-4 shadow-sm">

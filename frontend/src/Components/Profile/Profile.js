@@ -14,7 +14,6 @@ const Profile = () => {
   }));
   const [total, setTotal] = useState(0);
   const orders = order.history && order.history;
-  console.log(orders);
   useEffect(() => {
     order.history &&
       order.history.map((item) => {

@@ -61,3 +61,11 @@ export { default as OrderDetailMain } from "../Components/OrderAdmin/OrderDetail
 export { default as OrderDetailInfo } from "../Components/OrderAdmin/OrderDetailInfo";
 export { default as OrderDetailProducts } from "../Components/OrderAdmin/OrderDetailProducts";
 export { default as LatestUser } from "../Components/HomeAdmin/LatestUser";
+export { default as MainOrderDelete } from "../Components/OrderAdmin/MainOrderDelete";
+export { default as OrderDeleteAdmin } from "../Components/OrderAdmin/OrderDeleteAdmin";
+export { default as OrdersDelete } from "../Components/OrderAdmin/OrdersDelete";
+export { default as Orders } from "../Components/OrderAdmin/Orders";
+export { default as MainManagerAdmin } from "../Components/ManagerAdminUser/MainManagerAdmin";
+export { default as MainManagerUser } from "../Components/ManagerAdminUser/MainManagerUser";
+export { default as ManagerAdmin } from "../Components/ManagerAdminUser/ManagerAdmin";
+export { default as ManagerUser } from "../Components/ManagerAdminUser/ManagerUser";

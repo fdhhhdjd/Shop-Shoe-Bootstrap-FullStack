@@ -27,6 +27,7 @@ const Comments = ({
   const [commentId, setCommentId] = useState();
   const [Review, setReview] = useState();
   const { comment } = commentReview;
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCommentReview({ ...commentReview, [name]: value });

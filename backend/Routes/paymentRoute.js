@@ -9,20 +9,10 @@ router
 
 //Get Delete Payment User Deleted
 
-router.get("/deletePayment", auth, authAdmin, paymentCtrl.getPaymentDeletes);
+router.get("/deletePayment", paymentCtrl.getPaymentDeletes);
 //Delete Payment User Deleted
-router.patch(
-  "/deletePayments/:id",
-  auth,
-  authAdmin,
-  paymentCtrl.DeletePaymentSoftErase
-);
-router.patch(
-  "/undoPayments/:id",
-  auth,
-  authAdmin,
-  paymentCtrl.UndoPaymentSoftErase
-);
+router.patch("/deletePayments/:id", paymentCtrl.DeletePaymentSoftErase);
+router.patch("/undoPayments/:id", paymentCtrl.UndoPaymentSoftErase);
 
 //Id Payment
 router.get("/payments/:id", auth, authAdmin, paymentCtrl.getIdPayment);

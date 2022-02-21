@@ -1,15 +1,44 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Loading } from "../../imports";
 import Message from "../../Pages/Error/Message";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import moment from "moment";
+import { DeleteOrderNewUserInitial } from "../../Redux/OrderSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { GlobalState } from "../../Context/GlobalState";
+import swal from "sweetalert";
 const History = ({ cartItems }) => {
   const { loading, order, error } = useSelector((state) => ({
     ...state.products,
   }));
+  const { refreshToken } = useSelector((state) => ({ ...state.data }));
+  const dispatch = useDispatch();
+  const state = useContext(GlobalState);
+  const [callback, setCallback] = state.callback;
+  const token = refreshToken.accessToken && refreshToken.accessToken;
   const orders = order.history;
-
+  const handleDelete = async (id) => {
+    try {
+      return await swal({
+        title: "Are you sure you want delete ?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          dispatch(DeleteOrderNewUserInitial({ id }));
+          setCallback(!callback);
+          swal("Delete order Successfully 😉 !", {
+            icon: "success",
+          });
+        } else {
+          swal("Thank you for 😆'!");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className=" d-flex justify-content-center align-items-center flex-column">
@@ -42,6 +71,7 @@ const History = ({ cartItems }) => {
                       <th>STATUS</th>
                       <th>DATE</th>
                       <th>TOTAL</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -65,6 +95,13 @@ const History = ({ cartItems }) => {
                               : moment(order.createdAt).calendar()}
                           </td>
                           <td>${order.total}</td>
+                          <td className="text-align-center">
+                            &nbsp;&nbsp;&nbsp;
+                            <i
+                              className="fa-solid fa-trash-can"
+                              onClick={() => handleDelete(order._id)}
+                            ></i>
+                          </td>
                         </tr>
                       ))}
                   </tbody>

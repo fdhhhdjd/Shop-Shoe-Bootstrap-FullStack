@@ -586,7 +586,10 @@ const userCtrl = {
   //Get all History
   historyCart: async (req, res) => {
     try {
-      const history = await Payments.find({ user_id: req.user.id });
+      const history = await Payments.find({
+        user_id: req.user.id,
+        deleteAt: false,
+      });
       res.json({
         status: 200,
         success: true,
