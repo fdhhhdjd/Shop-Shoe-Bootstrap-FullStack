@@ -1,11 +1,92 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import CountUp from "react-countup";
+import { GlobalState } from "../../Context/GlobalState";
+import swal from "sweetalert";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { GetAllUserInitiate } from "../../Redux/AuthenticationAdminSlice";
 const Users = (props) => {
   const { orders, visible, search } = props;
+  const state = useContext(GlobalState);
+  const [users, setUsers] = state.UserApi.users;
+  const { refreshTokenAdmin } = useSelector((state) => ({
+    ...state.admin,
+  }));
+  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const [callback, setCallback] = state.callback;
+  const [isCheck, setIsCheck] = useState(false);
+  const handleDelete = async (id) => {
+    try {
+      return await swal({
+        title: "Are you sure you want delete ?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          axios.delete(`/api/auth/deleteUserAdmin/${id}`, {
+            headers: { Authorization: ` ${refreshTokenAdmin.accessToken}` },
+          });
+          setCallbackAdmin(!callbackAdmin);
+          swal("Delete User Successfully 😉 !", {
+            icon: "success",
+          });
+        } else {
+          swal("Thank you for 😆'!");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteUser = async (id) => {
+    try {
+      const deleteProduct = axios.delete(`/api/auth/deleteUserAdmin/${id}`, {
+        headers: { Authorization: refreshTokenAdmin.accessToken },
+      });
+
+      await deleteProduct;
+      swal("Delete User successfully 🤣!", {
+        icon: "success",
+      });
+      setCallbackAdmin(!callbackAdmin);
+    } catch (err) {
+      swal(err.response.data.msg, {
+        icon: "error",
+      });
+    }
+  };
+  const handleCheck = (id) => {
+    users.forEach((product) => {
+      if (product._id === id) product.checked = !product.checked;
+    });
+    console.log(users);
+    setUsers([...users]);
+  };
+  const deleteAll = () => {
+    users.forEach((product) => {
+      if (product.checked) deleteUser(product._id);
+    });
+    swal("Delete User successfully 🤣!", {
+      icon: "success",
+    });
+  };
+  const checkAll = () => {
+    users.forEach((product) => {
+      product.checked = !isCheck;
+    });
+    setUsers([...users]);
+    setIsCheck(!isCheck);
+  };
   return (
     <>
+      <input type="checkbox" checked={isCheck} onChange={checkAll} />
+      <div className="content-header">
+        <button onClick={deleteAll} className="btn btn-danger text-white">
+          Delete User
+        </button>
+      </div>
       {orders.length === 0 ? (
         <nav className="float-center mt-4" aria-label="Page navigation">
           <ul className="pagination  justify-content-center">
@@ -84,9 +165,22 @@ const Users = (props) => {
                       ))}
                   </td>
                   <td className="d-flex justify-content-end align-item-center">
-                    <Link to={`/orders/${order._id}`} className="text-success">
-                      <i className="fas fa-eye"></i>
+                    <Link
+                      to={`/editUsers/${order._id}`}
+                      className="text-success"
+                    >
+                      <i className="fa-solid fa-pencil"></i> &nbsp;&nbsp;
                     </Link>
+                    <i
+                      className="fa-solid fa-trash text-success"
+                      onClick={() => handleDelete(order._id)}
+                    ></i>
+                    &nbsp;&nbsp;
+                    <input
+                      type="checkbox"
+                      className="text-success"
+                      onChange={() => handleCheck(order._id)}
+                    />
                   </td>
                 </tr>
               ))}

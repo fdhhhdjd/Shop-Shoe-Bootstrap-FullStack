@@ -16,6 +16,7 @@ const UserApi = (token, refreshTokensAdmin) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [cart, setCart] = useState([]);
   const [history, setHistory] = useState([]);
+  const [users, setUsers] = useState([]);
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
   const { order } = useSelector((state) => ({ ...state.products }));
   const orders = order.history && order.history;
@@ -48,6 +49,18 @@ const UserApi = (token, refreshTokensAdmin) => {
       dispatch(NewUserInitiate({ tokens }));
     }
   }, [refreshTokensAdmin]);
+  useEffect(() => {
+    if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
+      const getProducts = async () => {
+        const res = await axios.get("/api/auth/getAllUser", {
+          headers: { Authorization: refreshTokensAdmin },
+        });
+        setUsers(res.data.user);
+      };
+      getProducts();
+    }
+  }, [refreshTokensAdmin]);
+  console.log(users, "alloooo");
   const addCart = async (product) => {
     if (refreshToken.accessToken === undefined)
       return swal({
@@ -89,6 +102,7 @@ const UserApi = (token, refreshTokensAdmin) => {
   return {
     cart: [cart, setCart],
     addCart: addCart,
+    users: [users, setUsers],
   };
 };
 export default UserApi;

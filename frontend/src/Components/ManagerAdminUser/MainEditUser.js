@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Loading } from "../../imports/index";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
@@ -8,27 +8,43 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 const initialState = {
   name: "",
-  description: "",
-  price: "",
-  countInStock: "",
-  rating: 0,
-  numReviews: 0,
+  date_of_birth: "",
+  phone_number: "",
+  sex: "",
+  role: "",
 };
-const AddProductMain = () => {
+const MainEditUser = () => {
   const [states, setState] = useState(initialState);
-  const { name, description, price, countInStock, rating, numReviews } = states;
-  const { admin, refreshTokenAdmin } = useSelector((state) => ({
+  const { name, date_of_birth, phone_number, sex, role } = states;
+  const { refreshTokenAdmin, userAll } = useSelector((state) => ({
     ...state.admin,
   }));
+  const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState(false);
   const state = useContext(GlobalState);
   const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
   const navigate = useNavigate();
+  const user = userAll.user;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...states, [name]: value });
   };
+  useEffect(() => {
+    if (id) {
+      user &&
+        user.forEach((product) => {
+          if (product._id == id) {
+            setState(product);
+            if (product.url === "") {
+              setImages(product.image.url);
+            } else {
+              setImages(product.image);
+            }
+          }
+        });
+    }
+  }, [id]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!images)
@@ -36,8 +52,8 @@ const AddProductMain = () => {
         icon: "error",
       });
     try {
-      await axios.post(
-        "/api/product/create",
+      await axios.patch(
+        `/api/auth/updateUserAdmin/${id}`,
         { ...states, image: images },
         {
           headers: {
@@ -45,11 +61,11 @@ const AddProductMain = () => {
           },
         }
       );
-      swal("Create product Successfully", {
+      swal("Edit User Successfully", {
         icon: "success",
       });
       setCallbackAdmin(!callbackAdmin);
-      navigate("/products");
+      navigate("/users");
     } catch (error) {
       alert(error.response.data.msg);
     }
@@ -115,13 +131,13 @@ const AddProductMain = () => {
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit}>
           <div className="content-header">
-            <Link to="/products" className="btn btn-danger text-white">
-              Go to products
+            <Link to="/users" className="btn btn-danger text-white">
+              Go to Users
             </Link>
-            <h2 className="content-title">Add product</h2>
+            <h2 className="content-title">Edit User</h2>
             <div>
               <button type="submit" className="btn btn-primary">
-                Publish Now
+                Edit Now
               </button>
             </div>
           </div>
@@ -130,8 +146,6 @@ const AddProductMain = () => {
             <div className="col-xl-8 col-lg-8">
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
-                  {/* {error && <Message variant="alert-danger">{error}</Message>} */}
-
                   <div className="mb-4">
                     {loading ? (
                       <Loading />
@@ -144,25 +158,27 @@ const AddProductMain = () => {
                           style={styleUpload}
                         />
                         <label
-                          className="form-control mt-3"
+                          className="form-control mt-3 "
                           style={styleUpload}
                           onClick={handleDestroy}
                         >
-                          Close Image X
+                          Close Image&nbsp;<i className="fa-solid fa-trash"></i>
                         </label>
                       </>
                     )}
-                    <input
-                      className="form-control mt-3"
-                      type="file"
-                      name="file"
-                      id="file_up"
-                      onChange={handleUpload}
-                    />
+                    {!images && (
+                      <input
+                        className="form-control mt-3"
+                        type="file"
+                        name="file"
+                        id="file_up"
+                        onChange={handleUpload}
+                      />
+                    )}
                   </div>
                   <div className="mb-4">
                     <label htmlFor="product_title" className="form-label">
-                      Product title
+                      Name
                     </label>
                     <input
                       type="text"
@@ -170,14 +186,14 @@ const AddProductMain = () => {
                       className="form-control"
                       id="product_title"
                       required
-                      value={name}
+                      value={states.name}
                       name="name"
                       onChange={handleChange}
                     />
                   </div>
                   <div className="mb-4">
                     <label htmlFor="product_price" className="form-label">
-                      Price
+                      Phone
                     </label>
                     <input
                       type="number"
@@ -185,37 +201,63 @@ const AddProductMain = () => {
                       className="form-control"
                       id="product_price"
                       required
-                      value={price}
+                      value={states.phone_number}
                       name="price"
                       onChange={handleChange}
                     />
                   </div>
                   <div className="mb-4">
                     <label htmlFor="product_price" className="form-label">
-                      Count In Stock
+                      Date
                     </label>
                     <input
-                      type="number"
+                      type="date"
                       placeholder="Type here"
                       className="form-control"
                       id="product_price"
                       required
-                      value={countInStock}
+                      value={states.date_of_birth}
                       name="countInStock"
                       onChange={handleChange}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="form-label">Description</label>
-                    <textarea
-                      placeholder="Type here"
-                      className="form-control"
-                      rows="7"
-                      required
-                      name="description"
-                      value={description}
+                    <label htmlFor="product_price" className="form-label">
+                      Sex
+                    </label>
+
+                    <select
+                      className="form-control form-select"
                       onChange={handleChange}
-                    ></textarea>
+                      name="admin"
+                      value={states.sex}
+                    >
+                      <option value="1" selected="">
+                        Man
+                      </option>
+                      <option value="0" selected="">
+                        Women
+                      </option>
+                    </select>
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="product_price" className="form-label">
+                      Role
+                    </label>
+
+                    <select
+                      className="form-control form-select"
+                      onChange={handleChange}
+                      name="admin"
+                      value={states.role}
+                    >
+                      <option value="1" selected="">
+                        Admin
+                      </option>
+                      <option value="0" selected="">
+                        Customer
+                      </option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -227,4 +269,4 @@ const AddProductMain = () => {
   );
 };
 
-export default AddProductMain;
+export default MainEditUser;

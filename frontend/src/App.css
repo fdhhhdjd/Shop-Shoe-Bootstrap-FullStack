@@ -452,6 +452,13 @@ textarea:focus {
   border-radius: 100px;
   color: #ffffff;
 }
+.img-thumbnail {
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  object-fit:cover
+ 
+}
 .badge1 {
   background-color: red;
   position: absolute;

@@ -33,6 +33,8 @@ import {
   ManagerUser,
   ManagerAdmin,
   Category,
+  EditUser,
+  EditAdmin,
 } from "./imports/index";
 import { HomeAdmin, Home } from "./imports/LazyRouter";
 function App() {
@@ -88,6 +90,12 @@ function App() {
           </Route>
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/users" element={<ManagerUser />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/editUsers/:id" element={<EditUser />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/editAdmins/:id" element={<EditAdmin />} />
           </Route>
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/admins" element={<ManagerAdmin />} />

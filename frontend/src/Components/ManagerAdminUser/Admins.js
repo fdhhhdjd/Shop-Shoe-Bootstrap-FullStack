@@ -25,9 +25,6 @@ const Admins = (props) => {
               <th scope="col">Sex</th>
               <th scope="col">Date</th>
               <th scope="col">Phone</th>
-              <th scope="col" className="text-end">
-                Action
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -82,11 +79,6 @@ const Admins = (props) => {
                       (order.phone_number == undefined && (
                         <b className="text-danger">No Phone</b>
                       ))}
-                  </td>
-                  <td className="d-flex justify-content-end align-item-center">
-                    <Link to={`/orders/${order._id}`} className="text-success">
-                      <i className="fas fa-eye"></i>
-                    </Link>
                   </td>
                 </tr>
               ))}
