@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import CountUp from "react-countup";
-const Orders = (props) => {
+const Admins = (props) => {
   const { orders, visible, search } = props;
   return (
     <>
@@ -21,10 +21,10 @@ const Orders = (props) => {
               <th scope="col">Image</th>
               <th scope="col">Name</th>
               <th scope="col">Email</th>
-              <th scope="col">Total</th>
-              <th scope="col">Paid</th>
+              <th scope="col">Role</th>
+              <th scope="col">Sex</th>
               <th scope="col">Date</th>
-              <th>Status</th>
+              <th scope="col">Phone</th>
               <th scope="col" className="text-end">
                 Action
               </th>
@@ -46,9 +46,9 @@ const Orders = (props) => {
               .map((order) => (
                 <tr key={order._id}>
                   <td>
-                    {order.user_id && order.user_id.image && (
+                    {order && order.image && (
                       <img
-                        src={order.user_id.image.url}
+                        src={order.image.url}
                         alt=""
                         style={{
                           width: "25px",
@@ -63,34 +63,25 @@ const Orders = (props) => {
                     <b>{order.name}</b>
                   </td>
                   <td>{order.email}</td>
+                  <td>{order.role === 1 && "Admin"}</td>
                   <td>
-                    $
-                    <CountUp
-                      className="count"
-                      start={0}
-                      end={order.total}
-                      duration={2.5}
-                      separator=","
-                    />
+                    {(order.sex === 1 && "Man") ||
+                      (order.sex === 0 && "Women") ||
+                      (order.sex == undefined && (
+                        <b className="text-danger">No Gender</b>
+                      ))}
                   </td>
                   <td>
-                    {order.status ? (
-                      <span className="badge rounded-pill alert-success">
-                        Paid At {moment(order.createdAt).format("MMM Do YY")}
-                      </span>
-                    ) : (
-                      <span className="badge rounded-pill alert-danger">
-                        Not Paid
-                      </span>
-                    )}
+                    {(order.date_of_birth == undefined && (
+                      <b className="text-danger">No Date</b>
+                    )) ||
+                      moment(order.date_of_birth).format("MMM Do YY")}
                   </td>
-                  <td>{moment(order.createdAt).format("MMM Do YY")}</td>
                   <td>
-                    {!order.isDelivered ? (
-                      <span className="badge btn-success">Delivered</span>
-                    ) : (
-                      <span className="badge btn-dark">Not delivered</span>
-                    )}
+                    {order.phone_number ||
+                      (order.phone_number == undefined && (
+                        <b className="text-danger">No Phone</b>
+                      ))}
                   </td>
                   <td className="d-flex justify-content-end align-item-center">
                     <Link to={`/orders/${order._id}`} className="text-success">
@@ -127,4 +118,4 @@ const Orders = (props) => {
   );
 };
 
-export default Orders;
+export default Admins;

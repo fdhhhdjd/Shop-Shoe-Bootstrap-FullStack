@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { ProfileInitiate } from "../Redux/AuthenticationSlice";
 import {
+  GetAllAdminInitiate,
+  GetAllUserInitiate,
   NewUserInitiate,
   ProfileAdminInitiate,
 } from "../Redux/AuthenticationAdminSlice";
@@ -41,6 +43,8 @@ const UserApi = (token, refreshTokensAdmin) => {
   useEffect(() => {
     if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
       dispatch(ProfileAdminInitiate({ refreshTokensAdmin }));
+      dispatch(GetAllAdminInitiate({ refreshTokensAdmin }));
+      dispatch(GetAllUserInitiate({ refreshTokensAdmin }));
       dispatch(NewUserInitiate({ tokens }));
     }
   }, [refreshTokensAdmin]);

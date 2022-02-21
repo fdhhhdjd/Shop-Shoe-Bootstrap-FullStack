@@ -88,19 +88,18 @@ const MainProduct = () => {
   const renderData = (data, index) => {
     return (
       <>
-        {data
-          .filter((value) => {
-            if (search === "") {
-              return value;
-            } else if (
-              value.name.toLowerCase().includes(search.toLowerCase())
-            ) {
-              return value;
-            }
-          })
-          .map((product) => (
-            <Product product={product} key={product._id} />
-          ))}
+        {data &&
+          data
+            .filter((value) => {
+              if (search === "") {
+                return value;
+              } else if (
+                value.name.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return value;
+              }
+            })
+            .map((product) => <Product product={product} key={product._id} />)}
       </>
     );
   };

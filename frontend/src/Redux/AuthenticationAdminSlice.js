@@ -102,6 +102,24 @@ export const NewUserInitiate = createAsyncThunk(
     return data;
   }
 );
+export const GetAllUserInitiate = createAsyncThunk(
+  "admin/getAllUser",
+  async ({ refreshTokensAdmin }) => {
+    const response = await axios.get("/api/auth/getAllUser", {
+      headers: { Authorization: refreshTokensAdmin },
+    });
+    return response.data;
+  }
+);
+export const GetAllAdminInitiate = createAsyncThunk(
+  "admin/getAllAdmin",
+  async ({ refreshTokensAdmin }) => {
+    const response = await axios.get("/api/auth/getAllAdmin", {
+      headers: { Authorization: refreshTokensAdmin },
+    });
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   admin: [],
@@ -113,6 +131,8 @@ const initialState = {
   forgetAdmin: [],
   newCountUser: [],
   logoutAdmin: false,
+  userAll: [],
+  adminAll: [],
 };
 const AuthenticationAdminSlice = createSlice({
   name: "admin",
@@ -244,6 +264,30 @@ const AuthenticationAdminSlice = createSlice({
       state.newCountUser = action.payload;
     },
     [NewUserInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Get All User
+    [GetAllUserInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [GetAllUserInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.userAll = action.payload;
+    },
+    [GetAllUserInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Get All Admin
+    [GetAllAdminInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [GetAllAdminInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.adminAll = action.payload;
+    },
+    [GetAllAdminInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
