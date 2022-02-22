@@ -1,5 +1,6 @@
 const Users = require("../Model/userModel");
 const Payments = require("../Model/PaymentModel");
+const Products = require("../Model/ProductModel");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
@@ -999,6 +1000,33 @@ const userCtrl = {
   deleteUserOrAdmin: async (req, res) => {
     try {
       await Users.findByIdAndDelete(req.params.id);
+
+      //tim ds products
+      const products = await Products.find({});
+      for (var i = 0; i < products.length; i++) {
+        for (var j = 0; j < products[i].reviews.length; j++) {
+          if (products[i].reviews[j].user.toString() === req.params.id) {
+            const a = products[i].reviews.slice(0, j);
+            const b = products[i].reviews.slice(
+              j + 1,
+              products[i].reviews.length
+            );
+            const c = a.concat(b);
+            products[i].reviews = c;
+          }
+        }
+        products[i].numReviews = products[i].reviews.length;
+
+        if (products[i].reviews.length === 0) {
+          products[i].rating = 0;
+        } else {
+          products[i].rating =
+            products[i].reviews.reduce((acc, item) => item.rating + acc, 0) /
+            products[i].reviews.length;
+        }
+        await products[i].save();
+      }
+
       res.status(200).json({
         status: 200,
         success: true,
