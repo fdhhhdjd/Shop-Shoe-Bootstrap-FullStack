@@ -131,6 +131,7 @@ const productCtrl = {
         price,
         countInStock,
         numReviews,
+        categories,
       } = req.body;
       if (!image) return res.status(400).json({ msg: "No image upload" });
       await Products.findOneAndUpdate(
@@ -143,6 +144,7 @@ const productCtrl = {
           price,
           countInStock,
           numReviews,
+          categories,
         }
       );
       res.status(200).json({
