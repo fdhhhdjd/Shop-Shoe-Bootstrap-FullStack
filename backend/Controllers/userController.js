@@ -1000,8 +1000,6 @@ const userCtrl = {
   deleteUserOrAdmin: async (req, res) => {
     try {
       await Users.findByIdAndDelete(req.params.id);
-
-      //tim ds products
       const products = await Products.find({});
       for (var i = 0; i < products.length; i++) {
         for (var j = 0; j < products[i].reviews.length; j++) {
@@ -1026,6 +1024,10 @@ const userCtrl = {
         }
         await products[i].save();
       }
+
+      await Payments.deleteMany({
+        user_id: req.params.id,
+      });
 
       res.status(200).json({
         status: 200,
