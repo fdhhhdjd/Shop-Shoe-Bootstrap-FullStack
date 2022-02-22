@@ -33,21 +33,6 @@ const MainManagerUser = () => {
                     value={search}
                   />
                 </div>
-                <div className="col-lg-2 col-6 col-md-3">
-                  <select className="form-select">
-                    <option>Status</option>
-                    <option>Active</option>
-                    <option>Disabled</option>
-                    <option>Show all</option>
-                  </select>
-                </div>
-                <div className="col-lg-2 col-6 col-md-3">
-                  <select className="form-select">
-                    <option>Show 20</option>
-                    <option>Show 30</option>
-                    <option>Show 40</option>
-                  </select>
-                </div>
               </div>
             </header>
             <div className="card-body">

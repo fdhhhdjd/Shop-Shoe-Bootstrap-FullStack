@@ -1,12 +1,101 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import CountUp from "react-countup";
+import { GlobalState } from "../../Context/GlobalState";
+import swal from "sweetalert";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { GetAllUserInitiate } from "../../Redux/AuthenticationAdminSlice";
 const Admins = (props) => {
   const { orders, visible, search } = props;
+  const state = useContext(GlobalState);
+  const [admins, setAdmins] = state.UserApi.admins;
+  const { refreshTokenAdmin } = useSelector((state) => ({
+    ...state.admin,
+  }));
+  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const [isCheck, setIsCheck] = useState(false);
+  const handleDelete = async (id) => {
+    try {
+      return await swal({
+        title: "Are you sure you want delete ?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          axios.delete(`/api/auth/deleteUserAdmin/${id}`, {
+            headers: { Authorization: ` ${refreshTokenAdmin.accessToken}` },
+          });
+          setCallbackAdmin(!callbackAdmin);
+          swal("Delete User Successfully 😉 !", {
+            icon: "success",
+          });
+        } else {
+          swal("Thank you for 😆'!");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteUser = async (id) => {
+    try {
+      const deleteProduct = axios.delete(`/api/auth/deleteUserAdmin/${id}`, {
+        headers: { Authorization: refreshTokenAdmin.accessToken },
+      });
+
+      await deleteProduct;
+      setCallbackAdmin(!callbackAdmin);
+      swal("Delete User successfully 🤣!", {
+        icon: "success",
+      });
+    } catch (err) {
+      swal(err.response.data.msg, {
+        icon: "error",
+      });
+    }
+  };
+  const handleCheck = (id) => {
+    admins.forEach((product) => {
+      if (product._id === id) product.checked = !product.checked;
+    });
+    setAdmins([...admins]);
+  };
+  const deleteAll = () => {
+    admins.forEach((product) => {
+      if (product.checked) deleteUser(product._id);
+    });
+    swal("Delete User successfully 🤣!", {
+      icon: "success",
+    });
+  };
+  const checkAll = () => {
+    admins.forEach((product) => {
+      product.checked = !isCheck;
+    });
+    setAdmins([...admins]);
+    setIsCheck(!isCheck);
+  };
   return (
     <>
-      {orders.length === 0 ? (
+      <div className="content-header">
+        <button onClick={deleteAll} className="btn btn-danger text-white">
+          Delete User
+        </button>
+        <div className="form-check">
+          <label className="form-check-label text-danger" for="defaultCheck1">
+            Choose All
+          </label>
+          <input
+            type="checkbox"
+            checked={isCheck}
+            onChange={checkAll}
+            className="form-check-input border-danger"
+          />
+        </div>
+      </div>
+      {admins.length === 0 ? (
         <nav className="float-center mt-4" aria-label="Page navigation">
           <ul className="pagination  justify-content-center">
             <li className="page-item">
@@ -25,10 +114,13 @@ const Admins = (props) => {
               <th scope="col">Sex</th>
               <th scope="col">Date</th>
               <th scope="col">Phone</th>
+              <th scope="col" className="text-end">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
-            {orders
+            {admins
               .slice(0, visible)
               .filter((value) => {
                 if (search === "") {
@@ -60,7 +152,7 @@ const Admins = (props) => {
                     <b>{order.name}</b>
                   </td>
                   <td>{order.email}</td>
-                  <td>{order.role === 1 && "Admin"}</td>
+                  <td>{order.role === 0 && "Customer"}</td>
                   <td>
                     {(order.sex === 1 && "Man") ||
                       (order.sex === 0 && "Women") ||
@@ -79,6 +171,25 @@ const Admins = (props) => {
                       (order.phone_number == undefined && (
                         <b className="text-danger">No Phone</b>
                       ))}
+                  </td>
+                  <td className="d-flex justify-content-end align-item-center">
+                    <Link
+                      to={`/editAdmins/${order._id}`}
+                      className="text-success"
+                    >
+                      <i className="fa-solid fa-pencil"></i> &nbsp;&nbsp;
+                    </Link>
+                    <i
+                      className="fa-solid fa-trash text-success"
+                      onClick={() => handleDelete(order._id)}
+                    ></i>
+                    &nbsp;&nbsp;
+                    <input
+                      type="checkbox"
+                      className="text-success form-check-input"
+                      checked={order.checked}
+                      onChange={() => handleCheck(order._id)}
+                    />
                   </td>
                 </tr>
               ))}

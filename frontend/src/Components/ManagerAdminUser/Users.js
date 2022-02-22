@@ -14,7 +14,6 @@ const Users = (props) => {
     ...state.admin,
   }));
   const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
-  const [callback, setCallback] = state.callback;
   const [isCheck, setIsCheck] = useState(false);
   const handleDelete = async (id) => {
     try {
@@ -47,10 +46,10 @@ const Users = (props) => {
       });
 
       await deleteProduct;
+      setCallbackAdmin(!callbackAdmin);
       swal("Delete User successfully 🤣!", {
         icon: "success",
       });
-      setCallbackAdmin(!callbackAdmin);
     } catch (err) {
       swal(err.response.data.msg, {
         icon: "error",
@@ -61,7 +60,6 @@ const Users = (props) => {
     users.forEach((product) => {
       if (product._id === id) product.checked = !product.checked;
     });
-    console.log(users);
     setUsers([...users]);
   };
   const deleteAll = () => {
@@ -81,11 +79,21 @@ const Users = (props) => {
   };
   return (
     <>
-      <input type="checkbox" checked={isCheck} onChange={checkAll} />
       <div className="content-header">
         <button onClick={deleteAll} className="btn btn-danger text-white">
           Delete User
         </button>
+        <div className="form-check">
+          <label className="form-check-label text-danger" for="defaultCheck1">
+            Choose All
+          </label>
+          <input
+            type="checkbox"
+            checked={isCheck}
+            onChange={checkAll}
+            className="form-check-input border-danger"
+          />
+        </div>
       </div>
       {orders.length === 0 ? (
         <nav className="float-center mt-4" aria-label="Page navigation">
@@ -112,7 +120,7 @@ const Users = (props) => {
             </tr>
           </thead>
           <tbody>
-            {orders
+            {users
               .slice(0, visible)
               .filter((value) => {
                 if (search === "") {
@@ -178,7 +186,8 @@ const Users = (props) => {
                     &nbsp;&nbsp;
                     <input
                       type="checkbox"
-                      className="text-success"
+                      className="text-success form-check-input"
+                      checked={order.checked}
                       onChange={() => handleCheck(order._id)}
                     />
                   </td>

@@ -1,7 +1,15 @@
 import React from "react";
-
+import { Sidebar, HeaderAdmin, MainEditAdmin } from "../../imports/index";
 const EditAdmin = () => {
-  return <div>EditAdmin</div>;
+  return (
+    <>
+      <Sidebar />
+      <main className="main-wrap">
+        <HeaderAdmin />
+        <MainEditAdmin />
+      </main>
+    </>
+  );
 };
 
 export default EditAdmin;

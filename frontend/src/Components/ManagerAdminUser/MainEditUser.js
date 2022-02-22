@@ -61,10 +61,10 @@ const MainEditUser = () => {
           },
         }
       );
+      setCallbackAdmin(!callbackAdmin);
       swal("Edit User Successfully", {
         icon: "success",
       });
-      setCallbackAdmin(!callbackAdmin);
       navigate("/users");
     } catch (error) {
       alert(error.response.data.msg);
@@ -154,7 +154,7 @@ const MainEditUser = () => {
                         <img
                           src={images ? images.url : ""}
                           alt=""
-                          className="img-thumbnail rounded"
+                          className="img-thumbnail rounded img-thumbnail1"
                           style={styleUpload}
                         />
                         <label
@@ -202,7 +202,7 @@ const MainEditUser = () => {
                       id="product_price"
                       required
                       value={states.phone_number}
-                      name="price"
+                      name="phone_number"
                       onChange={handleChange}
                     />
                   </div>
@@ -217,7 +217,7 @@ const MainEditUser = () => {
                       id="product_price"
                       required
                       value={states.date_of_birth}
-                      name="countInStock"
+                      name="date_of_birth"
                       onChange={handleChange}
                     />
                   </div>
@@ -229,7 +229,7 @@ const MainEditUser = () => {
                     <select
                       className="form-control form-select"
                       onChange={handleChange}
-                      name="admin"
+                      name="sex"
                       value={states.sex}
                     >
                       <option value="1" selected="">
@@ -248,7 +248,7 @@ const MainEditUser = () => {
                     <select
                       className="form-control form-select"
                       onChange={handleChange}
-                      name="admin"
+                      name="role"
                       value={states.role}
                     >
                       <option value="1" selected="">

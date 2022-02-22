@@ -83,7 +83,7 @@ const MainProduct = () => {
         icon: "error",
       });
     }
-    setitemsPerPage(itemsPerPage + 3);
+    setitemsPerPage(itemsPerPage + 4);
   };
   const renderData = (data, index) => {
     return (
