@@ -45,6 +45,11 @@ const Product = (props) => {
     <>
       <div className="col-md-6 col-sm-6 col-lg-3 mb-5">
         <div className="card card-product-grid shadow-sm">
+          <input
+            type="checkbox"
+            className="text-success form-check-input "
+            style={{ marginLeft: "0.7rem", fontSize: "1.5rem" }}
+          />
           <Link to="#" className="img-wrap">
             <img src={product.image && product.image.url} alt="Product" />
           </Link>

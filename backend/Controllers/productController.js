@@ -50,6 +50,7 @@ const productCtrl = {
         price,
         countInStock,
         numReviews,
+        categories,
       } = req.body;
       if (!image) return res.status(400).json({ msg: "No image upload" });
 
@@ -61,6 +62,7 @@ const productCtrl = {
         price,
         countInStock,
         numReviews,
+        categories,
       });
 
       await newProduct.save();

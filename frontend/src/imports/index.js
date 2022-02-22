@@ -77,3 +77,7 @@ export { default as EditAdmin } from "../Components/ManagerAdminUser/EditAdmin";
 export { default as EditUser } from "../Components/ManagerAdminUser/EditUser";
 export { default as MainEditAdmin } from "../Components/ManagerAdminUser/MainEditAdmin";
 export { default as MainEditUser } from "../Components/ManagerAdminUser/MainEditUser";
+export { default as Categories } from "../Components/CategoryAdmin/Categories";
+export { default as MainCategories } from "../Components/CategoryAdmin/MainCategories";
+export { default as EditCategories } from "../Components/CategoryAdmin/EditCategories";
+export { default as MainEditCategories } from "../Components/CategoryAdmin/MainEditCategories";

@@ -12,18 +12,33 @@ const initialState = {
   price: "",
   countInStock: "",
   rating: 0,
+  categories: "",
   numReviews: 0,
 };
 const AddProductMain = () => {
   const [states, setState] = useState(initialState);
-  const { name, description, price, countInStock, rating, numReviews } = states;
-  const { admin, refreshTokenAdmin } = useSelector((state) => ({
+
+  const { category, loadings, error } = useSelector((state) => ({
+    ...state.categories,
+  }));
+  const {
+    name,
+    description,
+    price,
+    countInStock,
+    rating,
+    numReviews,
+    categories,
+  } = states;
+  const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
+
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState(false);
   const state = useContext(GlobalState);
   const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,7 +66,9 @@ const AddProductMain = () => {
       setCallbackAdmin(!callbackAdmin);
       navigate("/products");
     } catch (error) {
-      alert(error.response.data.msg);
+      swal(error.response.data.msg, {
+        icon: "error",
+      });
     }
   };
   const handleUpload = async (e) => {
@@ -140,7 +157,7 @@ const AddProductMain = () => {
                         <img
                           src={images ? images.url : ""}
                           alt=""
-                          className="img-thumbnail rounded"
+                          className="img-thumbnail rounded img-thumbnail1"
                           style={styleUpload}
                         />
                         <label
@@ -205,6 +222,26 @@ const AddProductMain = () => {
                       onChange={handleChange}
                     />
                   </div>
+                  <div className="mb-4">
+                    <label htmlFor="product_price" className="form-label">
+                      Category
+                    </label>
+                    <select
+                      className="form-control form-select"
+                      onChange={handleChange}
+                      name="categories"
+                      value={categories}
+                    >
+                      <option value="">Please select a category</option>
+                      {category.categories &&
+                        category.categories.map((category) => (
+                          <option value={category.name} key={category._id}>
+                            {category.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+
                   <div className="mb-4">
                     <label className="form-label">Description</label>
                     <textarea

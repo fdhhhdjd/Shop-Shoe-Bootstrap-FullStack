@@ -4,6 +4,7 @@ import AuthenticationSlice from "./AuthenticationSlice";
 import ProductSlice from "./ProductSlice";
 import AuthenticationAdminSlice from "../Redux/AuthenticationAdminSlice";
 import OrderSlice from "../Redux/OrderSlice";
+import CategorySlice from "../Redux/CategoryAdminSlice";
 const rootReducer = (state, action) => {
   if (action.type === "counter/clear") {
     state = undefined;
@@ -16,6 +17,7 @@ const store = configureStore({
     admin: AuthenticationAdminSlice,
     order: OrderSlice,
     products: ProductSlice,
+    categories: CategorySlice,
     reducer: rootReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),

@@ -52,7 +52,7 @@ export const UndoOrderNewUserInitial = createAsyncThunk(
 );
 
 const initialState = {
-  loadings: false,
+  loading: false,
   error: null,
   order: [],
   detailOrder: [],
@@ -73,74 +73,74 @@ const OrderSlice = createSlice({
   extraReducers: {
     //Get All Order
     [GetOrderInitial.pending]: (state, action) => {
-      state.loadings = true;
+      state.loading = true;
     },
     [GetOrderInitial.fulfilled]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.order = action.payload;
     },
     [GetOrderInitial.rejected]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.error = action.payload;
     },
     //Get All Delete Order
     [GetDeleteOrderInitial.pending]: (state, action) => {
-      state.loadings = true;
+      state.loading = true;
     },
     [GetDeleteOrderInitial.fulfilled]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.orders = action.payload;
     },
     [GetDeleteOrderInitial.rejected]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.error = action.payload;
     },
     //Get Id of Order
     [GetIdOrderInitial.pending]: (state, action) => {
-      state.loadings = true;
+      state.loading = true;
     },
     [GetIdOrderInitial.fulfilled]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.detailOrder = action.payload;
     },
     [GetIdOrderInitial.rejected]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.error = action.payload;
     },
     //Get New User Buy 3 Day
     [GetOrderNewUserInitial.pending]: (state, action) => {
-      state.loadings = true;
+      state.loading = true;
     },
     [GetOrderNewUserInitial.fulfilled]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.newUserBuy = action.payload;
     },
     [GetOrderNewUserInitial.rejected]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.error = action.payload;
     },
     //User Delete Payment
     [DeleteOrderNewUserInitial.pending]: (state, action) => {
-      state.loadings = true;
+      state.loading = true;
     },
     [DeleteOrderNewUserInitial.fulfilled]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.deletePayments = action.payload;
     },
     [DeleteOrderNewUserInitial.rejected]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.error = action.payload;
     },
     //User Delete Payment
     [UndoOrderNewUserInitial.pending]: (state, action) => {
-      state.loadings = true;
+      state.loading = true;
     },
     [UndoOrderNewUserInitial.fulfilled]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.undoPayments = action.payload;
     },
     [UndoOrderNewUserInitial.rejected]: (state, action) => {
-      state.loadings = false;
+      state.loading = false;
       state.error = action.payload;
     },
   },

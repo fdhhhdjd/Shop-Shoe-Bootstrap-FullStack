@@ -5,6 +5,7 @@ import { RefreshTokenInitiate } from "../Redux/AuthenticationSlice";
 import ProductApi from "./ProductApi";
 import OrderApi from "./OrderApi";
 import { RefreshTokenAdminInitial } from "../Redux/AuthenticationAdminSlice";
+import CategoriesApi from "./CategoriesApi";
 export const GlobalState = createContext();
 export const DataProvider = ({ children }) => {
   const [callback, setCallback] = useState(false);
@@ -56,6 +57,7 @@ export const DataProvider = ({ children }) => {
       callback,
       callbackAdmin
     ),
+    CategoriesApi: CategoriesApi(callbackAdmin),
   };
   return <GlobalState.Provider value={data}>{children}</GlobalState.Provider>;
 };

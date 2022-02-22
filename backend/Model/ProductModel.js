@@ -52,6 +52,14 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    checked: {
+      type: Boolean,
+      default: false,
+    },
+    categories: {
+      type: String,
+      required: true,
+    },
     createdAt: {
       type: Date,
       default: Date.now,

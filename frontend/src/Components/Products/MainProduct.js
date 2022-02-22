@@ -10,7 +10,15 @@ const MainProduct = () => {
   }));
   const products = product.products;
   const [search, setSearch] = useState("");
-  //
+  //check box
+  const handleCheck = (id) => {
+    products.forEach((product) => {
+      if (product.id === id) {
+        return true;
+      }
+    });
+  };
+  //pagination
   const [currentPage, setcurrentPage] = useState(1);
   const [itemsPerPage, setitemsPerPage] = useState(8);
 
@@ -127,6 +135,7 @@ const MainProduct = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
+
               <div className="col-lg-2 col-6 col-md-3">
                 <select className="form-select">
                   <option>All category</option>
@@ -142,6 +151,18 @@ const MainProduct = () => {
                   <option>Most viewed</option>
                 </select>
               </div>
+            </div>
+            <div className="form-check">
+              <label
+                className="form-check-label text-danger"
+                for="defaultCheck1"
+              >
+                Choose All
+              </label>
+              <input
+                type="checkbox"
+                className="form-check-input border-danger"
+              />
             </div>
           </header>
 

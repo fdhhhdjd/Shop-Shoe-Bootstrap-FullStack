@@ -14,6 +14,7 @@ const initialState = {
   countInStock: "",
   rating: 0,
   numReviews: 0,
+  categories: "",
 };
 const EditProductMain = () => {
   const [states, setState] = useState(initialState);
@@ -21,6 +22,9 @@ const EditProductMain = () => {
   const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
   const [images, setImages] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { category } = useSelector((state) => ({
+    ...state.categories,
+  }));
   const { id } = useParams();
   const navigate = useNavigate();
   const { product } = useSelector((state) => ({
@@ -160,7 +164,7 @@ const EditProductMain = () => {
                         <img
                           src={images ? images.url : ""}
                           alt=""
-                          className="img-thumbnail rounded"
+                          className="img-thumbnail rounded img-thumbnail1"
                           style={styleUpload}
                         />
                         <label
@@ -224,6 +228,24 @@ const EditProductMain = () => {
                       name="countInStock"
                       onChange={handleChange}
                     />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="product_price" className="form-label">
+                      Category
+                    </label>
+                    <select
+                      className="form-control form-select"
+                      onChange={handleChange}
+                      name="categories"
+                      value={states.categories}
+                    >
+                      {category.categories &&
+                        category.categories.map((category) => (
+                          <option value={category.name} key={category._id}>
+                            {category.name}
+                          </option>
+                        ))}
+                    </select>
                   </div>
                   <div className="mb-4">
                     <label className="form-label">Description</label>

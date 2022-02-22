@@ -20,6 +20,7 @@ app.use(
 const customer = require("./Routes/customerRoute.js");
 const product = require("./Routes/ProductRoute.js");
 const payment = require("./Routes/paymentRoute.js");
+const category = require("./Routes/categoryRoute");
 const upload = require("./Routes/UploadCloud.js");
 
 //!Link router Main
@@ -28,6 +29,7 @@ const upload = require("./Routes/UploadCloud.js");
 app.use("/api/auth", customer);
 app.use("/api/product", product);
 app.use("/api/payment", payment);
+app.use("/api/category", category);
 
 //!upload
 app.use("/api", upload);
