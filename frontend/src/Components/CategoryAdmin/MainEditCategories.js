@@ -5,19 +5,27 @@ import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  CreateCategoriesInitial,
+  reset,
+  UpdateCategoriesInitial,
+} from "../../Redux/CategoryAdminSlice";
 const initialState = {
   name: "",
 };
 const MainEditCategories = () => {
   const [states, setState] = useState(initialState);
   const { name } = states;
-  const { category, loadings, error } = useSelector((state) => ({
-    ...state.categories,
-  }));
+  const { category, loadings, error, createCategory, updateCategory } =
+    useSelector((state) => ({
+      ...state.categories,
+    }));
+  const dispatch = useDispatch();
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
+  const token = refreshTokenAdmin.accessToken && refreshTokenAdmin.accessToken;
   const { id } = useParams();
   const [onEdit, setOnEdit] = useState(false);
   const [images, setImages] = useState(false);
@@ -54,38 +62,45 @@ const MainEditCategories = () => {
     e.preventDefault();
     try {
       if (onEdit) {
-        await axios.put(
-          `/api/category/categorys/${id}`,
-          { ...states },
-          {
-            headers: { Authorization: ` ${refreshTokenAdmin.accessToken}` },
-          }
-        );
-        setCallbackAdmin(!callbackAdmin);
-        navigate("/category");
-
-        swal("Edit Category successfully 🤩", {
-          icon: "success",
-        });
+        dispatch(UpdateCategoriesInitial({ token, id, name }));
       } else {
-        await axios.post(
-          "/api/category/categorys",
-          { ...states },
-          {
-            headers: { Authorization: ` ${refreshTokenAdmin.accessToken}` },
-          }
-        );
-        setCallbackAdmin(!callbackAdmin);
-        navigate("/category");
-
-        swal("Add Category successfully 🤩", {
-          icon: "success",
-        });
+        dispatch(CreateCategoriesInitial({ token, id, name }));
       }
     } catch (error) {
       toast.error(error.response.data.msg);
     }
   };
+  useEffect(() => {
+    if (onEdit) {
+      if (updateCategory.status === 200) {
+        setCallbackAdmin(!callbackAdmin);
+        navigate("/category");
+        swal(updateCategory.msg, {
+          icon: "success",
+        });
+        dispatch(reset());
+      } else if (updateCategory.status === 400) {
+        swal(updateCategory.msg, {
+          icon: "error",
+        });
+        dispatch(reset());
+      }
+    } else {
+      if (createCategory.status === 200) {
+        setCallbackAdmin(!callbackAdmin);
+        navigate("/category");
+        swal(createCategory.msg, {
+          icon: "success",
+        });
+        dispatch(reset());
+      } else if (createCategory.status === 400) {
+        swal(createCategory.msg, {
+          icon: "error",
+        });
+        dispatch(reset());
+      }
+    }
+  }, [createCategory, updateCategory, onEdit]);
 
   return (
     <>

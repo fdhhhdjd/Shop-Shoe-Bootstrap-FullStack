@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Loading, Admins } from "../../imports";
 import Message from "../../Pages/Error/Message";
-import { Link } from "react-router-dom";
 const MainManagerAdmin = () => {
   const { adminAll, loading, error } = useSelector((state) => ({
     ...state.admin,
@@ -18,7 +17,7 @@ const MainManagerAdmin = () => {
       {adminAll.user && (
         <section className="content-main">
           <div className="content-header">
-            <h2 className="content-title">Manager User</h2>
+            <h2 className="content-title">Manager Admin</h2>
           </div>
 
           <div className="card mb-4 shadow-sm">

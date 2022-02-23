@@ -32,7 +32,6 @@ import {
   OrderDeleteAdmin,
   ManagerUser,
   ManagerAdmin,
-  Category,
   EditUser,
   EditAdmin,
   Categories,
@@ -114,9 +113,7 @@ function App() {
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/DeleteOrders" element={<OrderDeleteAdmin />} />
           </Route>
-          <Route element={<PrivateRouterAdmin />}>
-            <Route path="/category" element={<Category />} />
-          </Route>
+
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/orders/:id" element={<OderDetailAdmin />} />
           </Route>

@@ -38,7 +38,15 @@ const categoryCtrl = {
   },
   deleteCategory: async (req, res) => {
     try {
-      const products = await Products.findOne({ category: req.params.id });
+      const category = await Category.findById({ _id: req.params.id });
+      if (!category) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Not found category",
+        });
+      }
+      const products = await Products.findOne({ categories: category.name });
       if (products)
         return res.json({
           status: 400,

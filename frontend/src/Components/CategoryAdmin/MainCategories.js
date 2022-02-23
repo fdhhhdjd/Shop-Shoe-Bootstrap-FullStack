@@ -1,26 +1,31 @@
-import React, { useContext, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useContext, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Loading, Admins } from "../../imports";
 import Message from "../../Pages/Error/Message";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import swal from "sweetalert";
 import axios from "axios";
+import { DeleteCategoriesInitial } from "../../Redux/CategoryAdminSlice";
+import { reset } from "../../Redux/CategoryAdminSlice";
 const MainCategories = () => {
-  const { category, loadings, error } = useSelector((state) => ({
-    ...state.categories,
-  }));
+  const { category, loadings, error, deleteCategory } = useSelector(
+    (state) => ({
+      ...state.categories,
+    })
+  );
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
   const state = useContext(GlobalState);
   const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
-
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [visible, setVisible] = useState(10);
   const handleLoadMore = () => {
     setVisible((prev) => prev + 5);
   };
+  const token = refreshTokenAdmin.accessToken && refreshTokenAdmin.accessToken;
   const handleDelete = async (id) => {
     try {
       return await swal({
@@ -30,13 +35,7 @@ const MainCategories = () => {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          axios.delete(`/api/category/categorys/${id}`, {
-            headers: { Authorization: ` ${refreshTokenAdmin.accessToken}` },
-          });
-          setCallbackAdmin(!callbackAdmin);
-          swal("Delete Category Successfully 😉 !", {
-            icon: "success",
-          });
+          dispatch(DeleteCategoriesInitial({ id, token }));
         } else {
           swal("Thank you for 😆'!");
         }
@@ -45,12 +44,26 @@ const MainCategories = () => {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (deleteCategory.status === 200) {
+      setCallbackAdmin(!callbackAdmin);
+      swal(deleteCategory.msg, {
+        icon: "success",
+      });
+      dispatch(reset());
+    } else if (deleteCategory.status === 400) {
+      swal(deleteCategory.msg, {
+        icon: "error",
+      });
+      dispatch(reset());
+    }
+  }, [dispatch, deleteCategory]);
   return (
     <>
       {category.categories && (
         <section className="content-main">
           <div className="content-header">
-            <h2 className="content-title">Manager User</h2>
+            <h2 className="content-title">Manager Category</h2>
             <div>
               <Link to="/createCategory" className="btn btn-primary">
                 Create Category

@@ -5,7 +5,7 @@ import { GlobalState } from "../../Context/GlobalState";
 import swal from "sweetalert";
 import axios from "axios";
 const Product = (props) => {
-  const { product } = props;
+  const { product, handleCheck } = props;
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
@@ -49,6 +49,8 @@ const Product = (props) => {
             type="checkbox"
             className="text-success form-check-input "
             style={{ marginLeft: "0.7rem", fontSize: "1.5rem" }}
+            onChange={() => handleCheck(product._id)}
+            checked={product.checked}
           />
           <Link to="#" className="img-wrap">
             <img src={product.image && product.image.url} alt="Product" />

@@ -81,7 +81,7 @@ const Admins = (props) => {
     <>
       <div className="content-header">
         <button onClick={deleteAll} className="btn btn-danger text-white">
-          Delete User
+          Delete Admin
         </button>
         <div className="form-check">
           <label className="form-check-label text-danger" for="defaultCheck1">
@@ -99,7 +99,7 @@ const Admins = (props) => {
         <nav className="float-center mt-4" aria-label="Page navigation">
           <ul className="pagination  justify-content-center">
             <li className="page-item">
-              <h1 style={{ color: "red" }}>Oder Empty</h1>
+              <h1 style={{ color: "red" }}>Admin Empty</h1>
             </li>
           </ul>
         </nav>

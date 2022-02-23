@@ -1,21 +1,72 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Message from "../../Pages/Error/Message";
 import { useSelector } from "react-redux";
 import { Loading, Product } from "../../imports/index";
 import swal from "sweetalert";
+import { GlobalState } from "../../Context/GlobalState";
+import axios from "axios";
 const MainProduct = () => {
-  const { loading, product } = useSelector((state) => ({
-    ...state.products,
+  const { category } = useSelector((state) => ({
+    ...state.categories,
   }));
-  const products = product.products;
+  const state = useContext(GlobalState);
+  const [product, setProduct] = state.ProductApi.product;
+  const products = product;
+  const [categoriess, setCategoriess] = state.ProductApi.categoriess;
+  const [sort, setSort] = state.ProductApi.sort;
   const [search, setSearch] = useState("");
+  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const [isCheck, setIsCheck] = useState(false);
+  const { refreshTokenAdmin } = useSelector((state) => ({
+    ...state.admin,
+  }));
+
+  //filter
+  const handleCategory = (e) => {
+    setCategoriess(e.target.value);
+    setSearch("");
+  };
+  console.log(products);
   //check box
   const handleCheck = (id) => {
     products.forEach((product) => {
-      if (product.id === id) {
-        return true;
+      if (product._id === id) {
+        product.checked = !product.checked;
       }
+    });
+    setProduct([...product]);
+  };
+  const checkAll = () => {
+    products.forEach((product) => {
+      product.checked = !isCheck;
+    });
+    setProduct([...product]);
+    setIsCheck(!isCheck);
+  };
+
+  const DeleteProduct = async (id) => {
+    try {
+      const deleteProduct = axios.delete(`/api/product/delete/${id}`, {
+        headers: { Authorization: refreshTokenAdmin.accessToken },
+      });
+      await deleteProduct;
+      setCallbackAdmin(!callbackAdmin);
+      swal("Delete Product successfully 🤣!", {
+        icon: "success",
+      });
+    } catch (err) {
+      swal(err.response.data.msg, {
+        icon: "error",
+      });
+    }
+  };
+  const deleteAll = () => {
+    products.forEach((product) => {
+      if (product.checked) DeleteProduct(product._id);
+    });
+    swal("Delete User successfully 🤣!", {
+      icon: "success",
     });
   };
   //pagination
@@ -102,12 +153,19 @@ const MainProduct = () => {
               if (search === "") {
                 return value;
               } else if (
-                value.name.toLowerCase().includes(search.toLowerCase())
+                value.name.toLowerCase().includes(search.toLowerCase()) ||
+                value.categories.toLowerCase().includes(search.toLowerCase)
               ) {
                 return value;
               }
             })
-            .map((product) => <Product product={product} key={product._id} />)}
+            .map((product) => (
+              <Product
+                product={product}
+                key={product._id}
+                handleCheck={handleCheck}
+              />
+            ))}
       </>
     );
   };
@@ -137,44 +195,63 @@ const MainProduct = () => {
               </div>
 
               <div className="col-lg-2 col-6 col-md-3">
-                <select className="form-select">
+                <select
+                  className="form-select"
+                  name="categories"
+                  value={categoriess}
+                  onChange={handleCategory}
+                >
                   <option>All category</option>
-                  <option>Electronics</option>
-                  <option>Clothings</option>
-                  <option>Something else</option>
+                  {category.categories &&
+                    category.categories.map((item) => (
+                      <option value={"categories=" + item.name} key={item._id}>
+                        {item.name}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="col-lg-2 col-6 col-md-3">
-                <select className="form-select">
-                  <option>Latest added</option>
-                  <option>Cheap first</option>
-                  <option>Most viewed</option>
+                <select
+                  className="form-select"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                >
+                  <option value="sort=oldest">Oldest</option>
+                  <option value="sort=-sold">Best sales</option>
+                  <option value="sort=-price">Price: Hight-Low</option>
+                  <option value="sort=price">Price: Low-Hight</option>
                 </select>
               </div>
             </div>
-            <div className="form-check">
-              <label
-                className="form-check-label text-danger"
-                for="defaultCheck1"
-              >
-                Choose All
-              </label>
-              <input
-                type="checkbox"
-                className="form-check-input border-danger"
-              />
+            <div className="form-check"></div>
+          </header>
+          <header className="card-header bg-white ">
+            <div className="content-header">
+              <button onClick={deleteAll} className="btn btn-danger text-white">
+                Delete Product
+              </button>
+              <div className="form-check">
+                <label
+                  className="form-check-label text-danger"
+                  for="defaultCheck1"
+                >
+                  Choose All
+                </label>
+                <input
+                  type="checkbox"
+                  checked={isCheck}
+                  onChange={checkAll}
+                  className="form-check-input border-danger"
+                />
+              </div>
             </div>
           </header>
 
           <div className="card-body">
-            {loading ? (
-              <Loading />
-            ) : (
-              <div className="row">
-                {/* Products */}
-                <>{renderData(currentItems)}</>
-              </div>
-            )}
+            <div className="row">
+              {/* Products */}
+              <>{renderData(currentItems)}</>
+            </div>
 
             <nav className="float-end mt-4" aria-label="Page navigation">
               <ul className="pagination">
