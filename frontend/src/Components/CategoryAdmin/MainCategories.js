@@ -57,7 +57,7 @@ const MainCategories = () => {
       });
       dispatch(reset());
     }
-  }, [dispatch, deleteCategory]);
+  }, [deleteCategory]);
   return (
     <>
       {category.categories && (
