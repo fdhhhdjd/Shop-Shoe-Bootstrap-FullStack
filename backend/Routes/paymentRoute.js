@@ -20,4 +20,15 @@ router.get("/payments/:id", auth, authAdmin, paymentCtrl.getIdPayment);
 //3 Day buy user
 router.route("/newPayment").get(auth, authAdmin, paymentCtrl.UserNewBuyPayment);
 
+//Get sum of income
+router.get("/sumOfIncome", auth, authAdmin, paymentCtrl.getSumOfIncome);
+
+//Get income this month and compare to last month
+router.get(
+  "/getIncomeThisMonthAndCompareTo",
+  auth,
+  authAdmin,
+  paymentCtrl.getIncomeThisAndLastMonth
+);
+
 module.exports = router;
