@@ -156,6 +156,87 @@ const paymentCtrl = {
       });
     }
   },
+
+  //Get sum of income
+  async getSumOfIncome(req, res) {
+    try {
+      const data = await Payments.aggregate([
+        {
+          $group: {
+            _id: "sum_of_income",
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Get sum of income successfully",
+        data,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 400,
+        success: false,
+        msg: "Get sum of income fail",
+      });
+    }
+  },
+
+  //Get the income this month and compare to last month
+  async getIncomeThisAndLastMonth(req, res) {
+    const thisMonth = new Date().getMonth() + 1;
+    const lastMonth = new Date().getMonth();
+
+    try {
+      const data = await Payments.aggregate([
+        {
+          $project: {
+            month: { $month: "$createdAt" },
+            total: 1,
+          },
+        },
+        { $match: { month: { $in: [lastMonth, thisMonth] } } },
+        {
+          $group: {
+            _id: "$month",
+            total_income: { $sum: "$total" },
+          },
+        },
+        { $sort: { _id: -1 } },
+      ]);
+
+      (data[0]._id = "This month"), (data[1]._id = "Last month");
+
+      const value = (
+        ((data[0].total_income - data[1].total_income) / data[1].total_income) *
+        100
+      ).toFixed(1);
+
+      const compared = value >= 0 ? "Increased" : "Decreased";
+
+      const compareToLastMonth = {
+        compared,
+        value,
+      };
+
+      data.push(compareToLastMonth);
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Get income this and last month successfully",
+        data,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 400,
+        success: false,
+        msg: "Get income this and last month fail",
+      });
+    }
+  },
 };
 
 const stock = async (id, quantity, countInStock) => {
