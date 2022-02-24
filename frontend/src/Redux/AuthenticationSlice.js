@@ -211,7 +211,7 @@ const AuthenticationSlice = createSlice({
     },
     //? Change Password
     [LoginGoogleInitiate.pending]: (state, action) => {
-      state.loading = true;
+      state.loading = false;
     },
     [LoginGoogleInitiate.fulfilled]: (state, action) => {
       state.loading = false;

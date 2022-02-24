@@ -50,7 +50,15 @@ export const UndoOrderNewUserInitial = createAsyncThunk(
     return response.data;
   }
 );
-
+export const GetOrderTotalInitial = createAsyncThunk(
+  "order/getTotalOrder",
+  async ({ tokens }) => {
+    const response = await axios.get("/api/payment/sumOfIncome", {
+      headers: { Authorization: tokens },
+    });
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   error: null,
@@ -60,6 +68,7 @@ const initialState = {
   deletePayments: [],
   orders: [],
   undoPayments: [],
+  totalPayment: [],
 };
 const OrderSlice = createSlice({
   name: "order",
@@ -140,6 +149,18 @@ const OrderSlice = createSlice({
       state.undoPayments = action.payload;
     },
     [UndoOrderNewUserInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Get Total Payment
+    [GetOrderTotalInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [GetOrderTotalInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.totalPayment = action.payload;
+    },
+    [GetOrderTotalInitial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

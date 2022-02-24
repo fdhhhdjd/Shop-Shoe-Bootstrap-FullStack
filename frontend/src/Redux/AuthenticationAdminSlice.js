@@ -160,7 +160,7 @@ const AuthenticationAdminSlice = createSlice({
     },
     //?LoginGoogle Admin
     [LoginGooglAdminInitiate.pending]: (state, action) => {
-      state.loading = true;
+      state.loading = false;
     },
     [LoginGooglAdminInitiate.fulfilled]: (state, action) => {
       state.loading = false;

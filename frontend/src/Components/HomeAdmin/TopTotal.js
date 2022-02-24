@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
+import { useSelector } from "react-redux";
 const TopTotal = (props) => {
   const { orders, products } = props;
+  const { totalPayment } = useSelector((state) => ({
+    ...state.order,
+  }));
+  const [total, setTotal] = useState();
+  useEffect(() => {
+    if (totalPayment.data && totalPayment.data.length > 0) {
+      totalPayment.data.map((item) => {
+        setTotal(item.total);
+      });
+    }
+  }, [totalPayment]);
+  console.log(total, "sdadsad");
   let totalSale = 0;
   if (orders) {
     orders.map((order) =>
@@ -20,13 +33,13 @@ const TopTotal = (props) => {
               <i className="text-primary fas fa-usd-circle"></i>
             </span>
             <div className="text">
-              <h6 className="mb-1">Total Sales</h6>{" "}
+              <h6 className="mb-1">Total Payment</h6>{" "}
               <span>
                 $
                 <CountUp
                   className="count"
                   start={0}
-                  end={totalSale.toFixed(0)}
+                  end={total}
                   duration={5.75}
                   separator=","
                 />

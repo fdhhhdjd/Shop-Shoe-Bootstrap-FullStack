@@ -9,6 +9,7 @@ import {
   GetDeleteOrderInitial,
   GetOrderInitial,
   GetOrderNewUserInitial,
+  GetOrderTotalInitial,
 } from "../Redux/OrderSlice";
 const OrderApi = (
   refreshTokens,
@@ -31,6 +32,7 @@ const OrderApi = (
       dispatch(GetOrderInitial({ tokens }));
       dispatch(GetDeleteOrderInitial({ tokens }));
       dispatch(GetOrderNewUserInitial({ tokens }));
+      dispatch(GetOrderTotalInitial({ tokens }));
     }
   }, [callback, tokens, callbackAdmin]);
 
