@@ -35,7 +35,11 @@ const paymentSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
+    order_status: {
+      type: String,
+      enum: ["Ordered", "On Delivery", "Delivered"],
+      default: "Ordered",
+    },
     deleteAt: {
       type: Boolean,
       default: false,

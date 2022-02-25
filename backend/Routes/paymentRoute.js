@@ -17,18 +17,42 @@ router.patch("/undoPayments/:id", paymentCtrl.UndoPaymentSoftErase);
 //Id Payment
 router.get("/payments/:id", auth, authAdmin, paymentCtrl.getIdPayment);
 
+//Update order status
+router.patch(
+  "/update/order_status/:id",
+  auth,
+  authAdmin,
+  paymentCtrl.updateOrderStatus
+);
+
 //3 Day buy user
 router.route("/newPayment").get(auth, authAdmin, paymentCtrl.UserNewBuyPayment);
 
 //Get sum of income
 router.get("/sumOfIncome", auth, authAdmin, paymentCtrl.getSumOfIncome);
 
-//Get income this month and compare to last month
+//Get income of orders customer received this month and compare to last month
 router.get(
-  "/getIncomeThisMonthAndCompareTo",
+  "/orders/customerReceived/getIncomeThisMonthAndCompareTo",
   auth,
   authAdmin,
-  paymentCtrl.getIncomeThisAndLastMonth
+  paymentCtrl.getIncomeCustomerReceivedThisAndLastMonth
+);
+
+//Get income of orders customer have not received this month and compare to last month
+router.get(
+  "/orders/customerNotReceived/getIncomeThisMonthAndCompareTo",
+  auth,
+  authAdmin,
+  paymentCtrl.getIncomeCustomerNotReceivedThisAndLastMonth
+);
+
+//Get monthly income of orders customer received
+router.get(
+  "/orders/customerReceived/getMonthlyIncome",
+  auth,
+  authAdmin,
+  paymentCtrl.getMonthlyIncomeCustomerReceived
 );
 
 module.exports = router;
