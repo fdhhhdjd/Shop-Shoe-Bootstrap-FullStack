@@ -235,8 +235,15 @@ const AddProductMain = () => {
                       <option value="">Please select a category</option>
                       {category.categories &&
                         category.categories.map((category) => (
-                          <option value={category.name} key={category._id}>
-                            {category.name}
+                          <option
+                            value={category._id}
+                            key={category._id}
+                            style={{
+                              backgroundImage:
+                                category.image && category.image.url,
+                            }}
+                          >
+                            {category.name}{" "}
                           </option>
                         ))}
                     </select>

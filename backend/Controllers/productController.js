@@ -52,7 +52,12 @@ const productCtrl = {
         numReviews,
         categories,
       } = req.body;
-      if (!image) return res.status(400).json({ msg: "No image upload" });
+      if (!image)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "No image upload",
+        });
 
       const newProduct = new Products({
         name,
@@ -82,7 +87,7 @@ const productCtrl = {
         .filtering()
         .sorting();
 
-      const products = await features.query;
+      const products = await features.query.populate("categories");
 
       res.json({
         status: 200,

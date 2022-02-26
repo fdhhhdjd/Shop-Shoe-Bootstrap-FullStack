@@ -9,10 +9,10 @@ export const GetCategoriesInitial = createAsyncThunk(
 );
 export const CreateCategoriesInitial = createAsyncThunk(
   "Categories/createCategory",
-  async ({ token, name }) => {
+  async ({ token, name, image, images }) => {
     const response = await axios.post(
       "/api/category/categorys",
-      { name },
+      { name, image: images },
       {
         headers: { Authorization: token },
       }
@@ -22,10 +22,10 @@ export const CreateCategoriesInitial = createAsyncThunk(
 );
 export const UpdateCategoriesInitial = createAsyncThunk(
   "Categories/UpdateCategory",
-  async ({ token, id, name }) => {
-    const response = await axios.put(
+  async ({ token, id, name, image, images }) => {
+    const response = await axios.patch(
       `/api/category/categorys/${id}`,
-      { name },
+      { name, image: images },
       {
         headers: { Authorization: token },
       }
@@ -58,6 +58,7 @@ const CategoriesSlice = createSlice({
       state.createCategory = [];
       state.deleteCategory = [];
       state.updateCategory = [];
+      // state.error = [];
     },
   },
   extraReducers: {

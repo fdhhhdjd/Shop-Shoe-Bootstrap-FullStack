@@ -15,7 +15,8 @@ const categoryCtrl = {
   },
   createCategory: async (req, res) => {
     try {
-      const { name } = req.body;
+      const { name, image } = req.body;
+
       const category = await Category.findOne({ name });
       if (category)
         return res.json({
@@ -23,9 +24,13 @@ const categoryCtrl = {
           success: false,
           msg: "This category already exists.",
         });
-
-      const newCategory = new Category({ name });
-
+      if (!image)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "No image upload",
+        });
+      const newCategory = new Category({ name, image });
       await newCategory.save();
       res.json({
         status: 200,
@@ -46,7 +51,7 @@ const categoryCtrl = {
           msg: "Not found category",
         });
       }
-      const products = await Products.findOne({ categories: category.name });
+      const products = await Products.findOne({ categories: req.params.id });
       if (products)
         return res.json({
           status: 400,
@@ -66,15 +71,22 @@ const categoryCtrl = {
   },
   updateCategory: async (req, res) => {
     try {
-      const { name } = req.body;
-      const category = await Category.findOne({ name });
-      if (category)
+      const { name, image } = req.body;
+      if (!image)
         return res.json({
           status: 400,
           success: false,
-          msg: "This category already exists.",
+          msg: "No image upload",
         });
-      await Category.findOneAndUpdate({ _id: req.params.id }, { name });
+      // const category = await Category.findOne({ name });
+      // if (category)
+      //   return res.json({
+      //     status: 400,
+      //     success: false,
+      //     msg: "This category already exists.",
+      //   });
+
+      await Category.findOneAndUpdate({ _id: req.params.id }, { name, image });
 
       res.json({
         success: true,
@@ -82,7 +94,11 @@ const categoryCtrl = {
         msg: "Updated a category",
       });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.json({
+        status: 500,
+        success: false,
+        msg: err.message,
+      });
     }
   },
 };

@@ -69,10 +69,36 @@ const OrderDetailMain = () => {
                   <div className="col-lg-3">
                     <div className="box shadow-sm bg-light">
                       {order.status ? (
-                        <button className="btn btn-success col-12">
-                          DELIVERED AT ({" "}
-                          {moment(order.isDeliveredAt).format("MMM Do YY")})
-                        </button>
+                        // <button className="btn btn-success col-12">
+                        //   DELIVERED AT ({" "}
+                        //   {moment(order.isDeliveredAt).format("MMM Do YY")})
+                        // </button>
+                        <td>
+                          {(order.order_status === "Delivered" && (
+                            <button className="btn btn-success col-12">
+                              DELIVERED AT ({" "}
+                              {moment(order.isDeliveredAt).format("MMM Do YY")})
+                            </button>
+                          )) ||
+                            (order.order_status === "On Delivery" && (
+                              <button className="btn btn-warning col-12">
+                                On Delivery ({" "}
+                                {moment(order.isDeliveredAt).format(
+                                  "MMM Do YY"
+                                )}
+                                )
+                              </button>
+                            )) ||
+                            (order.order_status === "Ordered" && (
+                              <button className="btn btn-danger col-12">
+                                On Delivery
+                                {moment(order.isDeliveredAt).format(
+                                  "MMM Do YY"
+                                )}
+                                )
+                              </button>
+                            ))}
+                        </td>
                       ) : (
                         <>
                           {loading && <Loading />}

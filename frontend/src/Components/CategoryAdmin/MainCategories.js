@@ -108,6 +108,7 @@ const MainCategories = () => {
                         <thead>
                           <tr>
                             <th scope="col">Code Id</th>
+                            <th scope="col">Images</th>
                             <th scope="col">Name</th>
                             <th scope="col" className="text-end">
                               Action
@@ -132,6 +133,20 @@ const MainCategories = () => {
                               <tr key={order._id}>
                                 <td>
                                   <b>{order._id}</b>
+                                </td>
+                                <td>
+                                  {order && order.image && (
+                                    <img
+                                      src={order.image.url}
+                                      alt=""
+                                      style={{
+                                        width: "45px",
+                                        height: "45px",
+                                        borderRadius: "50%",
+                                        objectFit: "cover",
+                                      }}
+                                    />
+                                  )}
                                 </td>
                                 <td>
                                   <b>{order.name}</b>

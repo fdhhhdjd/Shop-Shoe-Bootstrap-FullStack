@@ -13,10 +13,11 @@ import {
 } from "../../Redux/CategoryAdminSlice";
 const initialState = {
   name: "",
+  image: "",
 };
 const MainEditCategories = () => {
   const [states, setState] = useState(initialState);
-  const { name } = states;
+  const { name, image } = states;
   const { category, loadings, error, createCategory, updateCategory } =
     useSelector((state) => ({
       ...state.categories,
@@ -45,10 +46,10 @@ const MainEditCategories = () => {
           if (product._id == id) {
             setState(product);
             console.log(product);
-            if (product.url === "") {
-              setImages(product.url);
+            if (product.image === "") {
+              setImages(product.image);
             } else {
-              setImages(product);
+              setImages(product.image);
             }
           }
         });
@@ -62,12 +63,63 @@ const MainEditCategories = () => {
     e.preventDefault();
     try {
       if (onEdit) {
-        dispatch(UpdateCategoriesInitial({ token, id, name }));
+        dispatch(UpdateCategoriesInitial({ token, id, name, image, images }));
       } else {
-        dispatch(CreateCategoriesInitial({ token, id, name }));
+        dispatch(CreateCategoriesInitial({ token, id, name, image, images }));
       }
     } catch (error) {
       toast.error(error.response.data.msg);
+    }
+  };
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    try {
+      const file = e.target.files[0];
+      if (!file)
+        return swal("File not Exists", {
+          icon: "error",
+        });
+      if (file.size > 1024 * 1024)
+        // 1mb
+        return swal("Size too large!", {
+          icon: "error",
+        });
+      if (file.type !== "image/jpeg" && file.type !== "image/png")
+        // 1mb
+        return swal("File format is incorrect.", {
+          icon: "error",
+        });
+      let formData = new FormData();
+
+      formData.append("file", file);
+
+      const res = await axios.post("/api/uploadImageUser", formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `${refreshTokenAdmin.accessToken}`,
+        },
+      });
+
+      setImages(res.data);
+    } catch (error) {
+      toast.error(error.response.data.msg);
+    }
+  };
+  const handleDestroy = async () => {
+    try {
+      await axios.post(
+        "/api/destroyImageUser",
+        { public_id: images.public_id },
+        {
+          headers: {
+            Authorization: `${refreshTokenAdmin.accessToken}`,
+          },
+        }
+      );
+
+      setImages(false);
+    } catch (err) {
+      alert(err.response.data.msg);
     }
   };
   useEffect(() => {
@@ -101,7 +153,10 @@ const MainEditCategories = () => {
       }
     }
   }, [createCategory, updateCategory, onEdit]);
-
+  const styleUpload = {
+    display: images ? "block" : "none",
+  };
+  console.log(error);
   return (
     <>
       <section className="content-main" style={{ maxWidth: "1200px" }}>
@@ -124,6 +179,34 @@ const MainEditCategories = () => {
             <div className="col-xl-8 col-lg-8">
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
+                  <div className="mb-4">
+                    {loadings ? (
+                      <Loading />
+                    ) : (
+                      <>
+                        <img
+                          src={images ? images.url : ""}
+                          alt=""
+                          className="img-thumbnail rounded img-thumbnail1"
+                          style={styleUpload}
+                        />
+                        <label
+                          className="form-control mt-3"
+                          style={styleUpload}
+                          onClick={handleDestroy}
+                        >
+                          Close Image
+                        </label>
+                      </>
+                    )}
+                    <input
+                      className="form-control mt-3"
+                      type="file"
+                      name="file"
+                      id="file_up"
+                      onChange={handleUpload}
+                    />
+                  </div>
                   <div className="mb-4">
                     <label htmlFor="product_title" className="form-label">
                       Name

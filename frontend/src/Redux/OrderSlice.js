@@ -59,6 +59,21 @@ export const GetOrderTotalInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const UpdatePaymentStatusInitial = createAsyncThunk(
+  "order/updatePaymentStatusOrder",
+  async ({ token, id, order_status }) => {
+    const response = await axios.patch(
+      `/api/payment/update/order_status/${id}`,
+      {
+        order_status,
+      },
+      {
+        headers: { Authorization: token },
+      }
+    );
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   error: null,
@@ -69,6 +84,7 @@ const initialState = {
   orders: [],
   undoPayments: [],
   totalPayment: [],
+  editStatusPayment: [],
 };
 const OrderSlice = createSlice({
   name: "order",
@@ -77,6 +93,7 @@ const OrderSlice = createSlice({
     reset: (state) => {
       state.detailOrder = [];
       state.undoPayments = [];
+      state.editStatusPayment = [];
     },
   },
   extraReducers: {
@@ -161,6 +178,18 @@ const OrderSlice = createSlice({
       state.totalPayment = action.payload;
     },
     [GetOrderTotalInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Edit order_status Payment
+    [UpdatePaymentStatusInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [UpdatePaymentStatusInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.editStatusPayment = action.payload;
+    },
+    [UpdatePaymentStatusInitial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

@@ -130,7 +130,7 @@ const paymentCtrl = {
       const { order_status } = req.body;
 
       if (order_status !== "On Delivery" && order_status !== "Delivered") {
-        return res.status(400).json({
+        return res.json({
           status: 400,
           success: false,
           msg: "Please choose order status",

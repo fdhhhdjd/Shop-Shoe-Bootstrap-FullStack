@@ -181,118 +181,137 @@ const MainProduct = () => {
           </div>
         </div>
 
-        <div className="card mb-4 shadow-sm">
-          <header className="card-header bg-white ">
-            <div className="row gx-3 py-3">
-              <div className="col-lg-4 col-md-6 me-auto ">
-                <input
-                  type="search"
-                  placeholder="Search..."
-                  className="form-control p-2"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
-
-              <div className="col-lg-2 col-6 col-md-3">
-                <select
-                  className="form-select"
-                  name="categories"
-                  value={categoriess}
-                  onChange={handleCategory}
-                >
-                  <option>All category</option>
-                  {category.categories &&
-                    category.categories.map((item) => (
-                      <option value={"categories=" + item.name} key={item._id}>
-                        {item.name}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              <div className="col-lg-2 col-6 col-md-3">
-                <select
-                  className="form-select"
-                  value={sort}
-                  onChange={(e) => setSort(e.target.value)}
-                >
-                  <option value="sort=oldest">Oldest</option>
-                  <option value="sort=-sold">Best sales</option>
-                  <option value="sort=-price">Price: Hight-Low</option>
-                  <option value="sort=price">Price: Low-Hight</option>
-                </select>
-              </div>
-            </div>
-            <div className="form-check"></div>
-          </header>
-          <header className="card-header bg-white ">
-            <div className="content-header">
-              <button onClick={deleteAll} className="btn btn-danger text-white">
-                Delete Product
-              </button>
-              <div className="form-check">
-                <label
-                  className="form-check-label text-danger"
-                  for="defaultCheck1"
-                >
-                  Choose All
-                </label>
-                <input
-                  type="checkbox"
-                  checked={isCheck}
-                  onChange={checkAll}
-                  className="form-check-input border-danger"
-                />
-              </div>
-            </div>
-          </header>
-
-          <div className="card-body">
-            <div className="row">
-              {/* Products */}
-              <>{renderData(currentItems)}</>
-            </div>
-
-            <nav className="float-end mt-4" aria-label="Page navigation">
-              <ul className="pagination">
-                <li className="page-item disabled">
-                  <button
-                    onClick={handlePrevbtn}
-                    disabled={currentPage == pages[0] ? true : false}
-                    id="page-link"
-                  >
-                    Previous
-                  </button>
-                </li>
-                {pageDecrementBtn}
-                {renderPageNumbers}
-                {pageIncrementBtn}
-                <li className="page-item">
-                  <button
-                    id="page-link"
-                    onClick={handleNextbtn}
-                    disabled={
-                      currentPage == pages[pages.length - 1] ? true : false
-                    }
-                  >
-                    Next
-                  </button>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <nav className="float-end mt-4" aria-label="Page navigation">
+        {products.length === 0 ? (
+          <nav className="float-center mt-4" aria-label="Page navigation">
             <ul className="pagination  justify-content-center">
               <li className="page-item">
-                <button className="page-link" onClick={handleLoadMore}>
-                  {itemsPerPage === products && products.length
-                    ? "it's over"
-                    : "Load More"}
-                </button>
+                <h1 style={{ color: "red" }}>Product Empty</h1>
               </li>
             </ul>
           </nav>
-        </div>
+        ) : (
+          <>
+            <div className="card mb-4 shadow-sm">
+              <header className="card-header bg-white ">
+                <div className="row gx-3 py-3">
+                  <div className="col-lg-4 col-md-6 me-auto ">
+                    <input
+                      type="search"
+                      placeholder="Search..."
+                      className="form-control p-2"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="col-lg-2 col-6 col-md-3">
+                    <select
+                      className="form-select"
+                      name="categories"
+                      value={categoriess}
+                      onChange={handleCategory}
+                    >
+                      <option>All category</option>
+                      {category.categories &&
+                        category.categories.map((item) =>
+                          // <option
+                          //   value={"categories=" + item.name}
+                          //   key={item._id}
+                          // >
+                          //   {item.name}
+                          // </option>
+                          console.log(item.name)
+                        )}
+                    </select>
+                  </div>
+                  <div className="col-lg-2 col-6 col-md-3">
+                    <select
+                      className="form-select"
+                      value={sort}
+                      onChange={(e) => setSort(e.target.value)}
+                    >
+                      <option value="sort=oldest">Oldest</option>
+                      <option value="sort=-sold">Best sales</option>
+                      <option value="sort=-price">Price: Hight-Low</option>
+                      <option value="sort=price">Price: Low-Hight</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="form-check"></div>
+              </header>
+              <header className="card-header bg-white ">
+                <div className="content-header">
+                  <button
+                    onClick={deleteAll}
+                    className="btn btn-danger text-white"
+                  >
+                    Delete Product
+                  </button>
+                  <div className="form-check">
+                    <label
+                      className="form-check-label text-danger"
+                      for="defaultCheck1"
+                    >
+                      Choose All
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={isCheck}
+                      onChange={checkAll}
+                      className="form-check-input border-danger"
+                    />
+                  </div>
+                </div>
+              </header>
+
+              <div className="card-body">
+                <div className="row">
+                  {/* Products */}
+                  <>{renderData(currentItems)}</>
+                </div>
+
+                <nav className="float-end mt-4" aria-label="Page navigation">
+                  <ul className="pagination">
+                    <li className="page-item disabled">
+                      <button
+                        onClick={handlePrevbtn}
+                        disabled={currentPage == pages[0] ? true : false}
+                        id="page-link"
+                      >
+                        Previous
+                      </button>
+                    </li>
+                    {pageDecrementBtn}
+                    {renderPageNumbers}
+                    {pageIncrementBtn}
+                    <li className="page-item">
+                      <button
+                        id="page-link"
+                        onClick={handleNextbtn}
+                        disabled={
+                          currentPage == pages[pages.length - 1] ? true : false
+                        }
+                      >
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              <nav className="float-end mt-4" aria-label="Page navigation">
+                <ul className="pagination  justify-content-center">
+                  <li className="page-item">
+                    <button className="page-link" onClick={handleLoadMore}>
+                      {itemsPerPage === products && products.length
+                        ? "it's over"
+                        : "Load More"}
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </>
+        )}
       </section>
     </>
   );

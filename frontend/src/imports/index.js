@@ -79,3 +79,5 @@ export { default as Categories } from "../Components/CategoryAdmin/Categories";
 export { default as MainCategories } from "../Components/CategoryAdmin/MainCategories";
 export { default as EditCategories } from "../Components/CategoryAdmin/EditCategories";
 export { default as MainEditCategories } from "../Components/CategoryAdmin/MainEditCategories";
+export { default as EditOrderAdmin } from "../Components/Order/EditOrderAdmin";
+export { default as MainEditOrderAdmin } from "../Components/Order/MainEditOrderAdmin";

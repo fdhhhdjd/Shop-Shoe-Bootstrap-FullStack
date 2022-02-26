@@ -86,40 +86,31 @@ const Orders = (props) => {
                   </td>
                   <td>{moment(order.createdAt).format("MMM Do YY")}</td>
                   <td>
-                    {!order.isDelivered ? (
+                    {(order.order_status === "Delivered" && (
                       <span className="badge btn-success">Delivered</span>
-                    ) : (
-                      <span className="badge btn-dark">Not delivered</span>
-                    )}
+                    )) ||
+                      (order.order_status === "On Delivery" && (
+                        <span className="badge btn-warning">On Delivery</span>
+                      )) ||
+                      (order.order_status === "Ordered" && (
+                        <span className="badge btn-danger">Ordered</span>
+                      ))}
                   </td>
+
                   <td className="d-flex justify-content-end align-item-center">
+                    <Link
+                      to={`/editOrders/${order._id}`}
+                      className="text-success"
+                    >
+                      <i className="fa-solid fa-pencil"></i>
+                    </Link>
+                    &nbsp;&nbsp;
                     <Link to={`/orders/${order._id}`} className="text-success">
                       <i className="fas fa-eye"></i>
                     </Link>
                   </td>
                 </tr>
               ))}
-
-            {/* Not paid Not delivered */}
-            {/* <tr>
-        <td>
-          <b>Velcro Sneakers For Boys & Girls (Blue)</b>
-        </td>
-        <td>user@example.com</td>
-        <td>$45,789</td>
-        <td>
-          <span className="badge rounded-pill alert-danger">Not paid</span>
-        </td>
-        <td>Dec 12 2021</td>
-        <td>
-          <span className="badge btn-dark">Not Delivered</span>
-        </td>
-        <td className="d-flex justify-content-end align-item-center">
-          <Link to={`/order`} className="text-success">
-            <i className="fas fa-eye"></i>
-          </Link>
-        </td>
-      </tr> */}
           </tbody>
         </table>
       )}
