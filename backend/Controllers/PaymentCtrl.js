@@ -116,10 +116,41 @@ const paymentCtrl = {
       });
 
       await newPayment.save();
-      res.json({ msg: "Payment Succes!" });
+      res.json({ msg: "Payment Success!" });
       console.log({ newPayment });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  //Update order status
+  async updateOrderStatus(req, res) {
+    try {
+      const id = req.params.id;
+      const { order_status } = req.body;
+
+      if (order_status !== "On Delivery" && order_status !== "Delivered") {
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          msg: "Please choose order status",
+        });
+      }
+      await Payments.findByIdAndUpdate(
+        { _id: id },
+        { order_status, updatedAt: Date.now }
+      );
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Update order status successfully",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        msg: "Failed to update order status",
+      });
     }
   },
 
@@ -184,56 +215,312 @@ const paymentCtrl = {
     }
   },
 
-  //Get the income this month and compare to last month
-  async getIncomeThisAndLastMonth(req, res) {
+  //Get monthly the income customer have received
+  async getMonthlyIncomeCustomerReceived(req, res) {
+    const monthly = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const year_now = new Date().getFullYear();
+    console.log(year_now);
+
+    try {
+      let data = await Payments.aggregate([
+        {
+          $project: {
+            month: { $month: "$updatedAt" },
+            year: { $year: "$updatedAt" },
+            order_status: 1,
+            total: 1,
+          },
+        },
+        {
+          $match: {
+            month: { $in: monthly },
+            year: year_now,
+            order_status: "Delivered",
+          },
+        },
+        {
+          $group: {
+            _id: {
+              month: "$month",
+            },
+            total_income: { $sum: "$total" },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+      res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Get monthly income successfully",
+        data,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        success: false,
+        msg: "Failed to get monthly income",
+      });
+    }
+  },
+
+  //Get the income customer received this month and compare to last month
+  async getIncomeCustomerReceivedThisAndLastMonth(req, res) {
     const thisMonth = new Date().getMonth() + 1;
     const lastMonth = new Date().getMonth();
 
     try {
-      const data = await Payments.aggregate([
+      let data = await Payments.aggregate([
         {
           $project: {
-            month: { $month: "$createdAt" },
+            month: { $month: "$updatedAt" },
+            order_status: 1,
             total: 1,
           },
         },
-        { $match: { month: { $in: [lastMonth, thisMonth] } } },
+        {
+          $match: {
+            month: { $in: [lastMonth, thisMonth] },
+            order_status: "Delivered",
+          },
+        },
         {
           $group: {
-            _id: "$month",
+            _id: {
+              month: "$month",
+              order_status: "$order_status",
+            },
             total_income: { $sum: "$total" },
           },
         },
         { $sort: { _id: -1 } },
       ]);
 
-      (data[0]._id = "This month"), (data[1]._id = "Last month");
+      if (data.length === 0) {
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          msg: "Not data to show",
+        });
+      } else if (data.length === 1) {
+        if (data[0]._id.month === thisMonth) {
+          data = [
+            {
+              _id: {
+                month: "This month",
+                order_status: "Delivered",
+              },
+              total_income: data[0].total_income,
+            },
+            {
+              _id: {
+                month: "Last month",
+                order_status: "Delivered",
+              },
+              total_income: 0,
+            },
+            {
+              compared: "Increased",
+              value: data[0].total_income * 100,
+            },
+          ];
 
-      const value = (
-        ((data[0].total_income - data[1].total_income) / data[1].total_income) *
-        100
-      ).toFixed(1);
+          return res.status(200).json({
+            status: 200,
+            success: true,
+            msg: "Get income of orders customer have received this and last month successfully",
+            data,
+          });
+        } else if (data[0]._id.month === lastMonth) {
+          data = [
+            {
+              _id: {
+                month: "This month",
+                order_status: "Delivered",
+              },
+              total_income: 0,
+            },
+            {
+              _id: {
+                month: "Last month",
+                order_status: "Delivered",
+              },
+              total_income: data[0].total_income,
+            },
+            {
+              compared: "Decreased",
+              value: -100,
+            },
+          ];
+          return res.status(200).json({
+            status: 200,
+            success: true,
+            msg: "Get income of orders customer have received this and last month successfully",
+            data,
+          });
+        }
+      } else if (data.length === 2) {
+        (data[0]._id.month = "This month"), (data[1]._id.month = "Last month");
 
-      const compared = value >= 0 ? "Increased" : "Decreased";
+        const value = (
+          ((data[0].total_income - data[1].total_income) /
+            data[1].total_income) *
+          100
+        ).toFixed(1);
 
-      const compareToLastMonth = {
-        compared,
-        value,
-      };
+        const compared = value >= 0 ? "Increased" : "Decreased";
 
-      data.push(compareToLastMonth);
+        const compareToLastMonth = {
+          compared,
+          value,
+        };
 
-      res.status(200).json({
-        status: 200,
-        success: true,
-        msg: "Get income this and last month successfully",
-        data,
-      });
+        data.push(compareToLastMonth);
+
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          msg: "Get income of orders customer have received this and last month successfully",
+          data,
+        });
+      }
     } catch (error) {
       res.status(400).json({
         status: 400,
         success: false,
-        msg: "Get income this and last month fail",
+        msg: "Get income of orders customer have received this and last month fail",
+        error: error.message,
+      });
+    }
+  },
+
+  //Get the income customer not received this month and compare to last month
+  async getIncomeCustomerNotReceivedThisAndLastMonth(req, res) {
+    const thisMonth = new Date().getMonth() + 1;
+    const lastMonth = new Date().getMonth();
+
+    try {
+      let data = await Payments.aggregate([
+        {
+          $project: {
+            month: { $month: "$updatedAt" },
+            order_status: 1,
+            total: 1,
+          },
+        },
+        {
+          $match: {
+            month: { $in: [lastMonth, thisMonth] },
+            order_status: { $in: ["Ordered", "On Delivery"] },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              month: "$month",
+              order_status: "$order_status",
+            },
+            total_income: { $sum: "$total" },
+          },
+        },
+        { $sort: { _id: -1 } },
+      ]);
+
+      if (data.length === 0) {
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          msg: "Not data to show",
+        });
+      } else if (data.length === 1) {
+        if (data[0]._id.month === thisMonth) {
+          data = [
+            {
+              _id: {
+                month: "This month",
+                order_status: "Cusomer Not Received",
+              },
+              total_income: data[0].total_income,
+            },
+            {
+              _id: {
+                month: "Last month",
+                order_status: "Cusomer Not Received",
+              },
+              total_income: 0,
+            },
+            {
+              compared: "Increased",
+              value: data[0].total_income * 100,
+            },
+          ];
+
+          return res.status(200).json({
+            status: 200,
+            success: true,
+            msg: "Get income of orders customer have not received this and last month successfully",
+            data,
+          });
+        } else if (data[0]._id.month === lastMonth) {
+          data = [
+            {
+              _id: {
+                month: "This month",
+                order_status: "Cusomer Not Received",
+              },
+              total_income: 0,
+            },
+            {
+              _id: {
+                month: "Last month",
+                order_status: "Cusomer Not Received",
+              },
+              total_income: data[0].total_income,
+            },
+            {
+              compared: "Decreased",
+              value: -100,
+            },
+          ];
+          return res.status(200).json({
+            status: 200,
+            success: true,
+            msg: "Get income of orders customer have not received this and last month successfully",
+            data,
+          });
+        }
+      } else if (data.length === 2) {
+        (data[0]._id.month = "This month"), (data[1]._id.month = "Last month");
+        data[0]._id.order_status = "Cusomer Not Received";
+        data[1]._id.order_status = "Cusomer Not Received";
+
+        const value = (
+          ((data[0].total_income - data[1].total_income) /
+            data[1].total_income) *
+          100
+        ).toFixed(1);
+
+        const compared = value >= 0 ? "Increased" : "Decreased";
+
+        const compareToLastMonth = {
+          compared,
+          value,
+        };
+
+        data.push(compareToLastMonth);
+
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          msg: "Get income of orders customer have not received this and last month successfully",
+          data,
+        });
+      }
+    } catch (error) {
+      res.status(400).json({
+        status: 400,
+        success: false,
+        msg: "Get income of orders customer have not received this and last month fail",
+        error: error.message,
       });
     }
   },
