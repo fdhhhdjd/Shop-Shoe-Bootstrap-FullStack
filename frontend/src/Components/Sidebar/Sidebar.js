@@ -73,12 +73,12 @@ const Sidebar = () => {
                 </NavLink>
               </li>
 
-              <li className="menu-item">
+              {/* <li className="menu-item">
                 <NavLink end to="/transaction" className="menu-link disabled">
                   <i className="icon fas fa-usd-circle"></i>
                   <span className="text">Transactions</span>
                 </NavLink>
-              </li>
+              </li> */}
             </ul>
             <br />
             <br />

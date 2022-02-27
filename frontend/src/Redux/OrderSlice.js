@@ -74,6 +74,42 @@ export const UpdatePaymentStatusInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const RevenueReceivedMonthBeforeInitial = createAsyncThunk(
+  "order/RevenueReceivedMonthBefore",
+  async ({ tokens }) => {
+    const response = await axios.get(
+      "/api/payment/orders/customerReceived/getIncomeThisMonthAndCompareTo",
+      {
+        headers: { Authorization: tokens },
+      }
+    );
+    return response.data;
+  }
+);
+export const RevenueNotReceivedMonthBeforeInitial = createAsyncThunk(
+  "order/RevenueNotReceivedMonthBefore",
+  async ({ tokens }) => {
+    const response = await axios.get(
+      "/api/payment/orders/customerNotReceived/getIncomeThisMonthAndCompareTo",
+      {
+        headers: { Authorization: tokens },
+      }
+    );
+    return response.data;
+  }
+);
+export const RevenueReceivedEveryMonthInitial = createAsyncThunk(
+  "order/RevenueReceivedEveryMonthInitial",
+  async ({ tokens }) => {
+    const response = await axios.get(
+      "/api/payment/orders/customerReceived/getMonthlyIncome",
+      {
+        headers: { Authorization: tokens },
+      }
+    );
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   error: null,
@@ -85,6 +121,9 @@ const initialState = {
   undoPayments: [],
   totalPayment: [],
   editStatusPayment: [],
+  RevenueReceivedMonthBefore: [],
+  RevenueNotReceivedMonthBefore: [],
+  RevenueReceivedEveryMonth: [],
 };
 const OrderSlice = createSlice({
   name: "order",
@@ -190,6 +229,42 @@ const OrderSlice = createSlice({
       state.editStatusPayment = action.payload;
     },
     [UpdatePaymentStatusInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Get Money Revenue Month Before Initial (Received)
+    [RevenueReceivedMonthBeforeInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [RevenueReceivedMonthBeforeInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.RevenueReceivedMonthBefore = action.payload;
+    },
+    [RevenueReceivedMonthBeforeInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Get Money Revenue Month Before Initial (Not received)
+    [RevenueNotReceivedMonthBeforeInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [RevenueNotReceivedMonthBeforeInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.RevenueNotReceivedMonthBefore = action.payload;
+    },
+    [RevenueNotReceivedMonthBeforeInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Successfully shipped invoice revenue each month (Success Received)
+    [RevenueReceivedEveryMonthInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [RevenueReceivedEveryMonthInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.RevenueReceivedEveryMonth = action.payload;
+    },
+    [RevenueReceivedEveryMonthInitial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

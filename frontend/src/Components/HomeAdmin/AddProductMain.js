@@ -21,15 +21,7 @@ const AddProductMain = () => {
   const { category, loadings, error } = useSelector((state) => ({
     ...state.categories,
   }));
-  const {
-    name,
-    description,
-    price,
-    countInStock,
-    rating,
-    numReviews,
-    categories,
-  } = states;
+  const { name, description, price, countInStock, categories } = states;
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));

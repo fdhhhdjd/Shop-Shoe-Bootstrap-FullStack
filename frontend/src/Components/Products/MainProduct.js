@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import Message from "../../Pages/Error/Message";
 import { useSelector } from "react-redux";
-import { Loading, Product } from "../../imports/index";
+import { Product } from "../../imports/index";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
 import axios from "axios";
@@ -181,89 +180,87 @@ const MainProduct = () => {
           </div>
         </div>
 
-        {products.length === 0 ? (
-          <nav className="float-center mt-4" aria-label="Page navigation">
-            <ul className="pagination  justify-content-center">
-              <li className="page-item">
-                <h1 style={{ color: "red" }}>Product Empty</h1>
-              </li>
-            </ul>
-          </nav>
-        ) : (
-          <>
-            <div className="card mb-4 shadow-sm">
-              <header className="card-header bg-white ">
-                <div className="row gx-3 py-3">
-                  <div className="col-lg-4 col-md-6 me-auto ">
-                    <input
-                      type="search"
-                      placeholder="Search..."
-                      className="form-control p-2"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="col-lg-2 col-6 col-md-3">
-                    <select
-                      className="form-select"
-                      name="categories"
-                      value={categoriess}
-                      onChange={handleCategory}
-                    >
-                      <option>All category</option>
-                      {category.categories &&
-                        category.categories.map((item) =>
-                          // <option
-                          //   value={"categories=" + item.name}
-                          //   key={item._id}
-                          // >
-                          //   {item.name}
-                          // </option>
-                          console.log(item.name)
-                        )}
-                    </select>
-                  </div>
-                  <div className="col-lg-2 col-6 col-md-3">
-                    <select
-                      className="form-select"
-                      value={sort}
-                      onChange={(e) => setSort(e.target.value)}
-                    >
-                      <option value="sort=oldest">Oldest</option>
-                      <option value="sort=-sold">Best sales</option>
-                      <option value="sort=-price">Price: Hight-Low</option>
-                      <option value="sort=price">Price: Low-Hight</option>
-                    </select>
-                  </div>
+        <>
+          <div className="card mb-4 shadow-sm">
+            <header className="card-header bg-white ">
+              <div className="row gx-3 py-3">
+                <div className="col-lg-4 col-md-6 me-auto ">
+                  <input
+                    type="search"
+                    placeholder="Search..."
+                    className="form-control p-2"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
                 </div>
-                <div className="form-check"></div>
-              </header>
-              <header className="card-header bg-white ">
-                <div className="content-header">
-                  <button
-                    onClick={deleteAll}
-                    className="btn btn-danger text-white"
+
+                <div className="col-lg-2 col-6 col-md-3">
+                  <select
+                    className="form-select"
+                    name="categories"
+                    value={categoriess}
+                    onChange={handleCategory}
                   >
-                    Delete Product
-                  </button>
-                  <div className="form-check">
-                    <label
-                      className="form-check-label text-danger"
-                      for="defaultCheck1"
-                    >
-                      Choose All
-                    </label>
-                    <input
-                      type="checkbox"
-                      checked={isCheck}
-                      onChange={checkAll}
-                      className="form-check-input border-danger"
-                    />
-                  </div>
+                    <option>All category</option>
+                    {category.categories &&
+                      category.categories.map((item) => (
+                        <option value={"categories=" + item._id} key={item._id}>
+                          {item.name}
+                        </option>
+                      ))}
+                  </select>
                 </div>
-              </header>
+                <div className="col-lg-2 col-6 col-md-3">
+                  <select
+                    className="form-select"
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value)}
+                  >
+                    <option value="sort=oldest">Oldest</option>
+                    <option value="sort=-sold">Best sales</option>
+                    <option value="sort=-price">Price: Hight-Low</option>
+                    <option value="sort=price">Price: Low-Hight</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-check"></div>
+            </header>
+            <header className="card-header bg-white ">
+              <div className="content-header">
+                <button
+                  onClick={deleteAll}
+                  className="btn btn-danger text-white"
+                >
+                  Delete Product
+                </button>
+                <div className="form-check">
+                  <label
+                    className="form-check-label text-danger"
+                    for="defaultCheck1"
+                  >
+                    Choose All
+                  </label>
+                  <input
+                    type="checkbox"
+                    checked={isCheck}
+                    onChange={checkAll}
+                    className="form-check-input border-danger"
+                  />
+                </div>
+              </div>
+            </header>
 
+            {products.length === 0 ? (
+              <nav className="float-center mt-4" aria-label="Page navigation">
+                <ul className="pagination  justify-content-center">
+                  <li className="page-item">
+                    <h1 style={{ color: "red" }}>
+                      Product Has Not Been Updated
+                    </h1>
+                  </li>
+                </ul>
+              </nav>
+            ) : (
               <div className="card-body">
                 <div className="row">
                   {/* Products */}
@@ -298,20 +295,20 @@ const MainProduct = () => {
                   </ul>
                 </nav>
               </div>
+            )}
+            {itemsPerPage < product.length && (
               <nav className="float-end mt-4" aria-label="Page navigation">
                 <ul className="pagination  justify-content-center">
                   <li className="page-item">
                     <button className="page-link" onClick={handleLoadMore}>
-                      {itemsPerPage === products && products.length
-                        ? "it's over"
-                        : "Load More"}
+                      Load More
                     </button>
                   </li>
                 </ul>
               </nav>
-            </div>
-          </>
-        )}
+            )}
+          </div>
+        </>
       </section>
     </>
   );

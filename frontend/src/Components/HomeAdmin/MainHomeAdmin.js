@@ -6,6 +6,8 @@ import {
   LatestOrder,
   ProductsStatistics,
   LatestUser,
+  CompareTotal,
+  CompareTotalNotReceived,
 } from "../../imports/index";
 const MainHomeAdmin = () => {
   const { order, newUserBuy, loading, error } = useSelector((state) => ({
@@ -29,6 +31,17 @@ const MainHomeAdmin = () => {
         </div>
         {/* Top Total */}
         <TopTotal orders={order} products={products} />
+        <div className="content-header">
+          <h4 className="content-title"> Compare Received</h4>
+        </div>
+        {/* Compare Received<*/}
+        <CompareTotal />
+
+        <div className="content-header">
+          <h4 className="content-title"> Compare Not Received</h4>
+        </div>
+        {/* Compare Received<*/}
+        <CompareTotalNotReceived />
 
         <div className="row">
           {/* STATICS */}

@@ -10,6 +10,9 @@ import {
   GetOrderInitial,
   GetOrderNewUserInitial,
   GetOrderTotalInitial,
+  RevenueNotReceivedMonthBeforeInitial,
+  RevenueReceivedEveryMonthInitial,
+  RevenueReceivedMonthBeforeInitial,
 } from "../Redux/OrderSlice";
 const OrderApi = (
   refreshTokens,
@@ -33,6 +36,9 @@ const OrderApi = (
       dispatch(GetDeleteOrderInitial({ tokens }));
       dispatch(GetOrderNewUserInitial({ tokens }));
       dispatch(GetOrderTotalInitial({ tokens }));
+      dispatch(RevenueReceivedMonthBeforeInitial({ tokens }));
+      dispatch(RevenueNotReceivedMonthBeforeInitial({ tokens }));
+      dispatch(RevenueReceivedEveryMonthInitial({ tokens }));
     }
   }, [callback, tokens, callbackAdmin]);
 

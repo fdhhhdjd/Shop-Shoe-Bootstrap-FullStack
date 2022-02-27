@@ -81,3 +81,5 @@ export { default as EditCategories } from "../Components/CategoryAdmin/EditCateg
 export { default as MainEditCategories } from "../Components/CategoryAdmin/MainEditCategories";
 export { default as EditOrderAdmin } from "../Components/Order/EditOrderAdmin";
 export { default as MainEditOrderAdmin } from "../Components/Order/MainEditOrderAdmin";
+export { default as CompareTotal } from "../Components/HomeAdmin/CompareTotal";
+export { default as CompareTotalNotReceived } from "../Components/HomeAdmin/CompareTotalNotReceived";
