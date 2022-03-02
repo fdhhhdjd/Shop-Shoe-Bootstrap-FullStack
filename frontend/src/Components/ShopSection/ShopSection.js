@@ -5,7 +5,7 @@ import Message from "../../Pages/Error/Message";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import swal from "sweetalert";
-const ShopSection = () => {
+const ShopSection = React.forwardRef((props, ref) => {
   const { loading, product, error } = useSelector((state) => ({
     ...state.products,
   }));
@@ -136,7 +136,7 @@ const ShopSection = () => {
   };
   return (
     <>
-      <div className="container">
+      <div className="container" ref={ref}>
         <div className="section">
           <div className="row">
             <div className="col-lg-12 col-md-12 article">
@@ -196,6 +196,6 @@ const ShopSection = () => {
       </div>
     </>
   );
-};
+});
 
 export default ShopSection;

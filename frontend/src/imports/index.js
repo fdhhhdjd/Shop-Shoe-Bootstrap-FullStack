@@ -83,3 +83,4 @@ export { default as EditOrderAdmin } from "../Components/Order/EditOrderAdmin";
 export { default as MainEditOrderAdmin } from "../Components/Order/MainEditOrderAdmin";
 export { default as CompareTotal } from "../Components/HomeAdmin/CompareTotal";
 export { default as CompareTotalNotReceived } from "../Components/HomeAdmin/CompareTotalNotReceived";
+export { default as Carousel } from "../Components/Carousel/Carousel";

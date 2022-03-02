@@ -27,7 +27,7 @@ const CompareTotal = () => {
                       </span>
                     ) : (
                       <span className="icon icon-sm rounded-circle alert-danger">
-                        <i className="text-danger fa-arrow-down"></i>
+                        <i className="text-danger fa-solid fa-arrow-down-long"></i>
                       </span>
                     )}
 
@@ -36,7 +36,6 @@ const CompareTotal = () => {
                         {item && item._id ? item._id.month : item.compared}
                       </h6>
                       <span>
-                        {item && item._id ? "$" : ""}
                         <CountUp
                           className="count"
                           start={0}
@@ -46,6 +45,7 @@ const CompareTotal = () => {
                           duration={5.75}
                           separator=","
                         />
+                        {item && item._id ? "$" : "%"}
                       </span>
                     </div>
                   </article>

@@ -34,7 +34,6 @@ const CompareTotalNotReceived = () => {
                         {item && item._id ? item._id.month : item.compared}
                       </h6>
                       <span>
-                        {item && item._id ? "$" : ""}
                         <CountUp
                           className="count"
                           start={0}
@@ -44,6 +43,7 @@ const CompareTotalNotReceived = () => {
                           duration={5.75}
                           separator=","
                         />
+                        {item && item._id ? "$" : "%"}
                       </span>
                     </div>
                   </article>
