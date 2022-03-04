@@ -59,51 +59,6 @@ router.post("/destroyImageUser", (req, res) => {
   }
 });
 
-//upload video film
-router.post("/uploadVideoFilm", auth, (req, res) => {
-  try {
-    console.log(req.files);
-    if (!req.files || Object.keys(req.files).length === 0)
-      return res.status(400).json({ msg: "No files were uploaded." });
-
-    const file = req.files.file;
-    cloudinary.v2.uploader.upload_large(
-      file.tempFilePath,
-      { folder: "film/video", resource_type: "video", chunk_size: 6000000 },
-      async (err, result) => {
-        if (err) throw err;
-
-        removeTmp(file.tempFilePath);
-
-        res.json({ public_id: result.public_id, url: result.secure_url });
-      }
-    );
-  } catch (err) {
-    return res.status(500).json({ msg: err.message });
-  }
-});
-
-//delete video film
-router.post("/destroyVideoFilm", auth, (req, res) => {
-  try {
-    const { public_id } = req.body;
-    if (!public_id)
-      return res.status(400).json({ msg: "No Video Film Selected" });
-
-    cloudinary.v2.uploader.destroy(
-      public_id,
-      { resource_type: "video" },
-      async (err, result) => {
-        if (err) throw err;
-
-        res.json({ msg: "Deleted Video Film" });
-      }
-    );
-  } catch (err) {
-    return res.status(500).json({ msg: err.message });
-  }
-});
-
 const removeTmp = (path) => {
   fs.unlink(path, (err) => {
     if (err) throw err;

@@ -5,6 +5,7 @@ import ProductSlice from "./ProductSlice";
 import AuthenticationAdminSlice from "../Redux/AuthenticationAdminSlice";
 import OrderSlice from "../Redux/OrderSlice";
 import CategorySlice from "../Redux/CategoryAdminSlice";
+import VoucherSlice from "../Redux/VoucherSlice";
 const rootReducer = (state, action) => {
   if (action.type === "counter/clear") {
     state = undefined;
@@ -18,6 +19,7 @@ const store = configureStore({
     order: OrderSlice,
     products: ProductSlice,
     categories: CategorySlice,
+    vouchers: VoucherSlice,
     reducer: rootReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),

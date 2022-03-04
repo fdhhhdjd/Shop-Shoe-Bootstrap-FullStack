@@ -219,19 +219,20 @@ const paymentCtrl = {
   async getMonthlyIncomeCustomerReceived(req, res) {
     const monthly = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const year_now = new Date().getFullYear();
-    console.log(year_now);
 
     try {
       let data = await Payments.aggregate([
         {
+          //giong select
           $project: {
             month: { $month: "$updatedAt" },
             year: { $year: "$updatedAt" },
-            order_status: 1,
+            order_status: 1, //số 1 là lấy số 0 là không lấy
             total: 1,
           },
         },
         {
+          //kiểm tra
           $match: {
             month: { $in: monthly },
             year: year_now,
@@ -239,6 +240,7 @@ const paymentCtrl = {
           },
         },
         {
+          //khai báo nhận giá trị tự đặt
           $group: {
             _id: {
               month: "$month",

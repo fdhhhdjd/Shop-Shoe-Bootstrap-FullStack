@@ -22,6 +22,7 @@ const product = require("./Routes/ProductRoute.js");
 const payment = require("./Routes/paymentRoute.js");
 const category = require("./Routes/categoryRoute");
 const upload = require("./Routes/UploadCloud.js");
+const vouchers = require("./Routes/voucherRoute.js");
 
 //!Link router Main
 
@@ -30,6 +31,7 @@ app.use("/api/auth", customer);
 app.use("/api/product", product);
 app.use("/api/payment", payment);
 app.use("/api/category", category);
+app.use("/api/voucher", vouchers);
 
 //!upload
 app.use("/api", upload);

@@ -84,3 +84,7 @@ export { default as MainEditOrderAdmin } from "../Components/Order/MainEditOrder
 export { default as CompareTotal } from "../Components/HomeAdmin/CompareTotal";
 export { default as CompareTotalNotReceived } from "../Components/HomeAdmin/CompareTotalNotReceived";
 export { default as Carousel } from "../Components/Carousel/Carousel";
+export { default as Vouchers } from "../Components/Voucher/Vouchers";
+export { default as MainVoucher } from "../Components/Voucher/MainVoucher";
+export { default as CreateVoucher } from "../Components/Voucher/CreateVoucher";
+export { default as MainCreateVoucher } from "../Components/Voucher/MainCreateVoucher";

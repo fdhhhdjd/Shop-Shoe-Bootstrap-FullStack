@@ -67,9 +67,9 @@ const Sidebar = () => {
                 </NavLink>
               </li>
               <li className="menu-item">
-                <NavLink end to="/sellers" className="menu-link disabled">
+                <NavLink end to="/voucher" className="menu-link ">
                   <i className="icon fas fa-store-alt"></i>
-                  <span className="text">Sellers</span>
+                  <span className="text">Voucher</span>
                 </NavLink>
               </li>
 

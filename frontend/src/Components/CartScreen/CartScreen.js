@@ -6,23 +6,58 @@ import { Header, Paypal } from "../../imports/index";
 import { GlobalState } from "../../Context/GlobalState";
 import swal from "sweetalert";
 import axios from "axios";
+import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
+const initialState = {
+  voucher_code: "",
+};
 const CartScreen = () => {
   const state = useContext(GlobalState);
   const [cart, setCart] = state.UserApi.cart;
   const { refreshToken } = useSelector((state) => ({ ...state.data }));
+  const { totals, Message } = useSelector((state) => ({ ...state.vouchers }));
   const refreshTokens = refreshToken.accessToken;
+  const token = refreshToken.accessToken;
   const [total, setTotal] = useState(0);
+  const [vouchers, setVouchers] = useState(initialState);
+  const { voucher_code } = vouchers;
+  const dispatch = useDispatch();
   const cartItems = cart;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(GetTotalVoucherInitial({ token, voucher_code }));
+  };
+  console.log();
   useEffect(() => {
-    const getTotal = () => {
-      const total = cart.reduce((prev, item) => {
-        return prev + item.price * item.quantity;
-      }, 0);
-      setTotal(total);
-    };
-    getTotal();
+    if (totals.length === 0) {
+      const getTotal = () => {
+        const total = cart.reduce((prev, item) => {
+          return prev + item.price * item.quantity;
+        }, 0);
+        setTotal(total);
+      };
+      getTotal();
+    } else {
+      dispatch(GetTotalVoucherInitial({ token, voucher_code }));
+      setTotal(totals.totalCart);
+    }
   }, [cart]);
-
+  useEffect(() => {
+    if (totals.length === 0) {
+      const getTotal = () => {
+        const total = cart.reduce((prev, item) => {
+          return prev + item.price * item.quantity;
+        }, 0);
+        setTotal(total);
+      };
+      getTotal();
+    } else {
+      setTotal(totals.totalCart);
+    }
+  }, [totals]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setVouchers({ ...vouchers, [name]: value });
+  };
   const addToCart = async (cart) => {
     await axios.patch(
       "/api/auth/addcart",
@@ -103,6 +138,21 @@ const CartScreen = () => {
     });
     console.log(payment);
   };
+
+  useEffect(() => {
+    if (Message.status === 200) {
+      swal(Message.msg, {
+        icon: "success",
+      });
+      dispatch(reset());
+    } else if (Message.status === 400) {
+      swal(Message.msg, {
+        icon: "error",
+      });
+      dispatch(reset());
+    }
+  }, [totals]);
+
   return (
     <>
       <>
@@ -189,21 +239,40 @@ const CartScreen = () => {
               ))}
 
               {/* End of cart iterms */}
+              <form className="total" onSubmit={handleSubmit}>
+                <span className="sub">Code Voucher:</span>
+                <input
+                  type="text"
+                  value={voucher_code}
+                  name="voucher_code"
+                  onChange={handleChange}
+                  className="b"
+                />
+                &nbsp;&nbsp;
+                <button className="btn btn-success btn-sm col-md-1">
+                  Send
+                </button>
+              </form>
               <div className="total">
                 <span className="sub">total:</span>
                 <span className="total-price">${total}</span>
               </div>
+
               <hr />
+
               <div className="cart-buttons d-flex align-items-center row">
                 <Link to="/" className="col-md-6 ">
                   <button>Continue To Shopping</button>
                 </Link>
                 {/* {total > 0 && ( */}
+                {/* // */}
+
                 <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
                   <button className="paypal">
                     <Paypal total={total} tranSuccess={tranSuccess} />
                   </button>
                 </div>
+
                 {/* )} */}
               </div>
             </>
