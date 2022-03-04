@@ -19,6 +19,7 @@ const userCtrl = {
 
       const user = await Users.findOne({ email });
       const users = await Users.findOne({ email, role: 1 });
+
       if (users) {
         return res.json({
           status: 400,
@@ -48,8 +49,7 @@ const userCtrl = {
         return res.json({
           status: 400,
           success: false,
-          message:
-            "Password must contain at least one number and one uppercase and lowercase and special letter, and at least 6 or more characters ",
+          msg: "Password must contain at least one number and one uppercase and lowercase and special letter, and at least 6 or more characters ",
         });
       }
 

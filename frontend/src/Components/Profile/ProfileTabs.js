@@ -22,6 +22,7 @@ const ProfileTabs = () => {
   const { loading, profile, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
+
   const token = refreshToken.accessToken;
   const submitHandler = async (e) => {
     e.preventDefault();

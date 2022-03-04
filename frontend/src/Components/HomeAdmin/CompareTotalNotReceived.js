@@ -5,7 +5,7 @@ const CompareTotalNotReceived = () => {
   const { RevenueNotReceivedMonthBefore } = useSelector((state) => ({
     ...state.order,
   }));
-
+  console.log(RevenueNotReceivedMonthBefore, "demo");
   return (
     <>
       <div className="row">
