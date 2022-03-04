@@ -287,7 +287,6 @@ const paymentCtrl = {
           $group: {
             _id: {
               month: "$month",
-              order_status: "$order_status",
             },
             total_income: { $sum: "$total" },
           },
@@ -307,14 +306,12 @@ const paymentCtrl = {
             {
               _id: {
                 month: "This month",
-                order_status: "Delivered",
               },
               total_income: data[0].total_income,
             },
             {
               _id: {
                 month: "Last month",
-                order_status: "Delivered",
               },
               total_income: 0,
             },
@@ -335,14 +332,12 @@ const paymentCtrl = {
             {
               _id: {
                 month: "This month",
-                order_status: "Delivered",
               },
               total_income: 0,
             },
             {
               _id: {
                 month: "Last month",
-                order_status: "Delivered",
               },
               total_income: data[0].total_income,
             },
@@ -417,7 +412,6 @@ const paymentCtrl = {
           $group: {
             _id: {
               month: "$month",
-              order_status: "$order_status",
             },
             total_income: { $sum: "$total" },
           },
@@ -437,14 +431,12 @@ const paymentCtrl = {
             {
               _id: {
                 month: "This month",
-                order_status: "Cusomer Not Received",
               },
               total_income: data[0].total_income,
             },
             {
               _id: {
                 month: "Last month",
-                order_status: "Cusomer Not Received",
               },
               total_income: 0,
             },
@@ -465,14 +457,12 @@ const paymentCtrl = {
             {
               _id: {
                 month: "This month",
-                order_status: "Cusomer Not Received",
               },
               total_income: 0,
             },
             {
               _id: {
                 month: "Last month",
-                order_status: "Cusomer Not Received",
               },
               total_income: data[0].total_income,
             },
@@ -490,8 +480,6 @@ const paymentCtrl = {
         }
       } else if (data.length === 2) {
         (data[0]._id.month = "This month"), (data[1]._id.month = "Last month");
-        data[0]._id.order_status = "Cusomer Not Received";
-        data[1]._id.order_status = "Cusomer Not Received";
 
         const value = (
           ((data[0].total_income - data[1].total_income) /
