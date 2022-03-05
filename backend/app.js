@@ -23,6 +23,7 @@ const payment = require("./Routes/paymentRoute.js");
 const category = require("./Routes/categoryRoute");
 const upload = require("./Routes/UploadCloud.js");
 const vouchers = require("./Routes/voucherRoute.js");
+const carousels = require("./Routes/carouselRoute.js");
 
 //!Link router Main
 
@@ -32,6 +33,7 @@ app.use("/api/product", product);
 app.use("/api/payment", payment);
 app.use("/api/category", category);
 app.use("/api/voucher", vouchers);
+app.use("/api/carousel", carousels);
 
 //!upload
 app.use("/api", upload);

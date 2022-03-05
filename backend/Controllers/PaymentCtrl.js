@@ -88,13 +88,12 @@ const paymentCtrl = {
   //Create Payment Paypal
   createPayment: async (req, res) => {
     try {
-      const user = await Users.findById(req.user.id).select("name email");
+      const user = await Users.findById(req.user.id).select(
+        "name email total_cart"
+      );
       if (!user) return res.status(400).json({ msg: "User does not exist." });
-
       const { cart, paymentID, address } = req.body;
-      const total = cart.reduce((prev, item) => {
-        return prev + item.price * item.quantity;
-      }, 0);
+      const total = user.total_cart;
       const { _id, name, email } = user;
 
       const newPayment = new Payments({
@@ -116,6 +115,7 @@ const paymentCtrl = {
       });
 
       await newPayment.save();
+      await Users.findByIdAndUpdate({ _id: req.user.id }, { total_cart: 0 });
       res.json({ msg: "Payment Success!" });
       console.log({ newPayment });
     } catch (err) {

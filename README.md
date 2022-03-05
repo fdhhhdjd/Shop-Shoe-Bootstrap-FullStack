@@ -25,10 +25,24 @@
 
 \*Category
 
-- Xem tất cả loại giày : get --> http://localhost:5000/api/category/categorys
-- Tạo thêm 1 loại giầy: post --> http://localhost:5000/api/category/categorys
-- Cập nhập loại giày: put --> http://localhost:5000/api/category/categorys/:id
-- Xóa loại giày: delete --> http://localhost:5000/api/category/categorys/:id
+- Xem tất cả loại categorys : get --> http://localhost:5000/api/category/categorys
+- Tạo thêm 1 loại categorys: post --> http://localhost:5000/api/category/categorys
+- Cập nhập loại categorys: patch --> http://localhost:5000/api/category/categorys/:id
+- Xóa loại categorys: delete --> http://localhost:5000/api/category/categorys/:id
+  
+\*Carousel
+
+- Xem tất cả loại Carousel: get --> http://localhost:5000/api/carousel/carousels
+- Tạo thêm 1 loại Carousels: post --> http://localhost:5000/api/carousel/carousels
+- Cập nhập loại Carousel: patch --> http://localhost:5000/api/carousel/carousels/:id
+- Xóa loại Carousel: delete --> http://localhost:5000/api/carousel/carousels/:id
+
+\*Voucher
+
+- Xem tất cả loại voucher : get --> http://localhost:5000/api/voucher/vouchers
+- Tạo thêm voucher: post --> http://localhost:5000/api/voucher/vouchers
+- Cập nhập voucher: patch --> http://localhost:5000/api/voucher/vouchers/:id
+- Xóa loại voucher: delete --> http://localhost:5000/api/voucher/vouchers/:id
 
 \*Product
 
@@ -52,7 +66,7 @@
 - Doanh thu hóa đơn đã vận chuyển thành công theo từng tháng: get --> http://localhost:5000/api/payment/orders/customerReceived/getMonthlyIncome
 - Lấy ra những đơn hàng được thanh toán trong 3 ngày gần nhất : get --> http://localhost:5000/api/payment/newPayment
 
-2. API dành cho khách hàng
+1. API dành cho khách hàng
 
 \*Upload:
 
@@ -78,7 +92,8 @@
 
 \*Category
 
-- Xem tất cả thể loại phim : get --> http://localhost:5000/api/category/all
+- Xem tất cả thể loại category : get --> http://localhost:5000/api/category/all
+
 
 \*Product
 
@@ -90,3 +105,5 @@
 \*Payment
 
 - Thanh toán đơn hàng: post --> http://localhost:5000/api/payment/payments
+- Xóa mem payment :Path -->http://localhost:5000/api/payment/deletePayments/:id
+ 

@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    total_cart: {
+      type: Number,
+      default: 0,
+    },
     phone_number: {
       type: String,
       required: false,

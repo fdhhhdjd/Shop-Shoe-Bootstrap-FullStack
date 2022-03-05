@@ -18,15 +18,16 @@ const CartScreen = () => {
   const refreshTokens = refreshToken.accessToken;
   const token = refreshToken.accessToken;
   const [total, setTotal] = useState(0);
+  const [cost, setCost] = useState(0);
   const [vouchers, setVouchers] = useState(initialState);
   const { voucher_code } = vouchers;
+  const [ToggleVoucher, SetToggleVoucher] = useState(false);
   const dispatch = useDispatch();
   const cartItems = cart;
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(GetTotalVoucherInitial({ token, voucher_code }));
   };
-  console.log();
   useEffect(() => {
     if (totals.length === 0) {
       const getTotal = () => {
@@ -39,6 +40,7 @@ const CartScreen = () => {
     } else {
       dispatch(GetTotalVoucherInitial({ token, voucher_code }));
       setTotal(totals.totalCart);
+      setCost(totals.cost);
     }
   }, [cart]);
   useEffect(() => {
@@ -48,12 +50,14 @@ const CartScreen = () => {
           return prev + item.price * item.quantity;
         }, 0);
         setTotal(total);
+        setCost(totals.cost);
       };
       getTotal();
     } else {
       setTotal(totals.totalCart);
+      setCost(totals.cost);
     }
-  }, [totals]);
+  }, [totals, cost]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setVouchers({ ...vouchers, [name]: value });
@@ -144,6 +148,7 @@ const CartScreen = () => {
       swal(Message.msg, {
         icon: "success",
       });
+      setVouchers({ voucher_code: "" });
       dispatch(reset());
     } else if (Message.status === 400) {
       swal(Message.msg, {
@@ -152,6 +157,7 @@ const CartScreen = () => {
       dispatch(reset());
     }
   }, [totals]);
+  console.log(cost, "constt");
 
   return (
     <>
@@ -241,20 +247,44 @@ const CartScreen = () => {
               {/* End of cart iterms */}
               <form className="total" onSubmit={handleSubmit}>
                 <span className="sub">Code Voucher:</span>
-                <input
-                  type="text"
-                  value={voucher_code}
-                  name="voucher_code"
-                  onChange={handleChange}
-                  className="b"
-                />
-                &nbsp;&nbsp;
-                <button className="btn btn-success btn-sm col-md-1">
-                  Send
-                </button>
+                {ToggleVoucher ? (
+                  <>
+                    <input
+                      type="text"
+                      value={voucher_code}
+                      name="voucher_code"
+                      style={{
+                        borderRadius: "0.5rem",
+                        border: "0.5px solid black",
+                      }}
+                      onChange={handleChange}
+                      className="b"
+                    />
+                    &nbsp;&nbsp;
+                    <button className="btn btn-success btn-sm col-md-1">
+                      Send
+                    </button>
+                  </>
+                ) : (
+                  <a
+                    href="#"
+                    style={{ color: "blue", borderBottom: "1px solid blue" }}
+                    onClick={() => SetToggleVoucher(true)}
+                  >
+                    Voucher If you want Enter!
+                  </a>
+                )}
               </form>
+              {cost !== undefined && (
+                <div className="total">
+                  <span className="sub">Cost:</span>
+                  <span className="divider total-price">${cost}</span>
+                </div>
+              )}
               <div className="total">
-                <span className="sub">total:</span>
+                <span className="sub">
+                  {cost === undefined ? "Total:" : "Total Sell"}
+                </span>
                 <span className="total-price">${total}</span>
               </div>
 

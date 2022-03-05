@@ -18,7 +18,7 @@ const Home = () => {
   };
   return (
     <>
-      {!token ? "" : <Carousel handleScrollMenu={handleScrollMenu} />}
+      {token ? "" : <Carousel handleScrollMenu={handleScrollMenu} />}
       <Header />
       <ShopSection ref={menuRef} />
       <CalltoActionSection />

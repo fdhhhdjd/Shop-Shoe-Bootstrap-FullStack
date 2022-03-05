@@ -108,12 +108,20 @@ const categoryCtrl = {
           return prev + item.price * item.quantity;
         }, 0);
 
-        const discount_value = (totalCart / 100) * voucher.value;
+        const discount_value = ((totalCart / 100) * voucher.value).toFixed(1);
+
+        const total_cart = totalCart - discount_value;
+
+        await Users.findByIdAndUpdate(
+          { _id: req.user.id },
+          { total_cart: total_cart }
+        );
 
         res.json({
           status: 200,
           success: true,
-          totalCart: discount_value,
+          cost: totalCart,
+          totalCart: total_cart,
           msg: "Code Voucher Exactly",
         });
       }
