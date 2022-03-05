@@ -152,7 +152,7 @@ const Admins = (props) => {
                     <b>{order.name}</b>
                   </td>
                   <td>{order.email}</td>
-                  <td>{order.role === 0 && "Customer"}</td>
+                  <td>{order.role === 1 && "Admin"}</td>
                   <td>
                     {(order.sex === 1 && "Man") ||
                       (order.sex === 0 && "Women") ||

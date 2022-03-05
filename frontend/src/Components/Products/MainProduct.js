@@ -146,18 +146,24 @@ const MainProduct = () => {
   const renderData = (data, index) => {
     return (
       <>
+        {console.log(data && data, "allsdasdas")}
         {data &&
           data
+            .sort((a, b) => a.name.toString() - b.name.toString())
             .filter((value) => {
               if (search === "") {
                 return value;
               } else if (
                 value.name.toLowerCase().includes(search.toLowerCase()) ||
-                value.categories.toLowerCase().includes(search.toLowerCase)
+                (value.categories &&
+                  value.categories.name
+                    .toLowerCase()
+                    .includes(search.toLowerCase))
               ) {
                 return value;
               }
             })
+
             .map((product) => (
               <Product
                 product={product}

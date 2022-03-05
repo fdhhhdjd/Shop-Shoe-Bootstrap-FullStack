@@ -19,6 +19,7 @@ const CartScreen = () => {
   const token = refreshToken.accessToken;
   const [total, setTotal] = useState(0);
   const [cost, setCost] = useState(0);
+  const [percent, setPercent] = useState();
   const [vouchers, setVouchers] = useState(initialState);
   const { voucher_code } = vouchers;
   const [ToggleVoucher, SetToggleVoucher] = useState(false);
@@ -28,6 +29,7 @@ const CartScreen = () => {
     e.preventDefault();
     dispatch(GetTotalVoucherInitial({ token, voucher_code }));
   };
+  console.log(totals.voucher);
   useEffect(() => {
     if (totals.length === 0) {
       const getTotal = () => {
@@ -41,6 +43,7 @@ const CartScreen = () => {
       dispatch(GetTotalVoucherInitial({ token, voucher_code }));
       setTotal(totals.totalCart);
       setCost(totals.cost);
+      setPercent(totals.voucher && totals.voucher.value);
     }
   }, [cart]);
   useEffect(() => {
@@ -56,6 +59,7 @@ const CartScreen = () => {
     } else {
       setTotal(totals.totalCart);
       setCost(totals.cost);
+      setPercent(totals.voucher && totals.voucher.value);
     }
   }, [totals, cost]);
   const handleChange = (e) => {
@@ -157,7 +161,7 @@ const CartScreen = () => {
       dispatch(reset());
     }
   }, [totals]);
-  console.log(cost, "constt");
+  console.log(percent, "constt");
 
   return (
     <>
@@ -266,19 +270,41 @@ const CartScreen = () => {
                     </button>
                   </>
                 ) : (
-                  <a
-                    href="#"
-                    style={{ color: "blue", borderBottom: "1px solid blue" }}
+                  <span
+                    style={{
+                      color: "blue",
+                      borderBottom: "1px solid blue",
+                      cursor: "pointer",
+                    }}
                     onClick={() => SetToggleVoucher(true)}
                   >
                     Voucher If you want Enter!
-                  </a>
+                  </span>
                 )}
               </form>
               {cost !== undefined && (
                 <div className="total">
                   <span className="sub">Cost:</span>
-                  <span className="divider total-price">${cost}</span>
+                  <del>
+                    <span
+                      className="divider total-price"
+                      style={{ color: "red" }}
+                    >
+                      ${cost}
+                    </span>
+                  </del>
+                </div>
+              )}
+              {percent !== undefined && (
+                <div className="total">
+                  <span className="sub">percent:</span>
+
+                  <span
+                    className="divider total-price"
+                    style={{ color: "green" }}
+                  >
+                    {percent}%
+                  </span>
                 </div>
               )}
               <div className="total">

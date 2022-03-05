@@ -103,7 +103,6 @@ const categoryCtrl = {
             totalCart,
           });
         }
-
         const totalCart = data.cart.reduce((prev, item) => {
           return prev + item.price * item.quantity;
         }, 0);
@@ -120,6 +119,7 @@ const categoryCtrl = {
         res.json({
           status: 200,
           success: true,
+          voucher: voucher,
           cost: totalCart,
           totalCart: total_cart,
           msg: "Code Voucher Exactly",
