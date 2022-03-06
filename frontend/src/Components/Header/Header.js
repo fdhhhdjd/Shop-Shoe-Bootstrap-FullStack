@@ -20,10 +20,8 @@ const Header = () => {
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    dispatch(LogoutInitiate());
-    toast.success("Logout Success Thank You!");
+    dispatch(LogoutInitiate({ navigate, toast }));
   };
-  console.log(search);
   const submitHandler = (e) => {
     e.preventDefault();
   };

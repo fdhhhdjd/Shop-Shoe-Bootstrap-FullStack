@@ -27,12 +27,15 @@ const CarouselCtrl = {
       res.json({
         status: 200,
         success: true,
-        msg: "Created a Carousel",
+        msg: "Created a Carousel ",
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
+  //
+
+  //
   deleteCarousel: async (req, res) => {
     try {
       const Carousels = await Carousel.findById({ _id: req.params.id });

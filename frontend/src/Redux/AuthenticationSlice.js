@@ -2,11 +2,14 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const LoginInitial = createAsyncThunk(
   "auth/Login",
-  async ({ email, password }) => {
+  async ({ email, password, toast }) => {
     const response = await axios.post("/api/auth/login", {
       email,
       password,
     });
+    if (response.data.status === 200) {
+      toast.success("Login User Successfully 🥰");
+    }
     return response.data;
   }
 );
@@ -19,12 +22,18 @@ export const RefreshTokenInitiate = createAsyncThunk(
     return response.data;
   }
 );
-export const LogoutInitiate = createAsyncThunk("/api/auth/Logout", async () => {
-  const response = await axios.get("/api/auth/logout");
-  localStorage.removeItem("firstLogin");
-  window.location.href = "/login";
-  return response.data;
-});
+export const LogoutInitiate = createAsyncThunk(
+  "/api/auth/Logout",
+  async ({ navigate, toast }) => {
+    const response = await axios.get("/api/auth/logout");
+    if (response.data.status === 200) {
+      localStorage.removeItem("firstLogin");
+      toast.success("Logout Success Thank You!");
+      navigate("/login");
+    }
+    return response.data;
+  }
+);
 export const RegisterInitiate = createAsyncThunk(
   "auth/register",
   async ({ name, email, password }) => {

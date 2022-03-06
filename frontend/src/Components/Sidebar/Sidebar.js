@@ -72,6 +72,12 @@ const Sidebar = () => {
                   <span className="text">Voucher</span>
                 </NavLink>
               </li>
+              <li className="menu-item">
+                <NavLink end to="/info" className="menu-link ">
+                  <i className="icon fa-solid fa-sitemap"></i>
+                  <span className="text">Information</span>
+                </NavLink>
+              </li>
 
               {/* <li className="menu-item">
                 <NavLink end to="/transaction" className="menu-link disabled">

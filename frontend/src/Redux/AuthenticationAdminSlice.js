@@ -2,11 +2,14 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const LoginAdminInitial = createAsyncThunk(
   "admin/LoginAdmin",
-  async ({ email, password }) => {
+  async ({ email, password, toast }) => {
     const response = await axios.post("/api/auth/loginAdmin", {
       email,
       password,
     });
+    if (response.data.status === 200) {
+      toast.success("Login Admin Successfully 🥰");
+    }
     return response.data;
   }
 );
@@ -41,10 +44,15 @@ export const ProfileAdminInitiate = createAsyncThunk(
 );
 export const LogoutAdminInitiate = createAsyncThunk(
   "/admin/logoutAdmin",
-  async () => {
+  async ({ navigate, toast }) => {
     const response = await axios.get("/api/auth/logoutAdmin");
-    localStorage.removeItem("firstLoginAdmin");
-    window.location.href = "/loginAdmin";
+    if (response.data.status === 200) {
+      localStorage.removeItem("firstLoginAdmin");
+
+      toast.success("Logout Admin Success Thank You!");
+      navigate("/loginAdmin");
+    }
+
     return response.data;
   }
 );

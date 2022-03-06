@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAdminInitiate } from "../../Redux/AuthenticationAdminSlice";
+import { toast } from "react-toastify";
 const HeaderAdmin = () => {
   const { profileAdmin } = useSelector((state) => ({ ...state.admin }));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     $("[data-trigger]").on("click", function (e) {
       e.preventDefault();
@@ -26,7 +28,7 @@ const HeaderAdmin = () => {
   }, []);
   const logoutHandler = (e) => {
     e.preventDefault();
-    dispatch(LogoutAdminInitiate());
+    dispatch(LogoutAdminInitiate({ navigate, toast }));
   };
 
   return (

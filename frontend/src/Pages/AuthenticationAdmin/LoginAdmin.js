@@ -31,7 +31,7 @@ const LoginAdmin = () => {
     if (!email || !password) {
       return toast.error("Please Enter Input 🥲");
     }
-    dispatch(LoginAdminInitial({ email, password }));
+    dispatch(LoginAdminInitial({ email, password, toast }));
   };
   const HandleGoogle = (response) => {
     dispatch(LoginGooglAdminInitiate(response));

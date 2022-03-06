@@ -88,6 +88,12 @@ const ShopSection = React.forwardRef((props, ref) => {
     }
     setitemsPerPage(itemsPerPage + 3);
   };
+  const except = (str) => {
+    if (str.length > 30) {
+      str = str.substring(0, 30) + " " + "...";
+    }
+    return str;
+  };
   const renderData = (data, index) => {
     return (
       <>
@@ -119,7 +125,7 @@ const ShopSection = React.forwardRef((props, ref) => {
                   <div className="shoptext">
                     <p>
                       <Link to={`/products/${product._id}`}>
-                        {product.name}
+                        {except(product.name)}
                       </Link>
                     </p>
 

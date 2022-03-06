@@ -88,3 +88,7 @@ export { default as Vouchers } from "../Components/Voucher/Vouchers";
 export { default as MainVoucher } from "../Components/Voucher/MainVoucher";
 export { default as CreateVoucher } from "../Components/Voucher/CreateVoucher";
 export { default as MainCreateVoucher } from "../Components/Voucher/MainCreateVoucher";
+export { default as CreateEditInfo } from "../Components/Information/CreateEditInfo";
+export { default as Information } from "../Components/Information/Information";
+export { default as MainCreateEditInfo } from "../Components/Information/MainCreateEditInfo";
+export { default as MainInformation } from "../Components/Information/MainInformation";

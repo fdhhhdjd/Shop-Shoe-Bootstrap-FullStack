@@ -7,6 +7,7 @@ import OrderApi from "./OrderApi";
 import { RefreshTokenAdminInitial } from "../Redux/AuthenticationAdminSlice";
 import CategoriesApi from "./CategoriesApi";
 import VoucherApi from "./VoucherApi";
+import InformationApi from "./InformationApi";
 export const GlobalState = createContext();
 export const DataProvider = ({ children }) => {
   const [callback, setCallback] = useState(false);
@@ -59,6 +60,7 @@ export const DataProvider = ({ children }) => {
       callbackAdmin
     ),
     CategoriesApi: CategoriesApi(callbackAdmin),
+    InformationApi: InformationApi(callbackAdmin),
     VoucherApi: VoucherApi(callbackAdmin),
   };
   return <GlobalState.Provider value={data}>{children}</GlobalState.Provider>;

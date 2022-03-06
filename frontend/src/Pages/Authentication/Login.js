@@ -32,7 +32,7 @@ const Login = () => {
     if (!email || !password) {
       return toast.error("Please Enter Input 🥲 !");
     }
-    dispatch(LoginInitial({ email, password }));
+    dispatch(LoginInitial({ email, password, toast }));
   };
   const HandleGoogle = (response) => {
     dispatch(LoginGoogleInitiate(response));
