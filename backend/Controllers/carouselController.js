@@ -33,9 +33,6 @@ const CarouselCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
-  //
-
-  //
   deleteCarousel: async (req, res) => {
     try {
       const Carousels = await Carousel.findById({ _id: req.params.id });
