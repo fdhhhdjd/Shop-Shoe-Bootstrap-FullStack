@@ -89,11 +89,14 @@ const paymentCtrl = {
   createPayment: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select(
-        "name email total_cart"
+        "name email total_cart discount"
       );
+      console.log(user);
       if (!user) return res.status(400).json({ msg: "User does not exist." });
       const { cart, paymentID, address } = req.body;
-      const total = user.total_cart;
+      const cost = cart.reduce((prev, item) => {
+        return prev + item.price * item.quantity;
+      }, 0);
       const { _id, name, email } = user;
 
       const newPayment = new Payments({
@@ -101,12 +104,14 @@ const paymentCtrl = {
         name,
         email,
         cart,
-        total,
+        cost,
+        discount: user.discount,
+        total: user.total_cart,
         paymentID,
         address,
         status: true,
       });
-
+      console.log(newPayment);
       cart.filter((item) => {
         return sold(item._id, item.quantity, item.sold);
       });
@@ -115,9 +120,11 @@ const paymentCtrl = {
       });
 
       await newPayment.save();
-      await Users.findByIdAndUpdate({ _id: req.user.id }, { total_cart: 0 });
+      await Users.findByIdAndUpdate(
+        { _id: req.user.id },
+        { total_cart: 0, discount: 0 }
+      );
       res.json({ msg: "Payment Success!" });
-      console.log({ newPayment });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

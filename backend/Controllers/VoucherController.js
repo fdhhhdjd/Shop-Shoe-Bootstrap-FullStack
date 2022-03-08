@@ -88,6 +88,10 @@ const categoryCtrl = {
         const totalCart = data.cart.reduce((prev, item) => {
           return prev + item.price * item.quantity;
         }, 0);
+        await Users.findByIdAndUpdate(
+          { _id: req.user.id },
+          { total_cart: totalCart, discount: 0 }
+        );
         res.json({ totalCart: totalCart, discount_value: 0 });
       } else if (voucher_code) {
         const voucher = await Voucher.findOne({ title: voucher_code });
@@ -96,11 +100,16 @@ const categoryCtrl = {
           const totalCart = data.cart.reduce((prev, item) => {
             return prev + item.price * item.quantity;
           }, 0);
+          await Users.findByIdAndUpdate(
+            { _id: req.user.id },
+            { total_cart: totalCart, discount: 0 }
+          );
           res.json({
             status: 400,
             success: false,
             msg: "Not Found Voucher",
             totalCart,
+            discount_value: 0,
           });
         }
         const totalCart = data.cart.reduce((prev, item) => {
@@ -113,7 +122,7 @@ const categoryCtrl = {
 
         await Users.findByIdAndUpdate(
           { _id: req.user.id },
-          { total_cart: total_cart }
+          { total_cart: total_cart, discount: discount_value }
         );
 
         res.json({
@@ -121,6 +130,7 @@ const categoryCtrl = {
           success: true,
           voucher: voucher,
           cost: totalCart,
+          discount_value,
           totalCart: total_cart,
           msg: "Code Voucher Exactly",
         });
