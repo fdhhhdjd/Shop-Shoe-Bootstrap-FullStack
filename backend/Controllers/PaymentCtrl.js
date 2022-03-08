@@ -122,7 +122,7 @@ const paymentCtrl = {
       await newPayment.save();
       await Users.findByIdAndUpdate(
         { _id: req.user.id },
-        { total_cart: 0, discount: 0 }
+        { total_cart: 0, discount: 0, voucher: 0 }
       );
       res.json({ msg: "Payment Success!" });
     } catch (err) {
