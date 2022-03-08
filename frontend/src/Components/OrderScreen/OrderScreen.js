@@ -6,7 +6,7 @@ import moment from "moment";
 const OrderScreen = () => {
   const { order, loading } = useSelector((state) => ({ ...state.products }));
 
-  // const orders = order.history && order.history;
+  const orders = order.history && order.history;
   const [orderItem, setOrderItem] = useState({});
   const [total, setTotal] = useState(0);
   const [quantitys, setQuantitys] = useState(0);
@@ -39,7 +39,7 @@ const OrderScreen = () => {
               const total = item.cart.reduce((prev, item) => {
                 return prev + item.quantity;
               }, 0);
-              console.log(total, "allo");
+
               setQuantitys(total);
             };
             getTotal();
@@ -47,7 +47,6 @@ const OrderScreen = () => {
         });
     }
   }, [id]);
-  console.log(total, "total");
   return (
     <>
       <Header />
@@ -177,6 +176,7 @@ const OrderScreen = () => {
                 })}
               {orderItem.cart && (
                 <div className="col-lg-3 d-flex align-items-end flex-column mt-5 subtotal-order">
+                  {console.log(orderItem)}
                   <table className="table table-bordered">
                     <tbody>
                       <tr>
@@ -193,16 +193,62 @@ const OrderScreen = () => {
                       </tr>
                       <tr>
                         <td>
+                          <strong>Shipping</strong>
+                        </td>
+                        <td>
+                          {(orderItem.order_status === "Delivered" && (
+                            <span className="badge btn-success">Delivered</span>
+                          )) ||
+                            (orderItem.order_status === "On Delivery" && (
+                              <span className="badge btn-warning">
+                                On Delivery
+                              </span>
+                            )) ||
+                            (orderItem.order_status === "Ordered" && (
+                              <span className="badge btn-danger">Ordered</span>
+                            ))}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
                           <strong>Quantity</strong>
                         </td>
-
                         <td>{quantitys}</td>
                       </tr>
                       <tr>
                         <td>
-                          <strong>Total</strong>
+                          <strong>Sale Code Voucher</strong>
                         </td>
-                        <td>${orderItem.cart && orderItem.total}</td>
+
+                        {orderItem.voucher === 0 ? (
+                          <td>No Voucher</td>
+                        ) : (
+                          <td>{orderItem.voucher} %</td>
+                        )}
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Cost</strong>
+                        </td>
+                        {orderItem.voucher === 0 ? (
+                          <td>$ {orderItem.cost}</td>
+                        ) : (
+                          <del style={{ color: "red" }}>
+                            <td>$ {orderItem.cost}</td>
+                          </del>
+                        )}
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Total </strong>
+                        </td>
+                        {orderItem.voucher === 0 ? (
+                          <td>$ {orderItem.cart && orderItem.cost}</td>
+                        ) : (
+                          <td style={{ color: "green" }}>
+                            $ {orderItem.cart && orderItem.total}
+                          </td>
+                        )}
                       </tr>
                     </tbody>
                   </table>

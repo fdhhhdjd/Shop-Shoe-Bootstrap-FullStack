@@ -48,9 +48,8 @@ export const LogoutAdminInitiate = createAsyncThunk(
     const response = await axios.get("/api/auth/logoutAdmin");
     if (response.data.status === 200) {
       localStorage.removeItem("firstLoginAdmin");
-
       toast.success("Logout Admin Success Thank You!");
-      navigate("/loginAdmin");
+      window.location.href = "loginAdmin";
     }
 
     return response.data;

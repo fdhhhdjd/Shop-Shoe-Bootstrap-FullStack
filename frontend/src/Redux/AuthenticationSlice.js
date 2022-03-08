@@ -29,7 +29,7 @@ export const LogoutInitiate = createAsyncThunk(
     if (response.data.status === 200) {
       localStorage.removeItem("firstLogin");
       toast.success("Logout Success Thank You!");
-      navigate("/login");
+      window.location.href = "/login";
     }
     return response.data;
   }

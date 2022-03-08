@@ -13,7 +13,6 @@ const MainHomeAdmin = () => {
   const { order, newUserBuy, loading, error } = useSelector((state) => ({
     ...state.order,
   }));
-
   const { product } = useSelector((state) => ({ ...state.products }));
   const [orders, setOrders] = useState();
   const products = product.products;

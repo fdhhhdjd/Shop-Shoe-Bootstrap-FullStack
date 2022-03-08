@@ -24,7 +24,7 @@ const LatestOrder = (props) => {
             <nav className="float-center mt-4" aria-label="Page navigation">
               <ul className="pagination  justify-content-center">
                 <li className="page-item">
-                  <h1 style={{ color: "red" }}>Oder Emty</h1>
+                  <h1 style={{ color: "red" }}>Oder Empty</h1>
                 </li>
               </ul>
             </nav>
@@ -64,7 +64,7 @@ const LatestOrder = (props) => {
                           <CountUp
                             className="count"
                             start={0}
-                            end={order.total}
+                            end={order.voucher === 0 ? order.cost : order.total}
                             duration={3.5}
                             separator=","
                           />
@@ -80,6 +80,19 @@ const LatestOrder = (props) => {
                               Not Paid
                             </span>
                           )}
+                        </td>
+                        <td>
+                          {(order.order_status === "Delivered" && (
+                            <span className="badge btn-success">Delivered</span>
+                          )) ||
+                            (order.order_status === "On Delivery" && (
+                              <span className="badge btn-warning">
+                                On Delivery
+                              </span>
+                            )) ||
+                            (order.order_status === "Ordered" && (
+                              <span className="badge btn-danger">Ordered</span>
+                            ))}
                         </td>
                         <td>{moment(order.createdAt).calendar()}</td>
                         <td className="d-flex justify-content-end align-item-center">

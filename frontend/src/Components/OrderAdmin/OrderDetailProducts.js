@@ -42,15 +42,43 @@ const OrderDetailProducts = (props) => {
           <td colSpan="4">
             <article className="float-end">
               <dl className="dlist">
-                <dt>Subtotal:</dt> <dd>${order.total.toFixed(2)}</dd>
+                <dt>Subtotal:</dt>{" "}
+                {order.voucher === 0 ? (
+                  <dd>${order.cost.toFixed(2)}</dd>
+                ) : (
+                  <dd style={{ color: "green" }}>${order.total.toFixed(2)}</dd>
+                )}
               </dl>
               <dl className="dlist">
-                <dt>Shipping cost:</dt> <dd>${order.shippingPrice}</dd>
+                <dt>Shipping cost:</dt>{" "}
+                {order.voucher === 0 ? (
+                  <dd>${order.cost.toFixed(2)}</dd>
+                ) : (
+                  <dd style={{ color: "red" }}>
+                    <del>${order.cost.toFixed(2)}</del>
+                  </dd>
+                )}
               </dl>
               <dl className="dlist">
-                <dt>Grand total:</dt>
+                <dt>Self Voucher :</dt>{" "}
+                {order.voucher === 0 ? (
+                  <dd>No Voucher</dd>
+                ) : (
+                  <dd>{order.voucher} %</dd>
+                )}
+              </dl>
+              <dl className="dlist">
+                <dt>Status Bill:</dt>
                 <dd>
-                  <b className="h5">${order.totalPrice}</b>
+                  {(order.order_status === "Delivered" && (
+                    <span className="badge btn-success">Delivered</span>
+                  )) ||
+                    (order.order_status === "On Delivery" && (
+                      <span className="badge btn-warning">On Delivery</span>
+                    )) ||
+                    (order.order_status === "Ordered" && (
+                      <span className="badge btn-danger">Ordered</span>
+                    ))}
                 </dd>
               </dl>
               <dl className="dlist">

@@ -39,6 +39,7 @@ const History = ({ cartItems }) => {
       console.log(error);
     }
   };
+  console.log(order);
   return (
     <>
       <div className=" d-flex justify-content-center align-items-center flex-column">
@@ -69,6 +70,7 @@ const History = ({ cartItems }) => {
                     <tr>
                       <th>ID</th>
                       <th>STATUS</th>
+                      <th>STATUS BILL</th>
                       <th>DATE</th>
                       <th>TOTAL</th>
                       <th>Action</th>
@@ -90,11 +92,33 @@ const History = ({ cartItems }) => {
                           </td>
                           <td>{order.status ? <>Paid</> : <>Not Paid</>}</td>
                           <td>
+                            {(order.order_status === "Delivered" && (
+                              <span className="badge btn-success">
+                                Delivered
+                              </span>
+                            )) ||
+                              (order.order_status === "On Delivery" && (
+                                <span className="badge btn-warning">
+                                  On Delivery
+                                </span>
+                              )) ||
+                              (order.order_status === "Ordered" && (
+                                <span className="badge btn-danger">
+                                  Ordered
+                                </span>
+                              ))}
+                          </td>
+                          <td>
                             {order.isPaid
                               ? moment(order.paidAt).calendar()
                               : moment(order.createdAt).calendar()}
                           </td>
-                          <td>${order.total}</td>
+
+                          {order.voucher === 0 ? (
+                            <td>${order.cost}</td>
+                          ) : (
+                            <td>${order.total}</td>
+                          )}
                           <td className="text-align-center">
                             &nbsp;&nbsp;&nbsp;
                             <i
