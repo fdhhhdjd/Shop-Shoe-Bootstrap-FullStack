@@ -1,3 +1,7 @@
+.WebSite:https://shopshoetaiheo.herokuapp.com/
+
+Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
+
 1. API dành cho admin
 
 \*Admin:
