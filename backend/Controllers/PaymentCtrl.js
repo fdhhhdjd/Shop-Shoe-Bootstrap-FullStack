@@ -89,9 +89,8 @@ const paymentCtrl = {
   createPayment: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select(
-        "name email total_cart discount"
+        "name email total_cart discount voucher"
       );
-      console.log(user);
       if (!user) return res.status(400).json({ msg: "User does not exist." });
       const { cart, paymentID, address } = req.body;
       const cost = cart.reduce((prev, item) => {
@@ -105,6 +104,7 @@ const paymentCtrl = {
         email,
         cart,
         cost,
+        voucher: user.voucher,
         discount: user.discount,
         total: user.total_cart,
         paymentID,
