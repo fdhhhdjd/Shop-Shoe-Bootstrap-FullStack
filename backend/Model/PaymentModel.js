@@ -35,10 +35,6 @@ const paymentSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    voucher: {
-      type: Number,
-      required: true,
-    },
     total: {
       type: Number,
       required: true,

@@ -42,10 +42,6 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    voucher: {
-      type: Number,
-      default: 0,
-    },
     phone_number: {
       type: String,
       required: false,

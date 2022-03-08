@@ -90,9 +90,9 @@ const categoryCtrl = {
         }, 0);
         await Users.findByIdAndUpdate(
           { _id: req.user.id },
-          { total_cart: totalCart, discount: 0, voucher: 0 }
+          { total_cart: totalCart, discount: 0 }
         );
-        res.json({ totalCart: totalCart, discount_value: 0, voucher: 0 });
+        res.json({ totalCart: totalCart, discount_value: 0 });
       } else if (voucher_code) {
         const voucher = await Voucher.findOne({ title: voucher_code });
         //nhap voucher nhung bi khong hop le
@@ -102,14 +102,13 @@ const categoryCtrl = {
           }, 0);
           await Users.findByIdAndUpdate(
             { _id: req.user.id },
-            { total_cart: totalCart, discount: 0, voucher: 0 }
+            { total_cart: totalCart, discount: 0 }
           );
           res.json({
             status: 400,
             success: false,
             msg: "Not Found Voucher",
             totalCart,
-            voucher_value: 0,
             discount_value: 0,
           });
         }
@@ -123,11 +122,7 @@ const categoryCtrl = {
 
         await Users.findByIdAndUpdate(
           { _id: req.user.id },
-          {
-            total_cart: total_cart,
-            discount: discount_value,
-            voucher: voucher.value,
-          }
+          { total_cart: total_cart, discount: discount_value }
         );
 
         res.json({
@@ -135,7 +130,6 @@ const categoryCtrl = {
           success: true,
           voucher: voucher,
           cost: totalCart,
-          voucher_value: voucher.value,
           discount_value,
           totalCart: total_cart,
           msg: "Code Voucher Exactly",
