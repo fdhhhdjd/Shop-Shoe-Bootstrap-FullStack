@@ -27,6 +27,14 @@ const paymentSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    cost: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number,
+      required: true,
+    },
     total: {
       type: Number,
       required: true,
