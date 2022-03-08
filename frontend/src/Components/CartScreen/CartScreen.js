@@ -122,7 +122,7 @@ const CartScreen = () => {
           icon: "success",
         });
       } else {
-        swal("Thank you for 😆'!");
+        swal("Thank you for 😆 !");
       }
     });
   };
