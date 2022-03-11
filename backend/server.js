@@ -9,8 +9,11 @@ connectDB();
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: ".env" });
 }
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Tai heo Fa" });
+app.get("/tai", (req, res) => {
+  return res.status(200).json({
+    status: "200",
+    message: "WellCome To Tai Heo ",
+  });
 });
 
 const PORT = process.env.PORT || 5000;
