@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
-import { Loading, OrderDetailInfo, OrderDetailProducts } from "../../imports";
-import Message from "../../Pages/Error/Message";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Loading, OrderDetailInfo, OrderDetailProducts } from "../../imports";
 
 const OrderDetailMain = () => {
   const { detailOrder, loading, error } = useSelector((state) => ({

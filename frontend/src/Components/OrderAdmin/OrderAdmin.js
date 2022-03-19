@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Sidebar,
-  HeaderAdmin,
-  MainProduct,
-  MainOrder,
-} from "../../imports/index";
+import { HeaderAdmin, MainOrder, Sidebar } from "../../imports/index";
 const OrderAdmin = () => {
   return (
     <>

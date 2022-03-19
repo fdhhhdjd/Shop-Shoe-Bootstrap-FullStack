@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
-import { useDispatch, useSelector } from "react-redux";
-import { UpdatePaymentStatusInitial, reset } from "../../Redux/OrderSlice";
+import { SwaleMessage } from "../../imports/index";
+import { reset, UpdatePaymentStatusInitial } from "../../Redux/OrderSlice";
 const initialState = {
   order_status: "",
 };
@@ -14,7 +14,6 @@ const MainEditOrderAdmin = () => {
     ...state.order,
   }));
   const { order_status } = states;
-  console.log(order, "order");
   const dispatch = useDispatch();
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
@@ -51,14 +50,10 @@ const MainEditOrderAdmin = () => {
     if (editStatusPayment.status === 200) {
       setCallbackAdmin(!callbackAdmin);
       navigate("/orders");
-      swal(editStatusPayment.msg, {
-        icon: "success",
-      });
+      SwaleMessage(editStatusPayment.msg, "success");
       dispatch(reset());
     } else if (editStatusPayment.status === 400) {
-      swal(editStatusPayment.msg, {
-        icon: "error",
-      });
+      SwaleMessage(editStatusPayment.msg, "error");
       dispatch(reset());
     }
   }, [editStatusPayment]);

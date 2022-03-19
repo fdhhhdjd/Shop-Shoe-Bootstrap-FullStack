@@ -1,7 +1,6 @@
 import moment from "moment";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { Loading } from "../../imports/index";
 import Message from "../../Pages/Error/Message";
 const LatestUser = () => {

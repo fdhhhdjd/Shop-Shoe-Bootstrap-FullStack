@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import swal from "sweetalert";
-import { Header, Loading, MetaData } from "../../imports/index";
+import {
+  Header,
+  Loading,
+  Message,
+  MetaData,
+  SwaleMessage,
+} from "../../imports/index";
 import { reset, ResetInitiate } from "../../Redux/AuthenticationSlice";
-import Message from "../Error/Message";
 const initialState = {
   password: "",
   confirmPassword: "",
@@ -28,9 +32,7 @@ const Reset = () => {
   };
   useEffect(() => {
     if (resetForget.status === 200) {
-      swal(`${resetForget.msg}`, {
-        icon: "success",
-      });
+      SwaleMessage(`${resetForget.msg}`, "success");
       setState({ password: "", confirmPassword: "" });
       setTimeout(() => {
         window.close();

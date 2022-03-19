@@ -1,13 +1,13 @@
+import moment from "moment";
 import React, { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import swal from "sweetalert";
+import { GlobalState } from "../../Context/GlobalState";
 import { Loading } from "../../imports";
 import Message from "../../Pages/Error/Message";
-import { Link } from "react-router-dom";
-import moment from "moment";
 import { DeleteOrderNewUserInitial } from "../../Redux/OrderSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { GlobalState } from "../../Context/GlobalState";
-import swal from "sweetalert";
-const History = ({ cartItems }) => {
+const History = () => {
   const { loading, order, error } = useSelector((state) => ({
     ...state.products,
   }));

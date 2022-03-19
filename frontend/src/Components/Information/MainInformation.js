@@ -1,15 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Loading, Admins } from "../../imports";
-import Message from "../../Pages/Error/Message";
 import { Link } from "react-router-dom";
-import { GlobalState } from "../../Context/GlobalState";
 import swal from "sweetalert";
-import axios from "axios";
+import { GlobalState } from "../../Context/GlobalState";
+import { Loading } from "../../imports";
+import { Message, SwaleMessage } from "../../imports/index";
 import {
   DeleteInformationInitial,
   reset,
 } from "../../Redux/InformationAdminSlice";
+
 const MainInformation = () => {
   const { Information, loadings, error, deleteInformation } = useSelector(
     (state) => ({
@@ -39,7 +39,7 @@ const MainInformation = () => {
         if (willDelete) {
           dispatch(DeleteInformationInitial({ id, token }));
         } else {
-          swal("Thank you for 😆'!");
+          SwaleMessage("Thank you for 😆'!");
         }
       });
     } catch (error) {
@@ -49,14 +49,10 @@ const MainInformation = () => {
   useEffect(() => {
     if (deleteInformation.status === 200) {
       setCallbackAdmin(!callbackAdmin);
-      swal(deleteInformation.msg, {
-        icon: "success",
-      });
+      SwaleMessage(deleteInformation.msg, "success");
       dispatch(reset());
     } else if (deleteInformation.status === 400) {
-      swal(deleteInformation.msg, {
-        icon: "error",
-      });
+      SwaleMessage(deleteInformation.msg, "error");
       dispatch(reset());
     }
   }, [deleteInformation]);

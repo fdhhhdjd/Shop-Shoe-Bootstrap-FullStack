@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Loading, Rating } from "../../imports/index";
-import Message from "../../Pages/Error/Message";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
-import swal from "sweetalert";
+import { SwaleMessage } from "../../imports";
+import { Loading, Message, Rating } from "../../imports/index";
 const ShopSection = React.forwardRef((props, ref) => {
   const { loading, product, error } = useSelector((state) => ({
     ...state.products,
@@ -82,9 +81,7 @@ const ShopSection = React.forwardRef((props, ref) => {
 
   const handleLoadMore = () => {
     if (itemsPerPage === products && products.length) {
-      return swal("It's over, my friend 😄", {
-        icon: "error",
-      });
+      return SwaleMessage("It's over, my friend 😄", "error");
     }
     setitemsPerPage(itemsPerPage + 3);
   };

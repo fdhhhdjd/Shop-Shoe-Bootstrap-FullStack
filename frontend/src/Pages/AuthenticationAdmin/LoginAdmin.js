@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
+import GoogleLogin from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Loading, MetaData, HeaderLoginAdmin } from "../../imports/index";
+import { toast } from "react-toastify";
+import {
+  HeaderLoginAdmin,
+  Loading,
+  MetaData,
+  Message,
+} from "../../imports/index";
 import {
   LoginAdminInitial,
   LoginGooglAdminInitiate,
   reset,
 } from "../../Redux/AuthenticationAdminSlice";
-import Message from "../Error/Message";
-import GoogleLogin from "react-google-login";
-import { toast } from "react-toastify";
 const initialState = {
   email: "",
   password: "",

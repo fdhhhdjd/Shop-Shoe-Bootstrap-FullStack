@@ -1,7 +1,7 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { ProfileTabAdmin, ChangePasswordAdmin } from "../../imports/index";
-import moment from "moment";
+import { ChangePasswordAdmin, ProfileTabAdmin } from "../../imports/index";
 const ProfileAdmin = () => {
   const { profileAdmin } = useSelector((state) => ({ ...state.admin }));
   const { order } = useSelector((state) => ({

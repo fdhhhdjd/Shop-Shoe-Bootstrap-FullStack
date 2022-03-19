@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Header, Loading, MetaData } from "../../imports/index";
-import { ForgetInitiate, reset } from "../../Redux/AuthenticationSlice";
-import Message from "../Error/Message";
 import swal from "sweetalert";
+import {
+  Header,
+  Loading,
+  MetaData,
+  Message,
+  SwaleMessage,
+} from "../../imports/index";
+import { ForgetInitiate, reset } from "../../Redux/AuthenticationSlice";
+
 const initialState = {
   email: "",
 };
 const Forget = () => {
   window.scrollTo(0, 0);
   const [state, setState] = useState(initialState);
-  const [password, setPassword] = useState("");
-  const error = true;
   const dispatch = useDispatch();
   const { email } = state;
   const { loading, forget } = useSelector((state) => ({ ...state.data }));
@@ -30,9 +34,7 @@ const Forget = () => {
   };
   useEffect(() => {
     if (forget.status === 200) {
-      swal(`${forget.msg}`, {
-        icon: "success",
-      });
+      SwaleMessage(`${forget.msg}`, "success");
       setState({ email: "" });
       dispatch(reset());
     }

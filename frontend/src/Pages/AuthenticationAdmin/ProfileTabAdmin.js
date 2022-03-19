@@ -1,11 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
-import Message from "../../Pages/Error/Message";
-import { Loading } from "../../imports/index";
 import { GlobalState } from "../../Context/GlobalState";
+import { Loading } from "../../imports/index";
 const initialState = {
   name: "",
   phone_number: "",

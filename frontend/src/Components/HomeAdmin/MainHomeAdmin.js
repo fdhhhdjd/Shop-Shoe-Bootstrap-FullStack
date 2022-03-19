@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
-  TopTotal,
-  SaleStatistics,
-  LatestOrder,
-  ProductsStatistics,
-  LatestUser,
   CompareTotal,
   CompareTotalNotReceived,
+  LatestOrder,
+  LatestUser,
+  ProductsStatistics,
+  SaleStatistics,
+  TopTotal,
 } from "../../imports/index";
 const MainHomeAdmin = () => {
   const { order, newUserBuy, loading, error } = useSelector((state) => ({

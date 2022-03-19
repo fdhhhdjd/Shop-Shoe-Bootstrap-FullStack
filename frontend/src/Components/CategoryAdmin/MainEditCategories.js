@@ -1,11 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Loading } from "../../imports/index";
-import { toast } from "react-toastify";
-import swal from "sweetalert";
-import { GlobalState } from "../../Context/GlobalState";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { GlobalState } from "../../Context/GlobalState";
+import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
 import {
   CreateCategoriesInitial,
   reset,
@@ -27,9 +25,9 @@ const MainEditCategories = () => {
     ...state.admin,
   }));
   const token = refreshTokenAdmin.accessToken && refreshTokenAdmin.accessToken;
+  const { handleUpload, handleDestroy, images, setImages } = useUpDesImg(token);
   const { id } = useParams();
   const [onEdit, setOnEdit] = useState(false);
-  const [images, setImages] = useState(false);
   const state = useContext(GlobalState);
   const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
   const navigate = useNavigate();
@@ -71,84 +69,28 @@ const MainEditCategories = () => {
       toast.error(error.response.data.msg);
     }
   };
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    try {
-      const file = e.target.files[0];
-      if (!file)
-        return swal("File not Exists", {
-          icon: "error",
-        });
-      if (file.size > 1024 * 1024)
-        // 1mb
-        return swal("Size too large!", {
-          icon: "error",
-        });
-      if (file.type !== "image/jpeg" && file.type !== "image/png")
-        // 1mb
-        return swal("File format is incorrect.", {
-          icon: "error",
-        });
-      let formData = new FormData();
-
-      formData.append("file", file);
-
-      const res = await axios.post("/api/uploadImageUser", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `${refreshTokenAdmin.accessToken}`,
-        },
-      });
-
-      setImages(res.data);
-    } catch (error) {
-      toast.error(error.response.data.msg);
-    }
-  };
-  const handleDestroy = async () => {
-    try {
-      await axios.post(
-        "/api/destroyImageUser",
-        { public_id: images.public_id },
-        {
-          headers: {
-            Authorization: `${refreshTokenAdmin.accessToken}`,
-          },
-        }
-      );
-
-      setImages(false);
-    } catch (err) {
-      alert(err.response.data.msg);
-    }
-  };
   useEffect(() => {
     if (onEdit) {
       if (updateCategory.status === 200) {
         setCallbackAdmin(!callbackAdmin);
         navigate("/category");
-        swal(updateCategory.msg, {
-          icon: "success",
-        });
+        SwaleMessage(updateCategory.msg, "success");
+
         dispatch(reset());
       } else if (updateCategory.status === 400) {
-        swal(updateCategory.msg, {
-          icon: "error",
-        });
+        SwaleMessage(updateCategory.msg, "error");
         dispatch(reset());
       }
     } else {
       if (createCategory.status === 200) {
         setCallbackAdmin(!callbackAdmin);
         navigate("/category");
-        swal(createCategory.msg, {
-          icon: "success",
-        });
+        SwaleMessage(createCategory.msg, "success");
+
         dispatch(reset());
       } else if (createCategory.status === 400) {
-        swal(createCategory.msg, {
-          icon: "error",
-        });
+        SwaleMessage(createCategory.msg, "error");
+
         dispatch(reset());
       }
     }

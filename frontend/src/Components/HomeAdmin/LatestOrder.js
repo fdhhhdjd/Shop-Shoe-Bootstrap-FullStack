@@ -1,13 +1,12 @@
 import moment from "moment";
 import React, { useState } from "react";
+import CountUp from "react-countup";
 import { Link } from "react-router-dom";
 import { Loading } from "../../imports/index";
 import Message from "../../Pages/Error/Message";
-import CountUp from "react-countup";
 const LatestOrder = (props) => {
   const { loading, error, orders } = props;
   const [visible, setVisible] = useState(3);
-  console.log(orders && orders.length, "aaa");
   const handleLoadMore = () => {
     setVisible((e) => e + 3);
   };

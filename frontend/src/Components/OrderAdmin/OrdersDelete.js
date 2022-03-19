@@ -5,7 +5,7 @@ import CountUp from "react-countup";
 import { reset, UndoOrderNewUserInitial } from "../../Redux/OrderSlice";
 import { GlobalState } from "../../Context/GlobalState";
 import { useDispatch, useSelector } from "react-redux";
-import swal from "sweetalert";
+import { SwaleMessage } from "../../imports";
 const OrdersDelete = (props) => {
   const { orders, visible, search } = props;
   const dispatch = useDispatch();
@@ -18,13 +18,9 @@ const OrdersDelete = (props) => {
     try {
       dispatch(UndoOrderNewUserInitial({ id }));
       setCallbackAdmin(!callbackAdmin);
-      swal("Undo Order Customer successfully 🤩", {
-        icon: "success",
-      });
+      SwaleMessage("Undo Order Customer successfully 🤩", "success");
     } catch (error) {
-      swal(error.response.data.msg, {
-        icon: "error",
-      });
+      SwaleMessage(error.response.data.msg, "error");
     }
   };
   useEffect(() => {

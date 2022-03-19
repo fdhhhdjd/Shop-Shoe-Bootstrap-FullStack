@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { OrderDetailMain, Sidebar, HeaderAdmin } from "../../imports/index";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { HeaderAdmin, OrderDetailMain, Sidebar } from "../../imports/index";
 import { GetIdOrderInitial, reset } from "../../Redux/OrderSlice";
-import { useSelector, useDispatch } from "react-redux";
 
 const OderDetailAdmin = () => {
   const { id } = useParams();

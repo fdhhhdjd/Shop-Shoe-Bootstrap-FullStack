@@ -1,0 +1,31 @@
+//!Utils
+import {
+  getProducts,
+  getProfiles,
+  getAllUser,
+  getAllAdmin,
+  AddToCart,
+  TranSuccess,
+  UploadImg,
+  DestroyImg,
+  AddProduct,
+  UpdateProduct,
+  UpdateUser,
+  updateUserAdmin,
+  deleteUserAdmin,
+} from "../utils/Api";
+export {
+  getProducts,
+  getProfiles,
+  getAllUser,
+  getAllAdmin,
+  AddToCart,
+  TranSuccess,
+  UploadImg,
+  DestroyImg,
+  AddProduct,
+  UpdateProduct,
+  UpdateUser,
+  updateUserAdmin,
+  deleteUserAdmin,
+};

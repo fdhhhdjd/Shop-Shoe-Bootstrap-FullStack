@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Loading, MetaData, HeaderLoginAdmin } from "../../imports/index";
-import Message from "../Error/Message";
 import swal from "sweetalert";
+import {
+  HeaderLoginAdmin,
+  Loading,
+  MetaData,
+  Message,
+} from "../../imports/index";
 import {
   ForgetAdminInitiate,
   reset,

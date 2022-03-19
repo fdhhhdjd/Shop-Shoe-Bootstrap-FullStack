@@ -1,13 +1,13 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import UserApi from "./UserApi";
-import { RefreshTokenInitiate } from "../Redux/AuthenticationSlice";
-import ProductApi from "./ProductApi";
-import OrderApi from "./OrderApi";
 import { RefreshTokenAdminInitial } from "../Redux/AuthenticationAdminSlice";
+import { RefreshTokenInitiate } from "../Redux/AuthenticationSlice";
 import CategoriesApi from "./CategoriesApi";
-import VoucherApi from "./VoucherApi";
 import InformationApi from "./InformationApi";
+import OrderApi from "./OrderApi";
+import ProductApi from "./ProductApi";
+import UserApi from "./UserApi";
+import VoucherApi from "./VoucherApi";
 export const GlobalState = createContext();
 export const DataProvider = ({ children }) => {
   const [callback, setCallback] = useState(false);

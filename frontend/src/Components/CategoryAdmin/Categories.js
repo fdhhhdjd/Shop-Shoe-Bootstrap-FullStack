@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidebar, HeaderAdmin, MainCategories } from "../../imports/index";
+import { HeaderAdmin, MainCategories, Sidebar } from "../../imports/index";
 const Categories = () => {
   return (
     <>

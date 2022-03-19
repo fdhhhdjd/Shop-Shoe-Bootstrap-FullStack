@@ -1,10 +1,11 @@
+import axios from "axios";
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Product } from "../../imports/index";
+import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
-import axios from "axios";
+import { Product } from "../../imports/index";
+import { SwaleMessage } from "../../imports";
 const MainProduct = () => {
   const { category } = useSelector((state) => ({
     ...state.categories,
@@ -26,7 +27,6 @@ const MainProduct = () => {
     setCategoriess(e.target.value);
     setSearch("");
   };
-  console.log(products);
   //check box
   const handleCheck = (id) => {
     products.forEach((product) => {
@@ -51,22 +51,16 @@ const MainProduct = () => {
       });
       await deleteProduct;
       setCallbackAdmin(!callbackAdmin);
-      swal("Delete Product successfully 🤣!", {
-        icon: "success",
-      });
+      SwaleMessage("Delete Product successfully 🤣!", "success");
     } catch (err) {
-      swal(err.response.data.msg, {
-        icon: "error",
-      });
+      SwaleMessage(err.response.data.msg, "error");
     }
   };
   const deleteAll = () => {
     products.forEach((product) => {
       if (product.checked) DeleteProduct(product._id);
     });
-    swal("Delete User successfully 🤣!", {
-      icon: "success",
-    });
+    SwaleMessage("Delete User successfully 🤣!", "success");
   };
   //pagination
   const [currentPage, setcurrentPage] = useState(1);
@@ -137,16 +131,13 @@ const MainProduct = () => {
 
   const handleLoadMore = () => {
     if (itemsPerPage === products && products.length) {
-      return swal("It's over, my friend 😄", {
-        icon: "error",
-      });
+      return SwaleMessage("It's over, my friend 😄", "error");
     }
     setitemsPerPage(itemsPerPage + 4);
   };
   const renderData = (data, index) => {
     return (
       <>
-        {console.log(data && data, "allsdasdas")}
         {data &&
           data
             .sort((a, b) => a.name.toString() - b.name.toString())

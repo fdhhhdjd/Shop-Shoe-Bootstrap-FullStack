@@ -1,11 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import swal from "sweetalert";
-import Message from "../../Pages/Error/Message";
-import { Loading } from "../../imports/index";
 import { GlobalState } from "../../Context/GlobalState";
+import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
 const initialState = {
   name: "",
   phone_number: "",
@@ -15,21 +12,19 @@ const initialState = {
 const ProfileTabs = () => {
   const [states, setState] = useState(initialState);
   const dispatch = useDispatch();
-  const [images, setImages] = useState(false);
-  const [loadings, setLoading] = useState(false);
+
   const state = useContext(GlobalState);
   const [callback, setCallback] = state.callback;
-  const { loading, profile, refreshToken } = useSelector((state) => ({
+  const { profile, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
 
   const token = refreshToken.accessToken;
+  const { loading, handleUpload, handleDestroy, images, setImages } =
+    useUpDesImg(token);
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!images)
-      return swal("No Image Upload 😅.", {
-        icon: "error",
-      });
+    if (!images) return SwaleMessage("No Image Upload 😅 !", "error");
     try {
       await axios.patch(
         `/api/auth/profile/update`,
@@ -40,9 +35,7 @@ const ProfileTabs = () => {
           },
         }
       );
-      swal("Edit profile Successfully", {
-        icon: "success",
-      });
+      SwaleMessage("Edit profile Successfully", "success");
       setCallback(!callback);
     } catch (error) {
       alert(error.response.data.msg);
@@ -62,59 +55,6 @@ const ProfileTabs = () => {
       }
     }
   }, [profile]);
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    try {
-      const file = e.target.files[0];
-      if (!file)
-        return swal("File not Exists", {
-          icon: "error",
-        });
-      if (file.size > 1024 * 1024)
-        // 1mb
-        return swal("Size too large!", {
-          icon: "error",
-        });
-      if (file.type !== "image/jpeg" && file.type !== "image/png")
-        // 1mb
-        return swal("File format is incorrect.", {
-          icon: "error",
-        });
-      let formData = new FormData();
-
-      formData.append("file", file);
-      setLoading(true);
-      const res = await axios.post("/api/uploadImageUser", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `${token}`,
-        },
-      });
-
-      setLoading(false);
-      setImages(res.data);
-    } catch (error) {
-      toast.error(error.response.data.msg);
-    }
-  };
-  const handleDestroy = async () => {
-    try {
-      setLoading(true);
-      await axios.post(
-        "/api/destroyImageUser",
-        { public_id: images.public_id },
-        {
-          headers: {
-            Authorization: ` ${token}`,
-          },
-        }
-      );
-      setLoading(false);
-      setImages(false);
-    } catch (err) {
-      alert(err.response.data.msg);
-    }
-  };
   const styleUpload = {
     display: images ? "block" : "none",
   };
@@ -126,7 +66,7 @@ const ProfileTabs = () => {
             <div className="author-card-cover"></div>
             <div className="author-card-profile row">
               <div className="author-avatar col-md-4" style={styleUpload}>
-                {loadings ? (
+                {loading ? (
                   <Loading />
                 ) : (
                   <>

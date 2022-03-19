@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import { GlobalState } from "../../Context/GlobalState";
-import swal from "sweetalert";
 import axios from "axios";
+import moment from "moment";
+import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import { GetAllUserInitiate } from "../../Redux/AuthenticationAdminSlice";
+import { Link } from "react-router-dom";
+import swal from "sweetalert";
+import { GlobalState } from "../../Context/GlobalState";
+import { SwaleMessage } from "../../imports";
 const Admins = (props) => {
-  const { orders, visible, search } = props;
+  const { visible, search } = props;
   const state = useContext(GlobalState);
   const [admins, setAdmins] = state.UserApi.admins;
   const { refreshTokenAdmin } = useSelector((state) => ({
@@ -28,11 +28,9 @@ const Admins = (props) => {
             headers: { Authorization: ` ${refreshTokenAdmin.accessToken}` },
           });
           setCallbackAdmin(!callbackAdmin);
-          swal("Delete User Successfully 😉 !", {
-            icon: "success",
-          });
+          SwaleMessage("Delete User Successfully 😉 !", "success");
         } else {
-          swal("Thank you for 😆'!");
+          SwaleMessage("Thank you for 😆'!");
         }
       });
     } catch (error) {
@@ -47,13 +45,9 @@ const Admins = (props) => {
 
       await deleteProduct;
       setCallbackAdmin(!callbackAdmin);
-      swal("Delete User successfully 🤣!", {
-        icon: "success",
-      });
+      SwaleMessage("Delete User successfully 🤣!", "success");
     } catch (err) {
-      swal(err.response.data.msg, {
-        icon: "error",
-      });
+      SwaleMessage(err.response.data.msg, "error");
     }
   };
   const handleCheck = (id) => {
@@ -66,9 +60,7 @@ const Admins = (props) => {
     admins.forEach((product) => {
       if (product.checked) deleteUser(product._id);
     });
-    swal("Delete User successfully 🤣!", {
-      icon: "success",
-    });
+    SwaleMessage("Delete User successfully 🤣!", "success");
   };
   const checkAll = () => {
     admins.forEach((product) => {

@@ -1,12 +1,12 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
-  Header,
-  ProfileTabs,
   ChangePassword,
+  Header,
   Order,
+  ProfileTabs,
 } from "../../imports/index";
-import moment from "moment";
 const Profile = () => {
   const { profile } = useSelector((state) => ({ ...state.data }));
   const { order } = useSelector((state) => ({

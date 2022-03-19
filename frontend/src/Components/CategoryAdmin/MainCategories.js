@@ -1,13 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Loading, Admins } from "../../imports";
-import Message from "../../Pages/Error/Message";
 import { Link } from "react-router-dom";
-import { GlobalState } from "../../Context/GlobalState";
 import swal from "sweetalert";
-import axios from "axios";
-import { DeleteCategoriesInitial } from "../../Redux/CategoryAdminSlice";
-import { reset } from "../../Redux/CategoryAdminSlice";
+import { GlobalState } from "../../Context/GlobalState";
+import { Loading, SwaleMessage } from "../../imports";
+import Message from "../../Pages/Error/Message";
+import { DeleteCategoriesInitial, reset } from "../../Redux/CategoryAdminSlice";
 const MainCategories = () => {
   const { category, loadings, error, deleteCategory } = useSelector(
     (state) => ({
@@ -47,14 +45,10 @@ const MainCategories = () => {
   useEffect(() => {
     if (deleteCategory.status === 200) {
       setCallbackAdmin(!callbackAdmin);
-      swal(deleteCategory.msg, {
-        icon: "success",
-      });
+      SwaleMessage(deleteCategory.msg, "success");
       dispatch(reset());
     } else if (deleteCategory.status === 400) {
-      swal(deleteCategory.msg, {
-        icon: "error",
-      });
+      SwaleMessage(deleteCategory.msg, "error");
       dispatch(reset());
     }
   }, [deleteCategory]);

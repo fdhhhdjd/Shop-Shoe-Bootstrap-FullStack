@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Loading, Users } from "../../imports";
-import Message from "../../Pages/Error/Message";
-import { Link } from "react-router-dom";
+import { Loading, Users, Message } from "../../imports";
 const MainManagerUser = () => {
   const { userAll, loading, error } = useSelector((state) => ({
     ...state.admin,

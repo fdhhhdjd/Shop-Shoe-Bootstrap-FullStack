@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Loading, Admins } from "../../imports";
-import Message from "../../Pages/Error/Message";
+import { Admins, Loading, Message } from "../../imports";
 const MainManagerAdmin = () => {
   const { adminAll, loading, error } = useSelector((state) => ({
     ...state.admin,

@@ -1,26 +1,28 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import swal from "sweetalert";
-import { ProfileInitiate } from "../Redux/AuthenticationSlice";
 import {
   GetAllAdminInitiate,
   GetAllUserInitiate,
   NewUserInitiate,
   ProfileAdminInitiate,
 } from "../Redux/AuthenticationAdminSlice";
+import { ProfileInitiate } from "../Redux/AuthenticationSlice";
+import {
+  getAllUser,
+  getAllAdmin,
+  AddToCart,
+  getProfiles,
+} from "../imports/Import";
+import { SwaleMessage } from "../imports/index";
 const UserApi = (token, refreshTokensAdmin) => {
   const dispatch = useDispatch();
-  const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [cart, setCart] = useState([]);
-  const [history, setHistory] = useState([]);
   const [users, setUsers] = useState([]);
   const [admins, setAdmins] = useState([]);
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
-  const { order } = useSelector((state) => ({ ...state.products }));
-  const orders = order.history && order.history;
   const tokens = refreshTokensAdmin;
   useEffect(() => {
     if (token && token.length > 0) {
@@ -28,7 +30,7 @@ const UserApi = (token, refreshTokensAdmin) => {
 
       const getUser = async () => {
         try {
-          const res = await axios.get("/api/auth/profile", {
+          const res = await axios.get(getProfiles(), {
             headers: { Authorization: token },
           });
           setCart(res.data.user.cart);
@@ -53,10 +55,10 @@ const UserApi = (token, refreshTokensAdmin) => {
   useEffect(() => {
     if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
       const getProducts = async () => {
-        const res = await axios.get("/api/auth/getAllUser", {
+        const res = await axios.get(getAllUser(), {
           headers: { Authorization: refreshTokensAdmin },
         });
-        const data = await axios.get("/api/auth/getAllAdmin", {
+        const data = await axios.get(getAllAdmin(), {
           headers: { Authorization: refreshTokensAdmin },
         });
         setUsers(res.data.user);
@@ -88,19 +90,15 @@ const UserApi = (token, refreshTokensAdmin) => {
       setCart([...cart, { ...product, quantity: 1 }]);
 
       await axios.patch(
-        "/api/auth/addcart",
+        AddToCart(),
         { cart: [...cart, { ...product, quantity: 1 }] },
         {
           headers: { Authorization: token },
         }
       );
-      swal("Added cart successfully 😉 !", {
-        icon: "success",
-      });
+      SwaleMessage("Added cart successfully 😉 !", "success");
     } else {
-      swal("This product has been added to cart.", {
-        icon: "error",
-      });
+      SwaleMessage("This product has been added to cart.", "error");
     }
   };
   return {

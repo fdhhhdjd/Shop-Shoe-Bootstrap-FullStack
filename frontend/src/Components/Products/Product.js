@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { GlobalState } from "../../Context/GlobalState";
-import swal from "sweetalert";
 import axios from "axios";
+import React, { useContext, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import swal from "sweetalert";
+import { GlobalState } from "../../Context/GlobalState";
+import { SwaleMessage } from "../../imports";
 const Product = (props) => {
   const { product, handleCheck } = props;
   const { refreshTokenAdmin } = useSelector((state) => ({
@@ -30,11 +31,9 @@ const Product = (props) => {
           setCallback(!callback);
           setCallbackAdmin(!callbackAdmin);
           setLoading(false);
-          swal("Delete successfully, wait Loading... 😉 !", {
-            icon: "success",
-          });
+          SwaleMessage("Delete successfully, wait Loading... 😉 !", "success");
         } else {
-          swal("Thank you for 😆'!");
+          SwaleMessage("Thank you for 😆'!");
         }
       });
     } catch (error) {

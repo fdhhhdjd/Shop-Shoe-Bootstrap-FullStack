@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidebar, HeaderAdmin, MainEditCategories } from "../../imports/index";
+import { HeaderAdmin, MainEditCategories, Sidebar } from "../../imports/index";
 const EditCategories = () => {
   return (
     <>

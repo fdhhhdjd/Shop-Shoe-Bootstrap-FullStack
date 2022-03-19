@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidebar, HeaderAdmin, MainManagerUser } from "../../imports/index";
+import { HeaderAdmin, MainManagerUser, Sidebar } from "../../imports/index";
 const ManagerUser = () => {
   return (
     <>

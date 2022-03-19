@@ -1,12 +1,10 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 import { GlobalState } from "../../Context/GlobalState";
+import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
 const Header = () => {
-  const [keyword, setKeyword] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

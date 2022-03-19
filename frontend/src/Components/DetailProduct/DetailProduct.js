@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Header } from "../../imports/index";
 import {
   GetProductDetailInitial,
@@ -8,11 +8,10 @@ import {
   ReviewProductDetailInitial,
 } from "../../Redux/ProductSlice";
 import { Loading, Rating, MetaData } from "../../imports/index";
-import { Link } from "react-router-dom";
 import Message from "../../Pages/Error/Message";
 import { GlobalState } from "../../Context/GlobalState";
 import Comments from "./Comments";
-import swal from "sweetalert";
+import { SwaleMessage } from "../../imports/index";
 const initialState = {
   comment: "",
   rating: 0,
@@ -45,7 +44,7 @@ const DetailProduct = () => {
       dispatch(GetProductDetailInitial(id));
       getReplies();
       if (reviews.status === 400) {
-        return swal(reviews.msg, { icon: "error" });
+        return SwaleMessage(reviews.msg, "error");
       }
     }
     return () => {
@@ -68,9 +67,7 @@ const DetailProduct = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (!comment) {
-      return swal("Please Content Comment 🤗 ", {
-        icon: "error",
-      });
+      return SwaleMessage("Please Content Comment 🤗 ", "error");
     }
     dispatch(ReviewProductDetailInitial({ id, token, rating, comment }));
     setCallback(!callback);

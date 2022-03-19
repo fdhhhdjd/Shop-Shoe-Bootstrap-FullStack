@@ -1,6 +1,6 @@
 import React from "react";
-import { LoadingStyle } from "../../Styles/LoadingStyle";
 import { Loading1 } from "../../imports/Image";
+import { LoadingStyle } from "../../Styles/LoadingStyle";
 const Loadings = () => {
   return (
     <LoadingStyle>

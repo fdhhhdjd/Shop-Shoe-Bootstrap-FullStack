@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
+import GoogleLogin from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Header, Loading, MetaData } from "../../imports/index";
+import { toast } from "react-toastify";
+import { Header, Loading, MetaData, Message } from "../../imports/index";
 import {
   LoginGoogleInitiate,
   LoginInitial,
   reset,
 } from "../../Redux/AuthenticationSlice";
-import Message from "../Error/Message";
-import GoogleLogin from "react-google-login";
-import { toast } from "react-toastify";
+
 const initialState = {
   email: "",
   password: "",
@@ -21,7 +21,6 @@ const Login = () => {
   const [state, setState] = useState(initialState);
   const { email, password } = state;
   const { loading, auth } = useSelector((state) => ({ ...state.data }));
-  const { profile } = useSelector((state) => ({ ...state.data }));
 
   const handleChange = (e) => {
     const { name, value } = e.target;

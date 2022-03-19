@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CountUp from "react-countup";
 import { useSelector } from "react-redux";
 const CompareTotalNotReceived = () => {

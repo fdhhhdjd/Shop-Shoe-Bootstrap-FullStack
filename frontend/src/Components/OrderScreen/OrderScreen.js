@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Loading, Header } from "../../imports";
-import { Link, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { Header, Loading } from "../../imports";
 const OrderScreen = () => {
   const { order, loading } = useSelector((state) => ({ ...state.products }));
 

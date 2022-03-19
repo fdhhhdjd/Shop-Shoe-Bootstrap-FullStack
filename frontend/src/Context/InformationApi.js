@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { GetInformationInitial } from "../Redux/InformationAdminSlice";
 const InformationApi = (callbackAdmin) => {
   const dispatch = useDispatch();

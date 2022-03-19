@@ -1,10 +1,5 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  GetProductInitial,
-  HistoryProductDetailInitial,
-} from "../Redux/ProductSlice";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   GetDeleteOrderInitial,
   GetOrderInitial,
@@ -14,6 +9,7 @@ import {
   RevenueReceivedEveryMonthInitial,
   RevenueReceivedMonthBeforeInitial,
 } from "../Redux/OrderSlice";
+import { HistoryProductDetailInitial } from "../Redux/ProductSlice";
 const OrderApi = (
   refreshTokens,
   refreshTokensAdmin,

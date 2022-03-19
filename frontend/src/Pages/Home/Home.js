@@ -1,12 +1,11 @@
 import React, { useRef } from "react";
 import {
+  CalltoActionSection,
+  Carousel,
   ContactInfo,
   Footer,
   Header,
-  MetaData,
-  CalltoActionSection,
   ShopSection,
-  Carousel,
 } from "../../imports";
 
 const Home = () => {

@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getProducts } from "../imports/Import";
 import { GetProductInitial } from "../Redux/ProductSlice";
 const ProductApi = (callback, callbackAdmin) => {
   const [callbacks, setCallbacks] = useState(false);
@@ -14,7 +15,7 @@ const ProductApi = (callback, callbackAdmin) => {
   }, [callback, callbacks, search, callbackAdmin]);
   useEffect(() => {
     const getProduct = async () => {
-      const res = await axios.get(`/api/product/getAll?${categoriess}&${sort}`);
+      const res = await axios.get(getProducts(categoriess, sort));
       setProduct(res.data.products);
     };
     getProduct();

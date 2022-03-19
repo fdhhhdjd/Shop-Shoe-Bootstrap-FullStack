@@ -1,11 +1,11 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Header, Loading, Paypal } from "../../imports/index";
-import { GlobalState } from "../../Context/GlobalState";
-import swal from "sweetalert";
 import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import swal from "sweetalert";
+import { GlobalState } from "../../Context/GlobalState";
+import { AddToCart, TranSuccess } from "../../imports/Import";
+import { Header, Loading, Paypal, SwaleMessage } from "../../imports/index";
 import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
 const initialState = {
   voucher_code: "",
@@ -69,7 +69,7 @@ const CartScreen = () => {
   };
   const addToCart = async (cart) => {
     await axios.patch(
-      "/api/auth/addcart",
+      AddToCart(),
       { cart },
       {
         headers: { Authorization: refreshTokens },
@@ -80,9 +80,7 @@ const CartScreen = () => {
     cart.forEach((item) => {
       if (item._id === id) {
         if (item.quantity === sock)
-          return swal("The company has sold out", {
-            icon: "warning",
-          });
+          return SwaleMessage("The company has sold out", "warning");
         item.quantity += 1;
       }
     });
@@ -118,11 +116,9 @@ const CartScreen = () => {
         });
         setCart([...cart]);
         addToCart(cart);
-        swal("Delete Car successfully !", {
-          icon: "success",
-        });
+        SwaleMessage("Delete Car successfully !", "success");
       } else {
-        swal("Thank you for 😆 !");
+        SwaleMessage("Thank you for 😆 !");
       }
     });
   };
@@ -130,7 +126,7 @@ const CartScreen = () => {
     const { paymentID, address } = payment;
 
     await axios.post(
-      "/api/payment/payments",
+      TranSuccess(),
       { cart, paymentID, address },
       {
         headers: { Authorization: refreshTokens },
@@ -139,24 +135,17 @@ const CartScreen = () => {
     window.location.reload();
     setCart([]);
     addToCart([]);
-
-    swal("You have successfully placed an order.", {
-      icon: "success",
-    });
+    SwaleMessage("You have successfully placed an order.", "success");
     console.log(payment);
   };
 
   useEffect(() => {
     if (Message.status === 200) {
-      swal(Message.msg, {
-        icon: "success",
-      });
+      SwaleMessage(Message.msg, "success");
       setVouchers({ voucher_code: "" });
       dispatch(reset());
     } else if (Message.status === 400) {
-      swal(Message.msg, {
-        icon: "error",
-      });
+      SwaleMessage(Message.msg, "error");
       dispatch(reset());
     }
   }, [totals]);

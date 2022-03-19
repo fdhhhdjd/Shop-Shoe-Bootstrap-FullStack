@@ -1,13 +1,13 @@
-import React, { Fragment, useEffect, useState } from "react";
-import Rating from "../Rating/Rating";
 import moment from "moment";
+import React, { Fragment, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import swal from "sweetalert";
 import {
   DeleteProductDetailInitial,
   updateReviewProductDetailInitial,
 } from "../../Redux/ProductSlice";
-import { useDispatch } from "react-redux";
-import { reset } from "../../Redux/AuthenticationSlice";
-import swal from "sweetalert";
+import { Rating } from "../../imports/index";
+import { SwaleMessage } from "../../imports";
 const initialState = {
   comment: "",
 };
@@ -58,11 +58,9 @@ const Comments = ({
       if (willDelete) {
         dispatch(DeleteProductDetailInitial({ productId, token, commentId }));
         setCallback(!callback);
-        swal("Delete Comments successfully 😉 !", {
-          icon: "success",
-        });
+        SwaleMessage("Delete Comments successfully 😉 !", "success");
       } else {
-        swal("Thank you for 😆'!");
+        SwaleMessage("Thank you for 😆 !");
       }
     });
   };

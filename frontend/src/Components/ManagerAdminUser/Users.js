@@ -1,11 +1,12 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import { GlobalState } from "../../Context/GlobalState";
-import swal from "sweetalert";
 import axios from "axios";
+import moment from "moment";
+import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import { GetAllUserInitiate } from "../../Redux/AuthenticationAdminSlice";
+import { Link } from "react-router-dom";
+import swal from "sweetalert";
+import { GlobalState } from "../../Context/GlobalState";
+import { deleteUserAdmin } from "../../imports/Import";
+import { SwaleMessage } from "../../imports/index";
 const Users = (props) => {
   const { orders, visible, search } = props;
   const state = useContext(GlobalState);
@@ -24,15 +25,13 @@ const Users = (props) => {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          axios.delete(`/api/auth/deleteUserAdmin/${id}`, {
+          axios.delete(``, {
             headers: { Authorization: ` ${refreshTokenAdmin.accessToken}` },
           });
           setCallbackAdmin(!callbackAdmin);
-          swal("Delete User Successfully 😉 !", {
-            icon: "success",
-          });
+          SwaleMessage("Delete User Successfully 😉 !", "success");
         } else {
-          swal("Thank you for 😆'!");
+          SwaleMessage("Thank you for 😆'!");
         }
       });
     } catch (error) {
@@ -41,19 +40,15 @@ const Users = (props) => {
   };
   const deleteUser = async (id) => {
     try {
-      const deleteProduct = axios.delete(`/api/auth/deleteUserAdmin/${id}`, {
+      const deleteProduct = axios.delete(deleteUserAdmin(id), {
         headers: { Authorization: refreshTokenAdmin.accessToken },
       });
 
       await deleteProduct;
       setCallbackAdmin(!callbackAdmin);
-      swal("Delete User successfully 🤣!", {
-        icon: "success",
-      });
+      SwaleMessage("Delete User successfully 🤣!", "success");
     } catch (err) {
-      swal(err.response.data.msg, {
-        icon: "error",
-      });
+      SwaleMessage(err.response.data.msg, "error");
     }
   };
   const handleCheck = (id) => {
@@ -66,9 +61,7 @@ const Users = (props) => {
     users.forEach((product) => {
       if (product.checked) deleteUser(product._id);
     });
-    swal("Delete User successfully 🤣!", {
-      icon: "success",
-    });
+    SwaleMessage("Delete User successfully 🤣!", "success");
   };
   const checkAll = () => {
     users.forEach((product) => {

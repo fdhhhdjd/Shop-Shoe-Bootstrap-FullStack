@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import Message from "../../Pages/Error/Message";
-import swal from "sweetalert";
-import { Loading, MetaData } from "../../imports/index";
+import { Loading, SwaleMessage, Message } from "../../imports/index";
 import { ChangePasswordInitiate, reset } from "../../Redux/AuthenticationSlice";
 const initialState = {
   oldPassword: "",
@@ -29,9 +26,7 @@ const ChangePassword = () => {
   };
   useEffect(() => {
     if (changePass.status === 200) {
-      swal(`${changePass.msg}`, {
-        icon: "success",
-      });
+      SwaleMessage(`${changePass.msg}`, "success");
       dispatch(reset());
       setState({ oldPassword: "", password: "", confirmPassword: "" });
     } else if (changePass.status === 400) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { HeaderAdmin, Sidebar, ProfileAdmin } from "../../imports/index";
+import { HeaderAdmin, ProfileAdmin, Sidebar } from "../../imports/index";
 const ProfileAdmins = () => {
   return (
     <>

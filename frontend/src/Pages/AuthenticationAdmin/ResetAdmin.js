@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { Header, Loading, MetaData } from "../../imports/index";
 import {
-  ResetAdminInitiate,
   reset,
+  ResetAdminInitiate,
 } from "../../Redux/AuthenticationAdminSlice";
 import Message from "../Error/Message";
 const initialState = {

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import Message from "../../Pages/Error/Message";
-import swal from "sweetalert";
-import { Loading } from "../../imports/index";
+import { Loading, Message, SwaleMessage } from "../../imports/index";
 import {
   ChangePasswordAdminInitiate,
   reset,
@@ -34,9 +31,7 @@ const ChangePasswordAdmin = () => {
   };
   useEffect(() => {
     if (changePasswordAdmin.status === 200) {
-      swal(`${changePasswordAdmin.msg}`, {
-        icon: "success",
-      });
+      SwaleMessage(`${changePasswordAdmin.msg}`, "success");
       dispatch(reset());
       setState({ oldPassword: "", password: "", confirmPassword: "" });
     } else if (changePasswordAdmin.status === 400) {

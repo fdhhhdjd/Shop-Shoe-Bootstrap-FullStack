@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { Header, Loading, MetaData } from "../../imports/index";
+import { Header, Loading, Message, MetaData } from "../../imports/index";
 import { RegisterInitiate, reset } from "../../Redux/AuthenticationSlice";
-import Message from "../Error/Message";
 const initialState = {
   name: "",
   email: "",

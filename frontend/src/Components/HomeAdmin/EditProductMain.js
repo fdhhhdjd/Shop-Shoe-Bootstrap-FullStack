@@ -1,12 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import swal from "sweetalert";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
-import { Loading } from "../../imports/index";
-import { toast } from "react-toastify";
+import { UpdateProduct } from "../../imports/Import";
+import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
 const initialState = {
   name: "",
   description: "",
@@ -20,8 +18,6 @@ const EditProductMain = () => {
   const [states, setState] = useState(initialState);
   const state = useContext(GlobalState);
   const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
-  const [images, setImages] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { category } = useSelector((state) => ({
     ...state.categories,
   }));
@@ -30,9 +26,11 @@ const EditProductMain = () => {
   const { product } = useSelector((state) => ({
     ...state.products,
   }));
-  const { admin, refreshTokenAdmin } = useSelector((state) => ({
+  const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
+  const { loading, handleUpload, handleDestroy, images, setImages } =
+    useUpDesImg(refreshTokenAdmin);
   const products = product.products;
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,13 +38,11 @@ const EditProductMain = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!images)
-      return swal("No Image Upload 😅.", {
-        icon: "error",
-      });
+    if (!images) return SwaleMessage("No Image Upload 😅 !", "error");
+
     try {
       await axios.put(
-        `/api/product/update/${id}`,
+        UpdateProduct(id),
         { ...states, image: images },
         {
           headers: {
@@ -54,68 +50,14 @@ const EditProductMain = () => {
           },
         }
       );
-      swal("Edit Product Successfully 😉", {
-        icon: "success",
-      });
+      SwaleMessage("Edit Product Successfully 😉", "success");
       setCallbackAdmin(!callbackAdmin);
       navigate("/products");
     } catch (error) {
       alert(error.response.data.msg);
     }
   };
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    try {
-      const file = e.target.files[0];
-      if (!file)
-        return swal("File not Exists", {
-          icon: "error",
-        });
-      if (file.size > 1024 * 1024)
-        // 1mb
-        return swal("Size too large!", {
-          icon: "error",
-        });
-      if (file.type !== "image/jpeg" && file.type !== "image/png")
-        // 1mb
-        return swal("File format is incorrect.", {
-          icon: "error",
-        });
-      let formData = new FormData();
 
-      formData.append("file", file);
-      setLoading(true);
-      const res = await axios.post("/api/uploadImageUser", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `${refreshTokenAdmin.accessToken}`,
-        },
-      });
-
-      setLoading(false);
-      setImages(res.data);
-    } catch (error) {
-      toast.error(error.response.data.msg);
-    }
-  };
-  const handleDestroy = async () => {
-    try {
-      setLoading(true);
-      await axios.post(
-        "/api/destroyImageUser",
-        { public_id: images.public_id },
-        {
-          headers: {
-            Authorization: `${refreshTokenAdmin.accessToken}`,
-          },
-        }
-      );
-      setLoading(false);
-      setImages(false);
-    } catch (err) {
-      alert(err.response.data.msg);
-    }
-  };
   useEffect(() => {
     if (id) {
       products &&

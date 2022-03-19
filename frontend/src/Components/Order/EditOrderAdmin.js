@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidebar, HeaderAdmin, MainEditOrderAdmin } from "../../imports/index";
+import { HeaderAdmin, MainEditOrderAdmin, Sidebar } from "../../imports/index";
 const EditOrderAdmin = () => {
   return (
     <>

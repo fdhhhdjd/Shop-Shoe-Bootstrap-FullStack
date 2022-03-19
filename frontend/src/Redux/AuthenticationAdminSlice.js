@@ -1,5 +1,5 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const LoginAdminInitial = createAsyncThunk(
   "admin/LoginAdmin",
   async ({ email, password, toast }) => {

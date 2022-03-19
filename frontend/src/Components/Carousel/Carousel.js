@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
 import lottie from "lottie-web";
+import React, { useEffect, useRef } from "react";
 const Carousel = ({ handleScrollMenu }) => {
   const Scroll = useRef();
 
