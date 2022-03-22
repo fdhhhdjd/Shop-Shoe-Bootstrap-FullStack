@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const getProducts = (categoriess, sort) => {
   return `/api/product/getAll?${categoriess}&${sort}`;
 };
@@ -34,6 +36,13 @@ export const UpdateUser = (id) => {
 export const updateUserAdmin = (id) => {
   return `/api/auth/updateUserAdmin/${id}`;
 };
-export const deleteUserAdmin = (id) => {
-  return `/api/auth/deleteUserAdmin/${id}`;
+export const deleteUserAdmin = (id, token) => {
+  return axios.delete(`/api/auth/deleteUserAdmin/${id}`, {
+    headers: { Authorization: ` ${token}` },
+  });
+};
+export const deleteProduct = (id, token) => {
+  return axios.delete(`/api/product/delete/${id}`, {
+    headers: { Authorization: ` ${token}` },
+  });
 };

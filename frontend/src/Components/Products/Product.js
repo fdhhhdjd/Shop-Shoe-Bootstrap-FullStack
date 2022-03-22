@@ -1,44 +1,16 @@
-import axios from "axios";
-import React, { useContext, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import swal from "sweetalert";
-import { GlobalState } from "../../Context/GlobalState";
-import { SwaleMessage } from "../../imports";
+import { useDelete } from "../../imports";
+import { deleteProduct } from "../../imports/Import";
 const Product = (props) => {
   const { product, handleCheck } = props;
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
-  const state = useContext(GlobalState);
-  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
-  const [callback, setCallback] = state.callback;
-
-  const [loading, setLoading] = useState(false);
+  const { mutate } = useDelete();
   const HandleDeleteProduct = async (id) => {
-    try {
-      setLoading(true);
-      return await swal({
-        title: "Are you sure you want delete ?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          axios.delete(`/api/product/delete/${id}`, {
-            headers: { Authorization: ` ${refreshTokenAdmin.accessToken}` },
-          });
-          setCallback(!callback);
-          setCallbackAdmin(!callbackAdmin);
-          setLoading(false);
-          SwaleMessage("Delete successfully, wait Loading... 😉 !", "success");
-        } else {
-          SwaleMessage("Thank you for 😆'!");
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    mutate(() => deleteProduct(id, refreshTokenAdmin.accessToken));
   };
   return (
     <>

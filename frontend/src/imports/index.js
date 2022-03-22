@@ -1,3 +1,6 @@
+//!UseContext
+import { GlobalState } from "../Context/GlobalState";
+export { GlobalState };
 //!Component
 export { default as Header } from "../Components/Header/Header";
 export { default as Profile } from "../Components/Profile/Profile";
@@ -98,3 +101,4 @@ export { default as SwaleMessage } from "../Pages/Notification/SwaleMessage";
 export { default as Message } from "../Pages/Error/Message";
 //!Custom Hook
 export { default as useUpDesImg } from "../CustomHook/useUpDesImg";
+export { default as useDelete } from "../CustomHook/useDelete";

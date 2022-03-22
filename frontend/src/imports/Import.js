@@ -13,6 +13,7 @@ import {
   UpdateUser,
   updateUserAdmin,
   deleteUserAdmin,
+  deleteProduct,
 } from "../utils/Api";
 export {
   getProducts,
@@ -28,4 +29,5 @@ export {
   UpdateUser,
   updateUserAdmin,
   deleteUserAdmin,
+  deleteProduct,
 };

@@ -2,10 +2,9 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
-import { Product } from "../../imports/index";
 import { SwaleMessage } from "../../imports";
+import { Product } from "../../imports/index";
 const MainProduct = () => {
   const { category } = useSelector((state) => ({
     ...state.categories,
