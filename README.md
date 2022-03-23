@@ -7,6 +7,7 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 \*Admin:
 
 - Đăng ký tài khoản admin: post --> http://localhost:5000/api/auth/registerAdmin
+- Xác thực email đăng ký: get --> http://localhost:5000/api/auth/verify/:userId/:uniqueString
 - Đăng nhập tài khoản admin: post --> http://localhost:5000/api/auth/loginAdmin
 - Đăng xuất tài khoản: get --> http://localhost:5000/api/auth/logoutAdmin
 - Xem profile: get --> http://localhost:5000/api/auth/profile
@@ -33,7 +34,7 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 - Tạo thêm 1 loại categorys: post --> http://localhost:5000/api/category/categorys
 - Cập nhập loại categorys: patch --> http://localhost:5000/api/category/categorys/:id
 - Xóa loại categorys: delete --> http://localhost:5000/api/category/categorys/:id
-  
+
 \*Carousel
 
 - Xem tất cả loại Carousel: get --> http://localhost:5000/api/carousel/carousels
@@ -80,6 +81,7 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 \*Customer:
 
 - Đăng ký tài khoản khách hàng: post --> http://localhost:5000/api/auth/register
+- Xác thực email đăng ký: get --> http://localhost:5000/api/auth/verify/:userId/:uniqueString
 - Đăng nhập tài khoản khách hàng : post --> http://localhost:5000/api/auth/login
 - Đăng xuất tài khoản: get --> http://localhost:5000/api/auth/logout
 - Xem profile: get --> http://localhost:5000/api/auth/profile
@@ -98,7 +100,6 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 
 - Xem tất cả thể loại category : get --> http://localhost:5000/api/category/all
 
-
 \*Product
 
 - Xem tất cả sản phẩm: get --> http://localhost:5000/api/product/getAll
@@ -110,4 +111,3 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 
 - Thanh toán đơn hàng: post --> http://localhost:5000/api/payment/payments
 - Xóa mem payment :Path -->http://localhost:5000/api/payment/deletePayments/:id
- 

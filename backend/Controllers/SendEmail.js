@@ -1,7 +1,6 @@
 const nodeMailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const path = require("path");
-const { getMaxListeners } = require("process");
 
 require("dotenv").config();
 const sendEmail = async (options) => {
@@ -32,12 +31,13 @@ const sendEmail = async (options) => {
   transporter.use("compile", hbs(handlebarOptions));
 
   const mailOptions = {
-    from: process.env.SMPT_MAIL,
-    to: options.email,
+    from: options.from,
+    to: options.to,
     subject: options.subject,
     attachments: options.attachments,
     template: options.template,
     context: options.context,
+    html: options.html,
   };
   await transporter.sendMail(mailOptions);
 };

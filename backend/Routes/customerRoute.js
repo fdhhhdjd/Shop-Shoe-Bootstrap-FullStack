@@ -6,6 +6,9 @@ const router = require("express").Router();
 //Register
 router.post("/register", userCtrl.register);
 
+//Email verify
+router.get("/verify/:userId/:uniqueString", userCtrl.verifyEmail);
+
 //Login
 router.post("/login", userCtrl.login);
 

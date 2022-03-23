@@ -1,4 +1,5 @@
 const Users = require("../Model/userModel");
+const UserVerifications = require("../Model/userVerificationModel");
 const Payments = require("../Model/PaymentModel");
 const Products = require("../Model/ProductModel");
 const bcrypt = require("bcrypt");
@@ -8,7 +9,9 @@ const { OAuth2Client } = require("google-auth-library");
 const sendEmail = require("./SendEmail");
 const CLIENT_ID = process.env.GOOGLE_CLIENT_IDS;
 const client = new OAuth2Client(CLIENT_ID);
+const { v4: uuidv4 } = require("uuid");
 const path = require("path");
+require("dotenv").config;
 
 const userCtrl = {
   //!User
@@ -18,20 +21,12 @@ const userCtrl = {
         req.body;
 
       const user = await Users.findOne({ email });
-      const users = await Users.findOne({ email, role: 1 });
 
-      if (users) {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "The email already exists Admin.",
-        });
-      }
       if (user)
         return res.json({
           status: 400,
           success: false,
-          msg: "The email already exists Customer.",
+          msg: "The email already exists",
         });
 
       if (password.length < 6)
@@ -67,27 +62,99 @@ const userCtrl = {
       // Save mongodb
       await newUser.save();
 
-      // Then create jsonwebtoken to authentication
-      const accesstoken = createAccessToken({ id: newUser._id, role: 0 });
-      const refreshtoken = createRefreshToken({ id: newUser._id, role: 0 });
+      //url to be used in the email
+      const currentUrl = "http://localhost:5000/";
+      const uniqueString = uuidv4() + newUser.id;
 
-      res.cookie("refreshtoken", refreshtoken, {
-        httpOnly: true,
-        path: "/api/auth/refresh_token",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      //hash unique string
+      const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
+
+      const newVerification = new UserVerifications({
+        userId: newUser.id,
+        uniqueString: hashedUniqueString,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + 21600000,
       });
 
-      res.status(200).json({
+      await newVerification.save();
+
+      //send email verification
+      await sendEmail({
+        from: process.env.SMPT_MAIL,
+        to: email,
+        subject: `Verify Your Email`,
+        html: `<p>Verify your email address to complete the signup and login into your account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Press <a href= ${
+          currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString
+        }>here</a> to proceed.</p>`,
+      });
+
+      return res.json({
         status: 200,
         success: true,
-        accesstoken,
-        msg: "Register Successfully 😍!!",
+        msg: "Verification email sent to your email",
       });
     } catch (err) {
       return res.json({
         status: 400,
         success: false,
         msg: err.message,
+      });
+    }
+  },
+
+  //verify email
+  verifyEmail: async (req, res) => {
+    try {
+      const { userId, uniqueString } = req.params;
+
+      const userVerification = await UserVerifications.findOne({ userId });
+
+      if (userVerification) {
+        //if link expired then delete user
+        const expiredAt = userVerification.expiresAt;
+        const hashedUniqueString = userVerification.uniqueString;
+        if (expiredAt < Date.now()) {
+          await UserVerifications.deleteOne({ userId });
+          await Users.deleteOne({ _id: userId });
+
+          return res.json({
+            status: 400,
+            success: false,
+            msg: "Link has expired. Please register again",
+          });
+        } else {
+          const isMatch = await bcrypt.compare(
+            uniqueString,
+            hashedUniqueString
+          );
+          if (isMatch) {
+            await Users.findOneAndUpdate({ _id: userId }, { verified: true });
+            await UserVerifications.deleteOne({ userId });
+            return res.json({
+              status: 200,
+              success: true,
+              msg: "Register success",
+            });
+          } else {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Link invalid, unique string is not match",
+            });
+          }
+        }
+      } else {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Link is invalid because userid incorrect",
+        });
+      }
+    } catch (error) {
+      return res.json({
+        status: 400,
+        success: false,
+        msg: error.message,
       });
     }
   },
@@ -139,6 +206,14 @@ const userCtrl = {
           success: false,
           msg: "User does not exist.",
         });
+
+      if (user.verified === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Email hasn't been verified. Please check email inbox",
+        });
+      }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
@@ -519,6 +594,7 @@ const userCtrl = {
                     public_id: password,
                     url: picture,
                   },
+                  verified: true,
                 });
                 newUser.save((err, data) => {
                   if (err) {
@@ -609,20 +685,12 @@ const userCtrl = {
       const { name, email, password, sex, date_of_birth, phone_number } =
         req.body;
 
-      const user = await Users.findOne({ email });
-      const users = await Users.findOne({ email, role: 0 });
-      if (users) {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "The email already exists Customer.",
-        });
-      }
+      const user = await Users.findOne({ email, role: 1 });
       if (user)
         return res.json({
           status: 400,
           success: false,
-          msg: "The email already exists Admin.",
+          msg: "The email already exists",
         });
 
       if (password.length < 6)
@@ -660,21 +728,36 @@ const userCtrl = {
       // Save mongodb
       await newUser.save();
 
-      // Then create jsonwebtoken to authentication
-      const accesstoken = createAccessToken({ id: newUser._id, role: 1 });
-      const refreshtoken = createRefreshToken({ id: newUser._id, role: 1 });
+      //url to be used in the email
+      const currentUrl = "http://localhost:5000/";
+      const uniqueString = uuidv4() + newUser.id;
 
-      res.cookie("refreshtoken", refreshtoken, {
-        httpOnly: true,
-        path: "/api/auth/refreshTokenAdmin",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      //hash unique string
+      const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
+
+      const newVerification = new UserVerifications({
+        userId: newUser.id,
+        uniqueString: hashedUniqueString,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + 21600000,
       });
 
-      res.status(200).json({
+      await newVerification.save();
+
+      //send email verification
+      await sendEmail({
+        from: process.env.SMPT_MAIL,
+        to: email,
+        subject: `Verify Your Email`,
+        html: `<p>Verify your email address to complete the signup and login into your account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Press <a href= ${
+          currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString
+        }>here</a> to proceed.</p>`,
+      });
+
+      return res.json({
         status: 200,
         success: true,
-        accesstoken,
-        msg: "Register Admin Successfully 😍!!",
+        msg: "Verification email sent to your email",
       });
     } catch (err) {
       return res.json({
@@ -733,6 +816,14 @@ const userCtrl = {
           success: false,
           msg: "Admin does not exist.",
         });
+
+      if (user.verified === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Email hasn't been verified. Please check email inbox",
+        });
+      }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
@@ -906,6 +997,7 @@ const userCtrl = {
                     url: picture,
                   },
                   role: 1,
+                  verified: true,
                 });
                 newUser.save((err, data) => {
                   if (err) {
