@@ -14,7 +14,10 @@ const LoadingToRedirects = () => {
       setCount((currentCount) => --currentCount);
     }, 1000);
     count === 0 && navigate("/", { replace: true, state: { from: location } });
-    count === 0 && toast.info(`Please Logout Account ${profile.user.name} 🤔`);
+    count === 0 &&
+      toast.info(
+        `Please Logout Account ${profile.user && profile.user.name} 🤔`
+      );
     return () => clearInterval(interval);
   }, [count, navigate]);
 

@@ -149,7 +149,6 @@ function App() {
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/editInfo/:id" element={<CreateEditInfo />} />
           </Route>
-
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

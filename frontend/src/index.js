@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import axios from "axios";
 import "./index.css";
 import App from "./App";
 import store from "./Redux/store";
@@ -8,6 +9,8 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { DataProvider } from "./Context/GlobalState";
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "https://shopshoetaiheo.herokuapp.com";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
