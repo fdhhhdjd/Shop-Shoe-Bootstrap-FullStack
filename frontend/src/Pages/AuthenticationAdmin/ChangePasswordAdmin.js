@@ -48,7 +48,7 @@ const ChangePasswordAdmin = () => {
       <form className="row  form-container" onSubmit={submitHandler}>
         <div className="col-md-6">
           <div className="form">
-            <label for="account-fn">Old Password</label>
+            <label htmlFor="account-fn">Old Password</label>
             <input
               className="form-control"
               type="password"
@@ -61,7 +61,7 @@ const ChangePasswordAdmin = () => {
         </div>
         <div className="col-md-6">
           <div className="form">
-            <label for="account-pass">New Password</label>
+            <label htmlFor="account-pass">New Password</label>
             <input
               className="form-control"
               type="password"
@@ -73,7 +73,7 @@ const ChangePasswordAdmin = () => {
         </div>
         <div className="col-md-6">
           <div className="form">
-            <label for="account-confirm-pass">Confirm Password</label>
+            <label htmlFor="account-confirm-pass">Confirm Password</label>
             <input
               className="form-control"
               type="password"

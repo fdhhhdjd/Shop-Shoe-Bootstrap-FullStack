@@ -63,7 +63,10 @@ const userCtrl = {
       await newUser.save();
 
       //url to be used in the email
-      const currentUrl = "http://localhost:5000/";
+      const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
+      // const currentUrl = resetPasswordUrl;
+      const currentUrl = resetPasswordUrl;
+
       const uniqueString = uuidv4() + newUser.id;
 
       //hash unique string
@@ -92,6 +95,7 @@ const userCtrl = {
         status: 200,
         success: true,
         msg: "Verification email sent to your email",
+        uniqueString: uniqueString,
       });
     } catch (err) {
       return res.json({
@@ -729,7 +733,8 @@ const userCtrl = {
       await newUser.save();
 
       //url to be used in the email
-      const currentUrl = "http://localhost:5000/";
+      const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
+      const currentUrl = resetPasswordUrl;
       const uniqueString = uuidv4() + newUser.id;
 
       //hash unique string

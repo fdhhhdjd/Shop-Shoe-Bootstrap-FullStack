@@ -7,7 +7,7 @@ const ProductApi = (callback, callbackAdmin) => {
   const [callbacks, setCallbacks] = useState(false);
   const [search, setSearch] = useState("");
   const [product, setProduct] = useState([]);
-  const [categoriess, setCategoriess] = useState([]);
+  const [categoriess, setCategoriess] = useState("");
   const [sort, setSort] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {

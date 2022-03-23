@@ -24,6 +24,15 @@ export const RegisterAdminInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const VerifiedUserInitial = createAsyncThunk(
+  "admin/Verified",
+  async ({ id, uniqueString }) => {
+    const response = await axios.post(
+      `/api/auth//verify/${id}/${uniqueString}`
+    );
+    return response.data;
+  }
+);
 export const RefreshTokenAdminInitial = createAsyncThunk(
   "admin/RefreshTokenAdmin",
   async ({ token }) => {
@@ -140,6 +149,7 @@ const initialState = {
   logoutAdmin: false,
   userAll: [],
   adminAll: [],
+  verify: [],
 };
 const AuthenticationAdminSlice = createSlice({
   name: "admin",
@@ -174,6 +184,18 @@ const AuthenticationAdminSlice = createSlice({
       state.admin = action.payload;
     },
     [LoginGooglAdminInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //?verify
+    [VerifiedUserInitial.pending]: (state, action) => {
+      state.loading = false;
+    },
+    [VerifiedUserInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.verify = action.payload;
+    },
+    [VerifiedUserInitial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

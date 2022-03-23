@@ -2,12 +2,9 @@ import React from "react";
 import CountUp from "react-countup";
 import { useSelector } from "react-redux";
 const CompareTotal = () => {
-  const { RevenueReceivedMonthBefore, RevenueReceivedEveryMonth } = useSelector(
-    (state) => ({
-      ...state.order,
-    })
-  );
-  console.log(RevenueReceivedEveryMonth.data);
+  const { RevenueReceivedMonthBefore } = useSelector((state) => ({
+    ...state.order,
+  }));
   return (
     <>
       <div className="row">

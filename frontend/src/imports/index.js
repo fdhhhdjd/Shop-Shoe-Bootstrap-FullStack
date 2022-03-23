@@ -99,6 +99,7 @@ export { default as ProfileTabAdmin } from "../Pages/AuthenticationAdmin/Profile
 export { default as ChangePasswordAdmin } from "../Pages/AuthenticationAdmin/ChangePasswordAdmin";
 export { default as SwaleMessage } from "../Pages/Notification/SwaleMessage";
 export { default as Message } from "../Pages/Error/Message";
+export { default as CheckRegister } from "../Pages/Authentication/CheckRegister";
 //!Custom Hook
 export { default as useUpDesImg } from "../CustomHook/useUpDesImg";
 export { default as useDelete } from "../CustomHook/useDelete";

@@ -14,16 +14,13 @@ const TopTotal = (props) => {
       });
     }
   }, [totalPayment]);
-  console.log(total, "sdadsad");
   let totalSale = 0;
   if (orders) {
     orders.map((order) =>
       order.isPaid === true ? (totalSale = totalSale + order.totalPrice) : null
     );
   }
-  if (orders) {
-    orders.map((order) => console.log(order));
-  }
+
   return (
     <>
       <div className="row">

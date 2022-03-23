@@ -232,7 +232,7 @@ const MainProduct = () => {
                 <div className="form-check">
                   <label
                     className="form-check-label text-danger"
-                    for="defaultCheck1"
+                    htmlFor="defaultCheck1"
                   >
                     Choose All
                   </label>

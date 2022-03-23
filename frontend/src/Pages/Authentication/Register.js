@@ -38,7 +38,7 @@ const Register = () => {
         dispatch(reset());
       }, 3000);
     }
-  }, [authRegister]);
+  }, [authRegister, dispatch, navigate]);
   return (
     <>
       <MetaData title="Register-ShoeShop" />

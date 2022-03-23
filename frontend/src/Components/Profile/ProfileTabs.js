@@ -106,12 +106,12 @@ const ProfileTabs = () => {
 
         <div className="col-md-6">
           <div className="form">
-            <label for="account-fn">UserName</label>
+            <label htmlFor="account-fn">UserName</label>
             <input
               className="form-control"
               type="text"
               required
-              value={states.name}
+              value={states.name || ""}
               name="name"
               onChange={handleChange}
             />
@@ -120,11 +120,11 @@ const ProfileTabs = () => {
 
         <div className="col-md-6">
           <div className="form">
-            <label for="account-email">E-mail Address</label>
+            <label htmlFor="account-email">E-mail Address</label>
             <input
               className="form-control"
               type="email"
-              value={states.email}
+              value={states.email || ""}
               name="email"
               disabled
               onChange={handleChange}
@@ -133,11 +133,11 @@ const ProfileTabs = () => {
         </div>
         <div className="col-md-6">
           <div className="form">
-            <label for="account-pass">Phone Number</label>
+            <label htmlFor="account-pass">Phone Number</label>
             <input
               className="form-control"
               type="text"
-              value={states.phone_number}
+              value={states.phone_number || ""}
               name="phone_number"
               onChange={handleChange}
             />
@@ -155,7 +155,7 @@ const ProfileTabs = () => {
               value="1"
               id="sex"
               name="sex"
-              checked={states.sex == 1}
+              checked={states.sex == 1 || ""}
               onChange={handleChange}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault1">
@@ -169,7 +169,7 @@ const ProfileTabs = () => {
               value="0"
               id="sex"
               name="sex"
-              checked={states.sex == 0}
+              checked={states.sex == 0 || ""}
               onChange={handleChange}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault2">
@@ -179,7 +179,7 @@ const ProfileTabs = () => {
         </div>
         <div className="col-md-6">
           <div className="form">
-            <label for="account-pass">Phone Number</label>
+            <label htmlFor="account-pass">Phone Number</label>
             <input
               className="form-control"
               type="date"
@@ -187,7 +187,7 @@ const ProfileTabs = () => {
               data-date-format="DD MMMM YYYY"
               name="date_of_birth"
               id="date_of_birth"
-              value={states.date_of_birth}
+              value={states.date_of_birth || ""}
               onChange={handleChange}
             />
           </div>

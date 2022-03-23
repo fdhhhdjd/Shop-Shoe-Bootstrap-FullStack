@@ -9,15 +9,15 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { DataProvider } from "./Context/GlobalState";
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <DataProvider>
-        <Router>
-          <App />
-        </Router>
-      </DataProvider>
-    </Provider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <Provider store={store}>
+    <DataProvider>
+      <Router>
+        <App />
+      </Router>
+    </DataProvider>
+  </Provider>,
+  // </React.StrictMode>,
   document.getElementById("root")
 );
 
