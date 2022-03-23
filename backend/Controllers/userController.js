@@ -76,7 +76,7 @@ const userCtrl = {
         userId: newUser.id,
         uniqueString: hashedUniqueString,
         createdAt: Date.now(),
-        expiresAt: Date.now() + 21600000,
+        expiresAt: Date.now() + 3600000,
       });
 
       await newVerification.save();
@@ -134,11 +134,8 @@ const userCtrl = {
           if (isMatch) {
             await Users.findOneAndUpdate({ _id: userId }, { verified: true });
             await UserVerifications.deleteOne({ userId });
-            return res.json({
-              status: 200,
-              success: true,
-              msg: "Register success",
-            });
+
+            return res.sendFile(path.resolve(__dirname, "../index.html"));
           } else {
             return res.json({
               status: 400,
@@ -1046,7 +1043,9 @@ const userCtrl = {
   //Get all User
   GetAllUser: async (req, res) => {
     try {
-      const user = await Users.find({ role: 0 }).select("-password");
+      const user = await Users.find({ role: 0, verified: true }).select(
+        "-password"
+      );
       res.json({
         status: 200,
         success: true,
@@ -1143,7 +1142,9 @@ const userCtrl = {
       let value2 = d2.getTime();
       return Math.ceil((value2 - value1) / (24 * 60 * 60 * 1000));
     };
-    let user = await Users.find({ role: 0 }).select("-password");
+    let user = await Users.find({ role: 0, verified: true }).select(
+      "-password"
+    );
 
     var today = new Date();
     var result = [];
@@ -1173,7 +1174,9 @@ const userCtrl = {
   //Get all Admin
   GetAllAdmin: async (req, res) => {
     try {
-      const user = await Users.find({ role: 1 }).select("-password");
+      const user = await Users.find({ role: 1, verified: true }).select(
+        "-password"
+      );
       res.json({
         status: 200,
         success: true,

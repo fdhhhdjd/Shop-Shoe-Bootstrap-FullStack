@@ -40,7 +40,6 @@ import {
   ResetAdmin,
   ScrollTop,
   Vouchers,
-  CheckRegister,
 } from "./imports/index";
 import { Home, HomeAdmin } from "./imports/LazyRouter";
 import "./responsive.css";
@@ -56,12 +55,6 @@ function App() {
           </Route>
           <Route element={<PrivateRouterAuth />}>
             <Route path="/register" element={<Register />} />
-          </Route>
-          <Route element={<PrivateRouterAuth />}>
-            <Route
-              path="/api/auth/verify/:id/:uniqueString"
-              element={<CheckRegister />}
-            />
           </Route>
           <Route element={<PrivateRouterAuth />}>
             <Route path="/forget" element={<Forget />} />
