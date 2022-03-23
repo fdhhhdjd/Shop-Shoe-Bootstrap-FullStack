@@ -94,8 +94,7 @@ const userCtrl = {
       return res.json({
         status: 200,
         success: true,
-        msg: "Verification email sent to your email",
-        uniqueString: uniqueString,
+        msg: `Verification email sent to ${email} `,
       });
     } catch (err) {
       return res.json({
