@@ -8,12 +8,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: "https://shopshoedev.netlify.app",
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   fileUpload({
