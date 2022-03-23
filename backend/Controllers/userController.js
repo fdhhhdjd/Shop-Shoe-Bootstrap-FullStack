@@ -429,7 +429,8 @@ const userCtrl = {
     //const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
     try {
       await sendEmail({
-        email: user.email,
+        from: process.env.SMPT_MAIL,
+        to: email,
         subject: `Forgot Password`,
         template: "forgot-password",
         attachments: [
@@ -911,7 +912,8 @@ const userCtrl = {
     //const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
     try {
       await sendEmail({
-        email: user.email,
+        from: process.env.SMPT_MAIL,
+        to: email,
         subject: `Forgot Password`,
         template: "forgot-password",
         attachments: [
