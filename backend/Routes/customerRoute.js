@@ -64,7 +64,7 @@ router.post("/loginGoogleAdmin", userCtrl.loginGoogleAdmin);
 router.get("/getAllUser", auth, admin, userCtrl.GetAllUser);
 
 //Get All unCheck
-router.get("/getAllUserUncheck", auth, admin, userCtrl.GetAllUserUnCheck);
+router.get("/getAllUserUncheck", userCtrl.GetAllUserUnCheck);
 
 //Update User or Admin
 router.patch("/updateUserAdmin/:id", auth, admin, userCtrl.updateUserOrAdmin);
