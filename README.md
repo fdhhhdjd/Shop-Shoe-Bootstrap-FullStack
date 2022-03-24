@@ -22,6 +22,7 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 - Xóa tài khoản khách hàng hay admin : delete --> http://localhost:5000/api/auth/deleteUserAdmin/:id
 - Danh sách tài khoản mới đăng ký trong 3 ngày gần đây: get --> http://localhost:5000/api/auth/getUserDay
 - Danh sách các tài khoản admin: get --> http://localhost:5000/api/auth/getAllAdmin
+  
 
 \*Upload:
 
@@ -48,6 +49,11 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 - Tạo thêm voucher: post --> http://localhost:5000/api/voucher/vouchers
 - Cập nhập voucher: patch --> http://localhost:5000/api/voucher/vouchers/:id
 - Xóa loại voucher: delete --> http://localhost:5000/api/voucher/vouchers/:id
+  
+\*FeedBack
+
+- Xem tất cả loại voucher : get --> http://localhost:5000/api/feedback/all
+- Tra loi Feedback: patch --> http://localhost:5000/api/feedback/response/:id
 
 \*Product
 
@@ -99,6 +105,10 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 \*Category
 
 - Xem tất cả thể loại category : get --> http://localhost:5000/api/category/all
+  
+\*Feedback
+
+- Gui feed back : post --> http://localhost:5000/api/feedback/send
 
 \*Product
 
