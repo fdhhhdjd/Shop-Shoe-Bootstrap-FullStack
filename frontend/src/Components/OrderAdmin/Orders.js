@@ -18,7 +18,6 @@ const Orders = (props) => {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">Image</th>
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">Total</th>
@@ -45,20 +44,6 @@ const Orders = (props) => {
               })
               .map((order) => (
                 <tr key={order._id}>
-                  <td>
-                    {order.user_id && order.user_id.image && (
-                      <img
-                        src={order.user_id.image.url}
-                        alt=""
-                        style={{
-                          width: "25px",
-                          height: "25px",
-                          borderRadius: "50%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    )}
-                  </td>
                   <td>
                     <b>{order.name}</b>
                   </td>
