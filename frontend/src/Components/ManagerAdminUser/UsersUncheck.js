@@ -1,10 +1,4 @@
-import moment from "moment";
-import React, { useContext, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { GlobalState } from "../../Context/GlobalState";
-import { deleteUserAdmin } from "../../imports/Import";
-import { SwaleMessage, useDelete } from "../../imports/index";
+import React from "react";
 const UsersUncheck = (props) => {
   const { orders, visible, search } = props;
 
