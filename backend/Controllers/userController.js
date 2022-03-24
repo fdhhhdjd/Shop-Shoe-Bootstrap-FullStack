@@ -1091,7 +1091,7 @@ const userCtrl = {
       res.json({
         status: 200,
         success: true,
-        usersUncheck,
+        user: usersUncheck,
       });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
