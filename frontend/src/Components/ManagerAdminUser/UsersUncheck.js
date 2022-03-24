@@ -14,7 +14,7 @@ const UsersUncheck = (props) => {
         <nav className="float-center mt-4" aria-label="Page navigation">
           <ul className="pagination  justify-content-center">
             <li className="page-item">
-              <h1 style={{ color: "red" }}>Oder Empty</h1>
+              <h1 style={{ color: "red" }}>Uncheck Empty</h1>
             </li>
           </ul>
         </nav>
