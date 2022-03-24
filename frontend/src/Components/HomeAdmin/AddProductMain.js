@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
@@ -16,6 +16,7 @@ const initialState = {
 };
 const AddProductMain = () => {
   const [states, setState] = useState(initialState);
+  const inputRef = useRef();
 
   const { category } = useSelector((state) => ({
     ...state.categories,
@@ -37,25 +38,36 @@ const AddProductMain = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!images) return SwaleMessage("No Image Upload 😅 !", "error");
-    try {
-      await axios.post(
-        AddProduct(),
-        { ...states, image: images },
-        {
-          headers: {
-            Authorization: `${refreshTokenAdmin.accessToken}`,
-          },
-        }
-      );
-      SwaleMessage("Create product Successfully", "success");
+    if ((e.returnValue = "Are you sure you want to exit?")) {
+      if (!images) return SwaleMessage("No Image Upload 😅 !", "error");
+      try {
+        await axios.post(
+          AddProduct(),
+          { ...states, image: images },
+          {
+            headers: {
+              Authorization: `${refreshTokenAdmin.accessToken}`,
+            },
+          }
+        );
+        SwaleMessage("Create product Successfully", "success");
 
-      setCallbackAdmin(!callbackAdmin);
-      navigate("/products");
-    } catch (error) {
-      SwaleMessage(error.response.data.msg, "error");
+        setCallbackAdmin(!callbackAdmin);
+        navigate("/products");
+      } catch (error) {
+        SwaleMessage(error.response.data.msg, "error");
+      }
     }
   };
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleSubmit);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleSubmit, {
+        capture: true,
+      });
+    };
+  }, [handleSubmit]);
   const styleUpload = {
     display: images ? "block" : "none",
   };
@@ -107,6 +119,7 @@ const AddProductMain = () => {
                       name="file"
                       id="file_up"
                       onChange={handleUpload}
+                      ref={inputRef}
                     />
                   </div>
                   <div className="mb-4">
@@ -122,6 +135,7 @@ const AddProductMain = () => {
                       value={name}
                       name="name"
                       onChange={handleChange}
+                      ref={inputRef}
                     />
                   </div>
                   <div className="mb-4">
@@ -137,6 +151,7 @@ const AddProductMain = () => {
                       value={price}
                       name="price"
                       onChange={handleChange}
+                      ref={inputRef}
                     />
                   </div>
                   <div className="mb-4">
@@ -152,6 +167,7 @@ const AddProductMain = () => {
                       value={countInStock}
                       name="countInStock"
                       onChange={handleChange}
+                      ref={inputRef}
                     />
                   </div>
                   <div className="mb-4">
@@ -163,6 +179,7 @@ const AddProductMain = () => {
                       onChange={handleChange}
                       name="categories"
                       value={categories}
+                      ref={inputRef}
                     >
                       <option value="">Please select a category</option>
                       {category.categories &&
@@ -191,6 +208,7 @@ const AddProductMain = () => {
                       name="description"
                       value={description}
                       onChange={handleChange}
+                      ref={inputRef}
                     ></textarea>
                   </div>
                 </div>

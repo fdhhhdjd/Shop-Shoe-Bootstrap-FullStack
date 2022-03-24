@@ -80,15 +80,24 @@ const userCtrl = {
       });
 
       await newVerification.save();
-
+      const confirmEmailUrl =
+        currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString;
       //send email verification
       await sendEmail({
         from: process.env.SMPT_MAIL,
         to: email,
         subject: `Verify Your Email`,
-        html: `<p>Verify your email address to complete the signup and login into your account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Press <a href= ${
-          currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString
-        }>here</a> to proceed.</p>`,
+        template: "confirm-email",
+        attachments: [
+          {
+            filename: "netflix.png",
+            path: path.resolve("./views", "images", "netflix.jpg"),
+            cid: "netflix_logo",
+          },
+        ],
+        context: {
+          confirmEmailUrl,
+        },
       });
 
       return res.json({
