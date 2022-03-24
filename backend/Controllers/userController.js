@@ -76,7 +76,7 @@ const userCtrl = {
         userId: newUser.id,
         uniqueString: hashedUniqueString,
         createdAt: Date.now(),
-        expiresAt: Date.now() + 4000,
+        expiresAt: Date.now() + 3600000,
       });
 
       await newVerification.save();
@@ -750,7 +750,7 @@ const userCtrl = {
         userId: newUser.id,
         uniqueString: hashedUniqueString,
         createdAt: Date.now(),
-        expiresAt: Date.now() + 21600000,
+        expiresAt: Date.now() + 3600000,
       });
 
       await newVerification.save();
@@ -1068,13 +1068,30 @@ const userCtrl = {
   //Get all Uncheck User
   GetAllUserUnCheck: async (req, res) => {
     try {
-      const user = await Users.find({ role: 0, verified: false }).select(
-        "-password"
-      );
+      const data = await UserVerifications.find({
+        expiresAt: { $lt: Date.now() },
+      }).select("userId");
+
+      const users = await Users.find({ verified: false }).select("_id");
+
+      for (var i = 0; i < data.length; i++) {
+        for (var j = 0; j < users.length; j++) {
+          if (data[i].userId == users[j].id) {
+            await Users.deleteOne({ _id: users[j].id });
+            await UserVerifications.deleteOne({ userId: data[i].userId });
+          }
+        }
+      }
+
+      const usersUncheck = await Users.find({
+        verified: false,
+        role: 0,
+      }).select("-password");
+
       res.json({
         status: 200,
         success: true,
-        user,
+        usersUncheck,
       });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
