@@ -6,6 +6,7 @@ import {
   Header,
   Order,
   ProfileTabs,
+  Feedback,
 } from "../../imports/index";
 const Profile = () => {
   const { profile } = useSelector((state) => ({ ...state.data }));
@@ -105,6 +106,18 @@ const Profile = () => {
                         : 0}
                     </span>
                   </button>
+                  <button
+                    className="nav-link "
+                    id="v-pills-home-tab2"
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-pills-home2"
+                    type="button"
+                    role="tab"
+                    aria-controls="v-pills-home2"
+                    aria-selected="false"
+                  >
+                    Feed Back
+                  </button>
                 </div>
               </div>
             </div>
@@ -138,6 +151,14 @@ const Profile = () => {
               aria-labelledby="v-pills-profile-tab"
             >
               <Order cartItems={total} />
+            </div>
+            <div
+              className="tab-pane fade show "
+              id="v-pills-home2"
+              role="tabpanel"
+              aria-labelledby="v-pills-home-tab2"
+            >
+              <Feedback />
             </div>
           </div>
         </div>

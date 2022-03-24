@@ -7,6 +7,7 @@ import OrderSlice from "../Redux/OrderSlice";
 import CategorySlice from "../Redux/CategoryAdminSlice";
 import VoucherSlice from "../Redux/VoucherSlice";
 import Info from "./InformationAdminSlice";
+import Feedbacks from "./FeedbackSlice";
 const rootReducer = (state, action) => {
   if (action.type === "counter/clear") {
     state = undefined;
@@ -22,6 +23,7 @@ const store = configureStore({
     categories: CategorySlice,
     vouchers: VoucherSlice,
     info: Info,
+    feedbacks: Feedbacks,
     reducer: rootReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),

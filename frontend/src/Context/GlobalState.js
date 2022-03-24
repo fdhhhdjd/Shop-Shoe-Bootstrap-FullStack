@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RefreshTokenAdminInitial } from "../Redux/AuthenticationAdminSlice";
 import { RefreshTokenInitiate } from "../Redux/AuthenticationSlice";
 import CategoriesApi from "./CategoriesApi";
+import FeedbackApi from "./FeedbackApi";
 import InformationApi from "./InformationApi";
 import OrderApi from "./OrderApi";
 import ProductApi from "./ProductApi";
@@ -62,6 +63,7 @@ export const DataProvider = ({ children }) => {
     CategoriesApi: CategoriesApi(callbackAdmin),
     InformationApi: InformationApi(callbackAdmin),
     VoucherApi: VoucherApi(callbackAdmin),
+    FeedbackApi: FeedbackApi(callbackAdmin, refreshTokensAdmin),
   };
   return <GlobalState.Provider value={data}>{children}</GlobalState.Provider>;
 };

@@ -78,6 +78,13 @@ const Sidebar = () => {
                   <span className="text">Information</span>
                 </NavLink>
               </li>
+              <li className="menu-item">
+                <NavLink end to="/feedback" className="menu-link ">
+                  <i className="fa-solid fa-comment"></i>
+                  &nbsp;
+                  <span className="text">FeedBack</span>
+                </NavLink>
+              </li>
 
               {/* <li className="menu-item">
                 <NavLink end to="/transaction" className="menu-link disabled">

@@ -22,7 +22,7 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 - Xóa tài khoản khách hàng hay admin : delete --> http://localhost:5000/api/auth/deleteUserAdmin/:id
 - Danh sách tài khoản mới đăng ký trong 3 ngày gần đây: get --> http://localhost:5000/api/auth/getUserDay
 - Danh sách các tài khoản admin: get --> http://localhost:5000/api/auth/getAllAdmin
-  
+- Danh sách tài khoản Uncheck:get -->http://localhost:5000/api/auth/getAllUserUncheck
 
 \*Upload:
 
@@ -121,3 +121,4 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 
 - Thanh toán đơn hàng: post --> http://localhost:5000/api/payment/payments
 - Xóa mem payment :Path -->http://localhost:5000/api/payment/deletePayments/:id
+

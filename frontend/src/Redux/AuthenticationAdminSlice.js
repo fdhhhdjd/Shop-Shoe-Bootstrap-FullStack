@@ -136,6 +136,15 @@ export const GetAllAdminInitiate = createAsyncThunk(
     return response.data;
   }
 );
+export const GetAllUncheckInitiate = createAsyncThunk(
+  "admin/getAllUncheck",
+  async ({ refreshTokensAdmin }) => {
+    const response = await axios.get("/api/auth/getAllUserUncheck", {
+      headers: { Authorization: refreshTokensAdmin },
+    });
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   admin: [],
@@ -150,6 +159,7 @@ const initialState = {
   userAll: [],
   adminAll: [],
   verify: [],
+  uncheck: [],
 };
 const AuthenticationAdminSlice = createSlice({
   name: "admin",
@@ -317,6 +327,18 @@ const AuthenticationAdminSlice = createSlice({
       state.adminAll = action.payload;
     },
     [GetAllAdminInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Get All user uncheck
+    [GetAllUncheckInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [GetAllUncheckInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.uncheck = action.payload;
+    },
+    [GetAllUncheckInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

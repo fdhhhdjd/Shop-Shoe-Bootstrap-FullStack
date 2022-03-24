@@ -14,6 +14,7 @@ import {
   EditOrderAdmin,
   EditProduct,
   EditUser,
+  FeedbackAdmin,
   Forget,
   ForgetAdmin,
   Information,
@@ -40,6 +41,8 @@ import {
   ResetAdmin,
   ScrollTop,
   Vouchers,
+  ReplyUser,
+  ManagerUnchecked,
 } from "./imports/index";
 import { Home, HomeAdmin } from "./imports/LazyRouter";
 import "./responsive.css";
@@ -98,6 +101,9 @@ function App() {
             <Route path="/users" element={<ManagerUser />} />
           </Route>
           <Route element={<PrivateRouterAdmin />}>
+            <Route path="/unusers" element={<ManagerUnchecked />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
             <Route path="/editUsers/:id" element={<EditUser />} />
           </Route>
           <Route element={<PrivateRouterAdmin />}>
@@ -148,6 +154,12 @@ function App() {
           </Route>
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/editInfo/:id" element={<CreateEditInfo />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/feedback" element={<FeedbackAdmin />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/replyuser/:id" element={<ReplyUser />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

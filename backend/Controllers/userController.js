@@ -76,7 +76,7 @@ const userCtrl = {
         userId: newUser.id,
         uniqueString: hashedUniqueString,
         createdAt: Date.now(),
-        expiresAt: Date.now() + 3600000,
+        expiresAt: Date.now() + 4000,
       });
 
       await newVerification.save();
@@ -1054,6 +1054,21 @@ const userCtrl = {
   GetAllUser: async (req, res) => {
     try {
       const user = await Users.find({ role: 0, verified: true }).select(
+        "-password"
+      );
+      res.json({
+        status: 200,
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  //Get all Uncheck User
+  GetAllUserUnCheck: async (req, res) => {
+    try {
+      const user = await Users.find({ role: 0, verified: false }).select(
         "-password"
       );
       res.json({

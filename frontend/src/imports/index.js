@@ -70,6 +70,14 @@ export { default as Information } from "../Components/Information/Information";
 export { default as MainCreateEditInfo } from "../Components/Information/MainCreateEditInfo";
 export { default as MainInformation } from "../Components/Information/MainInformation";
 export { default as ScrollTop } from "../Components/ScrollTop/ScrollTop";
+export { default as Feedback } from "../Components/Profile/Feedback";
+export { default as FeedbackAdmin } from "../Components/FeedbackAdmin/FeedbackAdmin";
+export { default as FeedbackAdminMain } from "../Components/FeedbackAdmin/FeedbackAdminMain";
+export { default as ReplyUser } from "../Components/FeedbackAdmin/ReplyUser";
+export { default as ReplyUserMain } from "../Components/FeedbackAdmin/ReplyUserMain";
+export { default as ManagerUnchecked } from "../Components/ManagerAdminUser/ManagerUnchecked";
+export { default as ManagerUncheckedMain } from "../Components/ManagerAdminUser/ManagerUncheckedMain";
+export { default as UsersUncheck } from "../Components/ManagerAdminUser/UsersUncheck";
 //!Page
 export { default as Loading } from "../Pages/Loading/Loading";
 export { default as Login } from "../Pages/Authentication/Login";

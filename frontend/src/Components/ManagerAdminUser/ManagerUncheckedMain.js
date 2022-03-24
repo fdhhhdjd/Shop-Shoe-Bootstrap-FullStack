@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Loading, Users, Message } from "../../imports";
-const MainManagerUser = () => {
-  const { userAll, loading, error, uncheck } = useSelector((state) => ({
+import { Loading, UsersUncheck, Message } from "../../imports";
+const ManagerUncheckedMain = () => {
+  const { uncheck, loading, error } = useSelector((state) => ({
     ...state.admin,
   }));
 
@@ -14,16 +14,16 @@ const MainManagerUser = () => {
   };
   return (
     <>
-      {userAll.user && (
+      {uncheck.user && (
         <section className="content-main">
           <div className="content-header">
-            <h2 className="content-title">Manager User</h2>
+            <h2 className="content-title">Manager Uncheck</h2>
             <div>
-              <Link to="/unusers" className="btn btn-primary">
-                UserUnChecked &nbsp;
-                <span className="badge1 badge">
-                  {uncheck.user && uncheck.user.length}
-                </span>
+              <Link to="/users" className="btn btn-primary">
+                Back User &nbsp;
+                {/* <span className="badge1 badge">
+              {orders.payments && orders.payments.length}
+            </span> */}
               </Link>
             </div>
           </div>
@@ -49,8 +49,8 @@ const MainManagerUser = () => {
                 ) : error ? (
                   <Message variant="alert-danger">{error}</Message>
                 ) : (
-                  <Users
-                    orders={userAll.user}
+                  <UsersUncheck
+                    orders={uncheck.user}
                     visible={visible}
                     search={search}
                   />
@@ -61,7 +61,7 @@ const MainManagerUser = () => {
           <nav className="float-center mt-4" aria-label="Page navigation">
             <ul className="pagination  justify-content-center">
               <li className="page-item">
-                {userAll.user && visible < userAll.user.length && (
+                {uncheck.user && visible < uncheck.user.length && (
                   <button className="page-link" onClick={handleLoadMore}>
                     Load More <i className="fa-solid fa-angle-down"></i>
                   </button>
@@ -75,4 +75,4 @@ const MainManagerUser = () => {
   );
 };
 
-export default MainManagerUser;
+export default ManagerUncheckedMain;
