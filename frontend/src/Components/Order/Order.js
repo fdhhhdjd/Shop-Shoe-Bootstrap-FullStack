@@ -11,11 +11,9 @@ const History = () => {
   const { loading, order, error } = useSelector((state) => ({
     ...state.products,
   }));
-  const { refreshToken } = useSelector((state) => ({ ...state.data }));
   const dispatch = useDispatch();
   const state = useContext(GlobalState);
   const [callback, setCallback] = state.callback;
-  const token = refreshToken.accessToken && refreshToken.accessToken;
   const orders = order.history;
   const handleDelete = async (id) => {
     try {
@@ -39,7 +37,6 @@ const History = () => {
       console.log(error);
     }
   };
-  console.log(order);
   return (
     <>
       <div className=" d-flex justify-content-center align-items-center flex-column">

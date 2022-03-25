@@ -18,62 +18,61 @@ const Carousel = ({ handleScrollMenu }) => {
   return (
     <React.Fragment>
       {carousel && (
-        <div className="container-fluid">
-          <div
-            id="myCarousel"
-            className="carousel slide border"
-            data-ride="carousel"
-          >
-            <div className="carousel-inner">
-              {carousel.map((item) => {
-                return (
-                  <>
-                    <div className="carousel-item active">
-                      <img
-                        className="d-block w-100 "
-                        src={item.image && item.image.url}
-                        alt="Leopard"
-                      />
-                      <div className="carousel-caption d-none d-sm-block">
-                        <h2>{item.heading}</h2>
-                        <small>{item.description}</small>
-                      </div>
+        <div
+          id="carouselExampleIndicators"
+          className="carousel slide"
+          data-ride="carousel"
+        >
+          <ol className="carousel-indicators">
+            {carousel.map((item, index) => {
+              return (
+                <>
+                  <li
+                    data-target="#carouselExampleIndicators"
+                    data-slide-to={index}
+                    className={index === 0 ? "active" : ""}
+                  />
+                </>
+              );
+            })}
+          </ol>
+          <div className="carousel-inner">
+            {carousel.map((item, index) => {
+              return (
+                <>
+                  <div className={`carousel-item ${index === 0 && "active"}`}>
+                    <img
+                      className="d-block w-100"
+                      src={item.image && item.image.url}
+                      alt="First slide"
+                    />
+                    <div className="carousel-caption d-none d-md-block ">
+                      <h1>{item.heading}</h1>
+                      <p>{item.description}</p>
                     </div>
-                  </>
-                );
-              })}
-              <a className="carousel-control-prev" onClick={handleScrollMenu}>
-                <span className="sr-oy">
-                  <div ref={Scroll}></div> Here
-                </span>
-              </a>
-
-              <a
-                className="carousel-control-prev"
-                href="#myCarousel"
-                role="button"
-                data-slide="prev"
-              >
-                <span
-                  className="carousel-control-prev-icon"
-                  aria-hidden="true"
-                />
-                <span className="sr-only">Previous</span>
-              </a>
-              <a
-                className="carousel-control-next"
-                href="#myCarousel"
-                role="button"
-                data-slide="next"
-              >
-                <span
-                  className="carousel-control-next-icon"
-                  aria-hidden="true"
-                />
-                <span className="sr-only">Next</span>
-              </a>
-            </div>
+                  </div>
+                </>
+              );
+            })}
           </div>
+          <a
+            className="carousel-control-prev"
+            href="#carouselExampleIndicators"
+            role="button"
+            data-slide="prev"
+          >
+            <span className="carousel-control-prev-icon" aria-hidden="true" />
+            <span className="sr-only">Previous</span>
+          </a>
+          <a
+            className="carousel-control-next"
+            href="#carouselExampleIndicators"
+            role="button"
+            data-slide="next"
+          >
+            <span className="carousel-control-next-icon" aria-hidden="true" />
+            <span className="sr-only">Next</span>
+          </a>
         </div>
       )}
     </React.Fragment>
