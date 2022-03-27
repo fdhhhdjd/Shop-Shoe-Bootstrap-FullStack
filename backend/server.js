@@ -1,8 +1,5 @@
-const express = require("express");
 const dotenv = require("dotenv");
 const app = require("./app");
-const cloudinary = require("cloudinary");
-const fs = require("fs");
 dotenv.config({ path: ".env" });
 const connectDB = require("./configs/db");
 connectDB();

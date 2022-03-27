@@ -9,7 +9,6 @@ import {
   SkeletonText,
   Text,
 } from "@chakra-ui/react";
-
 import {
   useJsApiLoader,
   GoogleMap,
@@ -24,7 +23,7 @@ const center = { lat: 12.270515836232429, lng: 109.19842570483897 };
 function GoogleMapMain() {
   const { isLoaded } = useJsApiLoader({
     // googleMapsApiKey: "AIzaSyAs-i53vnQKFEgZbpXxGt-wme6aj4mPU30",
-    googleMapsApiKey: "AIzaSyDWTx7bREpM5B6JKdbzOvMW-RRlhkukmVE",
+    googleMapsApiKey: "AIzaSyA66KwUrjxcFG5u0exynlJ45CrbrNe3hEc",
     libraries: ["places"],
   });
   const [map, setMap] = useState(null);
