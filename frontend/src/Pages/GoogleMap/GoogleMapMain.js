@@ -23,7 +23,8 @@ const center = { lat: 12.270515836232429, lng: 109.19842570483897 };
 
 function GoogleMapMain() {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAs-i53vnQKFEgZbpXxGt-wme6aj4mPU30",
+    // googleMapsApiKey: "AIzaSyAs-i53vnQKFEgZbpXxGt-wme6aj4mPU30",
+    googleMapsApiKey: "AIzaSyDWTx7bREpM5B6JKdbzOvMW-RRlhkukmVE",
     libraries: ["places"],
   });
   const [map, setMap] = useState(null);
