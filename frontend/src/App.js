@@ -43,6 +43,7 @@ import {
   Vouchers,
   ReplyUser,
   ManagerUnchecked,
+  GoogleMap,
 } from "./imports/index";
 import { Home, HomeAdmin } from "./imports/LazyRouter";
 import "./responsive.css";
@@ -160,6 +161,9 @@ function App() {
           </Route>
           <Route element={<PrivateRouterAdmin />}>
             <Route path="/replyuser/:id" element={<ReplyUser />} />
+          </Route>
+          <Route element={<PrivateRouterAdmin />}>
+            <Route path="/googlemap" element={<GoogleMap />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -8,6 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { DataProvider } from "./Context/GlobalState";
+
 ReactDOM.render(
   // <React.StrictMode>
   <Provider store={store}>
