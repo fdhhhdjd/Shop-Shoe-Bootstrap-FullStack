@@ -37,8 +37,8 @@
     "toast": "^0.3.47"
   },
   "scripts": {
-    "start": "env-cmd -f .env.development react-scripts start",
-    "build": "env-cmd -f .env.development react-scripts build",
+    "start": "env-cmd -f ./.env.development react-scripts start",
+    "build": "env-cmd -f ./.env.development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
