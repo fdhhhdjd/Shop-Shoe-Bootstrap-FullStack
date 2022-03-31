@@ -19,7 +19,7 @@ const LoadingToRedirects = () => {
         `Please Logout Account ${profile.user && profile.user.name} 🤔`
       );
     return () => clearInterval(interval);
-  }, [count, navigate]);
+  }, [count, navigate, profile?.user]);
 
   return <Loadings />;
 };

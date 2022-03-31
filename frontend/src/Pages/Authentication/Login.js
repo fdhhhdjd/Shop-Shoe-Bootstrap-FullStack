@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GoogleLogin from "react-google-login";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Header, Loading, MetaData, Message } from "../../imports/index";
+import {
+  Header,
+  Loading,
+  Message,
+  MetaData,
+  SwaleMessage,
+} from "../../imports/index";
 import {
   LoginGoogleInitiate,
   LoginInitial,
@@ -19,9 +26,12 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [state, setState] = useState(initialState);
+  const [token, setToken] = useState("");
+  const reCaptcha = useRef();
   const { email, password } = state;
-  const { loading, auth } = useSelector((state) => ({ ...state.data }));
+  const grecaptchaObject = window.grecaptcha;
 
+  const { loading, auth } = useSelector((state) => ({ ...state.data }));
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -30,6 +40,10 @@ const Login = () => {
     e.preventDefault();
     if (!email || !password) {
       return toast.error("Please Enter Input 🥲 !");
+    }
+    if (!token) {
+      SwaleMessage("Mời bạn xác thực đầy đủ !", "error");
+      return;
     }
     dispatch(LoginInitial({ email, password, toast }));
   };
@@ -53,6 +67,7 @@ const Login = () => {
     }
   }, [auth]);
   window.scrollTo(0, 0);
+  console.log(process.env.REACT_APP_API_KEY, "aloooo");
   return (
     <>
       <MetaData title="Login-ShoeShop" />
@@ -88,6 +103,17 @@ const Login = () => {
             value={password}
             name="password"
             onChange={handleChange}
+          />
+          <br />
+          <br />
+          <ReCAPTCHA
+            ref={reCaptcha}
+            sitekey={process.env.REACT_APP_API_KEY}
+            onChange={(token) => setToken(token)}
+            onExpired={(e) => setToken("")}
+            size="normal"
+            theme="light"
+            grecaptcha={grecaptchaObject}
           />
           {loading ? <Loading /> : <button type="submit">Login</button>}
           <p>
