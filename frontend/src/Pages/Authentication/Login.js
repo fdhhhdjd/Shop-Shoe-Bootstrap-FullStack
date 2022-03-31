@@ -67,7 +67,6 @@ const Login = () => {
     }
   }, [auth]);
   window.scrollTo(0, 0);
-  console.log(process.env.REACT_APP_API_KEY, "aloooo");
   return (
     <>
       <MetaData title="Login-ShoeShop" />
@@ -108,7 +107,7 @@ const Login = () => {
           <br />
           <ReCAPTCHA
             ref={reCaptcha}
-            sitekey={process.env.REACT_APP_API_KEY}
+            sitekey="6LdHT3wcAAAAAJfSOX-t5x0EX_l6MVQ1zFjHH9es"
             onChange={(token) => setToken(token)}
             onExpired={(e) => setToken("")}
             size="normal"
