@@ -1,5 +1,10 @@
 .WebSite:https://shopshoetaiheo.herokuapp.com/
 
+.Tài Khoản thanh toán tiền chuyển khoản
+
+Tk:nguyentientai@gmail.com
+Mk:Taideptrai123
+
 Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 
 1. API dành cho admin
