@@ -126,5 +126,5 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 \*Payment
 
 - Thanh toán đơn hàng: post --> http://localhost:5000/api/payment/payments
-- Xóa mem payment :Path -->http://localhost:5000/api/payment/deletePayments/:id
+- Xóa mem payment : path -->http://localhost:5000/api/payment/deletePayments/:id
 
