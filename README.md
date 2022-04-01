@@ -2,9 +2,9 @@
 
 .Tài Khoản thanh toán tiền chuyển khoản
 
-Tk:nguyentientai@gmail.com
+Tk: nguyentientai@gmail.com
 
-Mk:Taideptrai123
+Mk: Taideptrai123
 
 Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 
