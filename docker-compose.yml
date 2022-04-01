@@ -8,26 +8,26 @@
         context: .
         dockerfile: Dockerfile
       container_name: shop-shoe-api-1
+      restart: unless-stopped
       env_file:
             - .env
       ports: 
-        - '5001:5000'   
+        - '5000:5000'   
     
   
     frontend:
       build: 
         context: ./frontend
-        dockerfile: Dockerfile
+        dockerfile: ./frontend/Dockerfile
       container_name: frontend
-      env_file:
-            - .env
+      restart: unless-stopped
       ports: 
         - '3000:3000'
       volumes:
       - ./frontend/src:/app/src   
       depends_on:
       - shop-shoe-api
-     
+
 
     
 
