@@ -54,13 +54,19 @@ const Login = () => {
     dispatch(LoginInitial({ email, password, toast, rememberer }));
   };
   const HandleGoogle = (response) => {
-    dispatch(LoginGoogleInitiate(response));
-  };
-  useEffect(() => {
-    if (foundUser) {
-      foundUser && setState(foundUser);
+    if (response.error) {
+      return toast.error(response.error);
+    } else {
+      dispatch(LoginGoogleInitiate(response));
     }
-  }, [foundUser]);
+  };
+  // useEffect(() => {
+  //   if (foundUser) {
+  //     setState(foundUser);
+  //   } else {
+  //     setState(initialState);
+  //   }
+  // }, [foundUser]);
   useEffect(() => {
     if (auth.status === 200) {
       if (location.state?.from) {
@@ -102,18 +108,17 @@ const Login = () => {
           <input
             type="email"
             placeholder="Email"
-            value={state.email || ""}
+            value={email}
             name="email"
             onChange={handleChange}
           />
           <input
             type="password"
             placeholder="Password"
-            value={state.password || ""}
+            value={password}
             name="password"
             onChange={handleChange}
           />
-
           <br />
           <br />
           <div className="custom-control custom-checkbox">

@@ -25,7 +25,6 @@ const LoginAdmin = () => {
   const [state, setState] = useState(initialState);
   const { email, password } = state;
   const { loading, admin } = useSelector((state) => ({ ...state.admin }));
-  const { profile } = useSelector((state) => ({ ...state.data }));
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -38,10 +37,14 @@ const LoginAdmin = () => {
     dispatch(LoginAdminInitial({ email, password, toast }));
   };
   const HandleGoogle = (response) => {
-    dispatch(LoginGooglAdminInitiate(response));
+    if (response.error) {
+      return toast.error(response.error);
+    } else {
+      dispatch(LoginGooglAdminInitiate(response));
+    }
   };
   useEffect(() => {
-    if (admin.status === 200) {
+    if (admin && admin.status === 200) {
       if (location.state?.from) {
         navigate(location.state.from);
         window.location.reload();
@@ -50,7 +53,7 @@ const LoginAdmin = () => {
       }
       localStorage.setItem("firstLoginAdmin", true);
     }
-    if (admin.status === 400) {
+    if (admin && admin.status === 400) {
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
@@ -63,7 +66,7 @@ const LoginAdmin = () => {
       <MetaData title="ShoeShop-Dev" />
       <HeaderLoginAdmin />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-        {admin.status === 400 && (
+        {admin && admin.status === 400 && (
           <Message variant="alert-danger">{admin.msg}</Message>
         )}
         <div className="Login col-md-8 col-lg-4 col-11">

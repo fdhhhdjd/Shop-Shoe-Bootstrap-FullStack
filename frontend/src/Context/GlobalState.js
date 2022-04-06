@@ -19,10 +19,10 @@ export const DataProvider = ({ children }) => {
     ...state.admin,
   }));
   const [rememberer, setRememberMe] = useState(false);
-  const token = auth.accessToken;
-  const tokenAdmin = admin.accessToken;
-  const refreshTokens = refreshToken.accessToken;
-  const refreshTokensAdmin = refreshTokenAdmin.accessToken;
+  const token = auth && auth.accessToken;
+  const tokenAdmin = admin && admin.accessToken;
+  const refreshTokens = refreshToken && refreshToken.accessToken;
+  const refreshTokensAdmin = refreshTokenAdmin && refreshTokenAdmin.accessToken;
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     if (firstLogin) {
