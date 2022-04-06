@@ -48,7 +48,7 @@ const MainEditUser = () => {
     if (!images) return SwaleMessage("No Image Upload 😅.", "error");
     try {
       await axios.patch(
-        updateUserAdmin(),
+        updateUserAdmin(id),
         { ...states, image: images },
         {
           headers: {

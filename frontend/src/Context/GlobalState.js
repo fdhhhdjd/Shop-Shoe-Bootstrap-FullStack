@@ -18,6 +18,7 @@ export const DataProvider = ({ children }) => {
   const { admin, refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
+  const [rememberer, setRememberMe] = useState(false);
   const token = auth.accessToken;
   const tokenAdmin = admin.accessToken;
   const refreshTokens = refreshToken.accessToken;
@@ -60,6 +61,7 @@ export const DataProvider = ({ children }) => {
       callback,
       callbackAdmin
     ),
+    remember: [rememberer, setRememberMe],
     CategoriesApi: CategoriesApi(callbackAdmin),
     InformationApi: InformationApi(callbackAdmin),
     VoucherApi: VoucherApi(callbackAdmin),

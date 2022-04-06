@@ -2,11 +2,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 export const LoginInitial = createAsyncThunk(
   "auth/Login",
-  async ({ email, password, toast }) => {
+  async ({ email, password, toast, rememberer }) => {
     const response = await axios.post("/api/auth/login", {
       email,
       password,
     });
+    if (rememberer === true) {
+      localStorage.setItem(
+        "remember",
+        JSON.stringify({
+          email: email,
+          password: password,
+        })
+      );
+    }
     if (response.data.status === 200) {
       toast.success("Login User Successfully 🥰");
     }
