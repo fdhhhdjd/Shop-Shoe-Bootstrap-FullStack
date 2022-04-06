@@ -99,6 +99,20 @@ export const LoginGoogleInitiate = createAsyncThunk(
     return res;
   }
 );
+export const CheckPasswordInitiate = createAsyncThunk(
+  "auth/CheckPassword",
+  async ({ token, checkPass }) => {
+    console.log(checkPass);
+    const { data } = await axios.post(
+      `/api/payment/checkPass`,
+      { checkPassword: checkPass },
+      {
+        headers: { Authorization: token },
+      }
+    );
+    return data;
+  }
+);
 const initialState = {
   loading: false,
   error: null,
@@ -110,6 +124,7 @@ const initialState = {
   resetForget: [],
   profile: [],
   changePass: [],
+  checkPass: [],
 };
 const AuthenticationSlice = createSlice({
   name: "auth",
@@ -120,6 +135,7 @@ const AuthenticationSlice = createSlice({
       state.authRegister = [];
       state.forget = [];
       state.resetForget = [];
+      state.changePass = [];
       state.changePass = [];
     },
   },
@@ -227,6 +243,18 @@ const AuthenticationSlice = createSlice({
       state.auth = action.payload;
     },
     [LoginGoogleInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //?Check Password
+    [CheckPasswordInitiate.pending]: (state, action) => {
+      state.loading = false;
+    },
+    [CheckPasswordInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.checkPass = action.payload;
+    },
+    [CheckPasswordInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

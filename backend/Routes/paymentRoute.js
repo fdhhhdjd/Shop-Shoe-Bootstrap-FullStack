@@ -10,6 +10,10 @@ router
 //Get Delete Payment User Deleted
 
 router.get("/deletePayment", paymentCtrl.getPaymentDeletes);
+
+//Check Pass then Delete Payment
+router.post("/checkPass", auth, paymentCtrl.CheckPassDelete);
+
 //Delete Payment User Deleted
 router.patch("/deletePayments/:id", paymentCtrl.DeletePaymentSoftErase);
 router.patch("/undoPayments/:id", paymentCtrl.UndoPaymentSoftErase);

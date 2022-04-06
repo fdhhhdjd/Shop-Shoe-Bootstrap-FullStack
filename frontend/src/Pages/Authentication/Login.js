@@ -84,7 +84,6 @@ const Login = () => {
             cookiePolicy={"single_host_origin"}
           />
         </div>
-
         <form
           className="Login col-md-8 col-lg-4 col-11"
           onSubmit={submitHandler}
@@ -105,6 +104,7 @@ const Login = () => {
           />
           <br />
           <br />
+
           <ReCAPTCHA
             ref={reCaptcha}
             sitekey="6LdHT3wcAAAAAJfSOX-t5x0EX_l6MVQ1zFjHH9es"

@@ -8,14 +8,15 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-textarea:focus,.editInput:focus{
+textarea:focus,
+.editInput:focus {
   border-color: inherit;
   -webkit-box-shadow: none;
   box-shadow: none;
-  outline:none;
+  outline: none;
 }
-.paypal{
-  background-color:rgb(0, 156, 222) !important;
+.paypal {
+  background-color: rgb(0, 156, 222) !important;
 }
 
 a {
@@ -445,7 +446,7 @@ textarea:focus {
 .badge2 {
   width: 20px;
   height: 20px;
-  background-color: red ;
+  background-color: red;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -456,8 +457,7 @@ textarea:focus {
   width: 20rem;
   height: 20rem;
   border-radius: 50%;
-  object-fit:cover
- 
+  object-fit: cover;
 }
 .badge1 {
   background-color: red;
@@ -669,21 +669,18 @@ textarea:focus {
 .page-item.active .page-link {
   background-color: black;
   border: 1px solid black;
- 
 }
-.active1{
-  background-color:black !important;
+.active1 {
+  background-color: black !important;
   color: white !important;
 }
 .pagination #page-link {
-  padding: 10px 30px ;
-  border:none !important;
-  
+  padding: 10px 30px;
+  border: none !important;
 }
 .page-item.active #page-link {
-  background-color: black ;
+  background-color: black;
   border: 1px solid black;
-  
 }
 /* Admin */
 @charset "UTF-8";
@@ -1595,7 +1592,6 @@ ul.row-sm {
   vertical-align: bottom;
 }
 /* system */
-
 
 /*slider*/
 /* .sr-oy{

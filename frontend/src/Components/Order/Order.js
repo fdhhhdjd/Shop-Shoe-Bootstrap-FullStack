@@ -3,14 +3,19 @@ import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { GlobalState } from "../../Context/GlobalState";
 import { Loading } from "../../imports";
+import { CheckPass, True } from "../../imports/Image";
 import Message from "../../Pages/Error/Message";
+import { CheckPasswordInitiate } from "../../Redux/AuthenticationSlice";
 import { DeleteOrderNewUserInitial } from "../../Redux/OrderSlice";
 const History = () => {
   const { loading, order, error } = useSelector((state) => ({
     ...state.products,
   }));
+  const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
+  const token = refreshToken.accessToken;
   const dispatch = useDispatch();
   const state = useContext(GlobalState);
   const [callback, setCallback] = state.callback;
@@ -24,10 +29,50 @@ const History = () => {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          dispatch(DeleteOrderNewUserInitial({ id }));
-          setCallback(!callback);
-          swal("Delete order Successfully 😉 !", {
-            icon: "success",
+          Swal.fire({
+            title: "Please Enter Password !!",
+            input: "password",
+            inputAttributes: {
+              autocapitalize: "off",
+            },
+            showCancelButton: true,
+            confirmButtonText: "Enter",
+            confirmButtonColor: "#1cb803",
+            showLoaderOnConfirm: true,
+            preConfirm: (checkPass) => {
+              return dispatch(CheckPasswordInitiate({ token, checkPass }))
+                .then((response) => {
+                  if (response.payload.status === 400) {
+                    return Swal.showValidationMessage(
+                      `Request failed: ${response.payload.msg}`
+                    );
+                  } else if (response.payload.status === 200) {
+                    dispatch(DeleteOrderNewUserInitial({ id }));
+                    setCallback(!callback);
+                  }
+                })
+                .catch((error) => {
+                  return Swal.showValidationMessage(`Request failed: ${error}`);
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Admin Thank You 😊!!",
+                imageUrl: `${profile.user && profile.user.image.url}`,
+                width: 600,
+                padding: "3em",
+                color: "#716add",
+                background: `#fff url(${True}) `,
+                backdrop: `
+                    rgba(0,0,123,0.4)
+                    url(${CheckPass})
+                    left top
+                    no-repeat
+                  `,
+              });
+            }
           });
         } else {
           swal("Thank you for 😆'!");

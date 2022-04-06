@@ -1,6 +1,7 @@
 const Payments = require("../Model/PaymentModel");
 const Users = require("../Model/userModel");
 const Products = require("../Model/ProductModel");
+const bcrypt = require("bcrypt");
 const paymentCtrl = {
   //Get All Payment
   getPayments: async (req, res) => {
@@ -26,6 +27,34 @@ const paymentCtrl = {
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
+    }
+  },
+  //Password Check then delete
+  CheckPassDelete: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const { checkPassword } = req.body;
+      const user = await Users.findById(userId).select("password");
+      const isMatch = await bcrypt.compare(checkPassword, user.password);
+      if (isMatch) {
+        return res.json({
+          status: 200,
+          success: true,
+          msg: "Check Password Successfully",
+        });
+      } else {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect password",
+        });
+      }
+    } catch (error) {
+      return res.json({
+        status: 400,
+        success: false,
+        msg: error.message,
+      });
     }
   },
   //Delete Soft Erase
