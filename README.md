@@ -1,16 +1,17 @@
-.WebSite:https://shopshoetaiheo.herokuapp.com/
+## WebSite: https://shopshoetaiheo.herokuapp.com/
 
-.Tài Khoản thanh toán tiền chuyển khoản
+## Tài Khoản thanh toán tiền chuyển khoản
 
-Tk: nguyentientai@gmail.com
+## Tk: nguyentientai@gmail.com
 
-Mk: Taideptrai123
+## Mk: Taideptrai123
 
-Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
+## Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 
-1. API dành cho admin
+## 1. API dành cho admin
 
-\*Admin:
+## Admin
+
 
 - Đăng ký tài khoản admin: post --> http://localhost:5000/api/auth/registerAdmin
 - Xác thực email đăng ký: get --> http://localhost:5000/api/auth/verify/:userId/:uniqueString
@@ -30,38 +31,38 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 - Danh sách các tài khoản admin: get --> http://localhost:5000/api/auth/getAllAdmin
 - Danh sách tài khoản Uncheck:get -->http://localhost:5000/api/auth/getAllUserUncheck
 
-\*Upload:
+## Upload:
 
 - Upload ảnh người dùng : post --> http://localhost:5000/api/uploadImageUser
 - Xóa ảnh người dùng trên cloud : post --> http://localhost:5000/api/destroyImageUser
 
-\*Category
+## Category
 
 - Xem tất cả loại categorys : get --> http://localhost:5000/api/category/categorys
 - Tạo thêm 1 loại categorys: post --> http://localhost:5000/api/category/categorys
 - Cập nhập loại categorys: patch --> http://localhost:5000/api/category/categorys/:id
 - Xóa loại categorys: delete --> http://localhost:5000/api/category/categorys/:id
 
-\*Carousel
+## Carousel
 
 - Xem tất cả loại Carousel: get --> http://localhost:5000/api/carousel/carousels
 - Tạo thêm 1 loại Carousels: post --> http://localhost:5000/api/carousel/carousels
 - Cập nhập loại Carousel: patch --> http://localhost:5000/api/carousel/carousels/:id
 - Xóa loại Carousel: delete --> http://localhost:5000/api/carousel/carousels/:id
 
-\*Voucher
+## Voucher
 
 - Xem tất cả loại voucher : get --> http://localhost:5000/api/voucher/vouchers
 - Tạo thêm voucher: post --> http://localhost:5000/api/voucher/vouchers
 - Cập nhập voucher: patch --> http://localhost:5000/api/voucher/vouchers/:id
 - Xóa loại voucher: delete --> http://localhost:5000/api/voucher/vouchers/:id
   
-\*FeedBack
+## FeedBack
 
 - Xem tất cả loại voucher : get --> http://localhost:5000/api/feedback/all
 - Tra loi Feedback: patch --> http://localhost:5000/api/feedback/response/:id
 
-\*Product
+## Product
 
 - Xem tất cả sản phẩm: get --> http://localhost:5000/api/product/getAll
 - Xem chi tiết sản phẩm : get --> http://localhost:5000/api/product/getId/:id
@@ -69,7 +70,7 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 - Cập nhập sản phẩm : put --> http://localhost:5000/api/product/update/:id
 - Xóa sản phẩm: delete --> http://localhost:5000/api/product/delete/:id
 
-\*Payment
+## Payment
 
 - Lấy ra toàn bộ đơn hàng: get --> http://localhost:5000/api/payment/payments
 - Lấy ra đơn hàng đã xóa: get --> http://localhost:5000/api/payment/deletePayment
@@ -83,14 +84,14 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 - Doanh thu hóa đơn đã vận chuyển thành công theo từng tháng: get --> http://localhost:5000/api/payment/orders/customerReceived/getMonthlyIncome
 - Lấy ra những đơn hàng được thanh toán trong 3 ngày gần nhất : get --> http://localhost:5000/api/payment/newPayment
 
-1. API dành cho khách hàng
+## 2. API dành cho khách hàng
 
-\*Upload:
+## Upload:
 
 - Upload ảnh người dùng : post --> http://localhost:5000/api/uploadImageUser
 - Xóa ảnh người dùng trên cloud : post --> http://localhost:5000/api/destroyImageUser
 
-\*Customer:
+## Customer:
 
 - Đăng ký tài khoản khách hàng: post --> http://localhost:5000/api/auth/register
 - Xác thực email đăng ký: get --> http://localhost:5000/api/auth/verify/:userId/:uniqueString
@@ -108,22 +109,22 @@ Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
 
 - Lịch sử đơn hàng của khách hàng : --> http://localhost:5000/api/auth/history
 
-\*Category
+## Category
 
 - Xem tất cả thể loại category : get --> http://localhost:5000/api/category/all
   
-\*Feedback
+## Feedback
 
 - Gui feed back : post --> http://localhost:5000/api/feedback/send
 
-\*Product
+## Product
 
 - Xem tất cả sản phẩm: get --> http://localhost:5000/api/product/getAll
 - Xem chi tiết sản phẩm : get --> http://localhost:5000/api/product/getId/:id
 - Chỉnh sửa comment review : put --> http://localhost:5000/api/product/:productId/update/review/:commentId
 - Xóa comment : delete --> http://localhost:5000/api/product/:productId/delete/review/:commentId
 
-\*Payment
+## Payment
 
 - Thanh toán đơn hàng: post --> http://localhost:5000/api/payment/payments
 - Xóa mem payment : patch -->http://localhost:5000/api/payment/deletePayments/:id

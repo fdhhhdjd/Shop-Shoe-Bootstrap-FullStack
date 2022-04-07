@@ -1,44 +1,55 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# Front End Code By: Nguyễn Tiến Tài
 
-## Available Scripts
+Profile For me Nguyễn Tiến Tài: [https://profile-forme.surge.sh/](https://profile-forme.surge.sh/)
 
-In the project directory, you can run:
+![giphy](https://user-images.githubusercontent.com/63393170/162171222-d6f7983d-bd06-4001-a29a-3c574e1ff962.gif)
 
-### `npm start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+This project code by [React,Redux,...](https://github.com/facebook/create-react-app).
+## 1. Customer
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Interface User
 
-### `npm run build`
+![user](https://user-images.githubusercontent.com/63393170/162173260-2c1e89bd-81ec-4b31-b57d-2a7a72f89cdc.jpg)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Interface Home User
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![homeuser](https://user-images.githubusercontent.com/63393170/162173949-43ca3330-1844-422f-81b6-23cb407eafce.jpg)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 2. Admin
 
-## Learn More
+Go to Interface Admin
+### Interface Admin
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![admin](https://user-images.githubusercontent.com/63393170/162174730-5eb4f9be-5024-4c39-a437-a05b948f6a72.jpg)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+
+### Google Map Admin
+
+![google](https://user-images.githubusercontent.com/63393170/162175127-cfeff0f7-7cb7-4764-811f-895f6b942fb6.jpg)
+
+
+For the rest, you invite other functions to the link below.
+
+### Docker Test local
+
+ Please Run code guilde.
+
+### Deployment Heroku
+
+Web Online Heroku: [https://shopshoetaiheo.herokuapp.com/](https://shopshoetaiheo.herokuapp.com/)
+
+### Support Forme
+
+Profile For me Nguyễn Tiến Tài: [https://profile-forme.surge.sh/](https://profile-forme.surge.sh/)
+
+## Thank For Nguyễn Tiến Tài .
