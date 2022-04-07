@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Header } from "../../imports/index";
 import {
   GetProductDetailInitial,
@@ -93,12 +94,47 @@ const DetailProduct = () => {
             {productDetail.product && (
               <div className="row">
                 <div className="col-md-6">
-                  <div className="single-image">
-                    <img
-                      src={productDetail.product.image.url}
-                      alt={productDetail.product.name}
-                    />
-                  </div>
+                  <TransformWrapper
+                    initialScale={0.75}
+                    initialPositionX={0}
+                    initialPositionY={20}
+                  >
+                    {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                      <React.Fragment>
+                        <div className="single-image">
+                          <TransformComponent>
+                            <img
+                              src={productDetail.product.image.url}
+                              alt={productDetail.product.name}
+                            />
+                          </TransformComponent>
+                        </div>
+                        <br />
+                        <button
+                          className="btn btn-success"
+                          onClick={() => zoomIn()}
+                        >
+                          Zoom In +
+                        </button>
+                        &nbsp;&nbsp;
+                        <button
+                          className="btn btn-success"
+                          onClick={() => zoomOut()}
+                        >
+                          Zoom Out -
+                        </button>
+                        &nbsp;&nbsp;
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => resetTransform()}
+                        >
+                          Return-X
+                        </button>
+                        <br />
+                        <br />
+                      </React.Fragment>
+                    )}
+                  </TransformWrapper>
                 </div>
                 <div className="col-md-6">
                   <div className="product-dtl">
