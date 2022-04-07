@@ -1,7 +1,7 @@
 import moment from "moment";
 import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import Swal from "sweetalert2";
 import { GlobalState } from "../../Context/GlobalState";
@@ -10,13 +10,14 @@ import { CheckPass, True } from "../../imports/Image";
 import Message from "../../Pages/Error/Message";
 import { CheckPasswordInitiate } from "../../Redux/AuthenticationSlice";
 import { DeleteOrderNewUserInitial } from "../../Redux/OrderSlice";
-const History = () => {
+const Order = () => {
   const { loading, order, error } = useSelector((state) => ({
     ...state.products,
   }));
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
   const token = refreshToken.accessToken;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const state = useContext(GlobalState);
   const [callback, setCallback] = state.callback;
   const orders = order.history;
@@ -132,7 +133,7 @@ const History = () => {
                               {order._id}
                             </Link>
                           </td>
-                          <td>{order.status ? <>Paid</> : <>Not Paid</>}</td>
+                          <td>{order.status ? "Paid" : "Not Paid"}</td>
                           <td>
                             {(order.order_status === "Delivered" && (
                               <span className="badge btn-success">
@@ -163,10 +164,19 @@ const History = () => {
                           )}
                           <td className="text-align-center">
                             &nbsp;&nbsp;&nbsp;
-                            <i
-                              className="fa-solid fa-trash-can"
-                              onClick={() => handleDelete(order._id)}
-                            ></i>
+                            {order.order_status == "On Delivery" ||
+                            order.order_status == "Delivered" ? (
+                              <i
+                                className="fas fa-eye"
+                                onClick={() => navigate(`/order/${order._id}`)}
+                                style={{ cursor: "pointer" }}
+                              ></i>
+                            ) : (
+                              <i
+                                className="fa-solid fa-trash-can"
+                                onClick={() => handleDelete(order._id)}
+                              ></i>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -181,4 +191,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default Order;

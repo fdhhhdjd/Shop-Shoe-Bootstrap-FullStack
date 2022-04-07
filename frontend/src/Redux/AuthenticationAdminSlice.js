@@ -2,14 +2,24 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 export const LoginAdminInitial = createAsyncThunk(
   "admin/LoginAdmin",
-  async ({ email, password, toast }) => {
+  async ({ email, password, toast, remembererAdmin }) => {
     const response = await axios.post("/api/auth/loginAdmin", {
       email,
       password,
     });
+    if (remembererAdmin === true) {
+      localStorage.setItem(
+        "rememberAdmin",
+        JSON.stringify({
+          email: email,
+          password: password,
+        })
+      );
+    }
     if (response.data.status === 200) {
       toast.success("Login Admin Successfully 🥰");
     }
+
     return response.data;
   }
 );

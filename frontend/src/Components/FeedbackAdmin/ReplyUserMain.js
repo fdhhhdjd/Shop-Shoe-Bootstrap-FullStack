@@ -85,16 +85,16 @@ const ReplyUserMain = () => {
                     <label htmlFor="product_title" className="form-label">
                       Response Content
                     </label>
-                    <input
-                      type="text"
+                    <textarea
                       placeholder="Type here"
                       className="form-control"
                       id="product_title"
+                      rows="10"
+                      cols="100"
                       required
                       value={response_content}
                       name="response_content"
                       onChange={handleChange}
-                      required={true}
                     />
                   </div>
                 </div>

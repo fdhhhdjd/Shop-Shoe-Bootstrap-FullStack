@@ -1,27 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import GoogleLogin from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   HeaderLoginAdmin,
   Loading,
   MetaData,
   Message,
+  SwaleMessage,
 } from "../../imports/index";
 import {
   LoginAdminInitial,
   LoginGooglAdminInitiate,
   reset,
 } from "../../Redux/AuthenticationAdminSlice";
+import { GlobalState } from "../../Context/GlobalState";
 const initialState = {
   email: "",
   password: "",
 };
 const LoginAdmin = () => {
+  const DataRemember = localStorage.getItem("rememberAdmin");
+  const foundUser = JSON.parse(DataRemember);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const [token, setToken] = useState("");
+  const grecaptchaObject = window.grecaptcha;
+  const states = useContext(GlobalState);
+  const [remembererAdmin, setRememberMeAdmin] = states.rememberAdmin;
+  const reCaptcha = useRef();
   const [state, setState] = useState(initialState);
   const { email, password } = state;
   const { loading, admin } = useSelector((state) => ({ ...state.admin }));
@@ -34,7 +44,14 @@ const LoginAdmin = () => {
     if (!email || !password) {
       return toast.error("Please Enter Input 🥲");
     }
-    dispatch(LoginAdminInitial({ email, password, toast }));
+    if (!token) {
+      SwaleMessage("Mời bạn xác thực đầy đủ !", "error");
+      return;
+    }
+    dispatch(LoginAdminInitial({ email, password, toast, remembererAdmin }));
+  };
+  const HandleRememberAdmin = () => {
+    setRememberMeAdmin(!remembererAdmin);
   };
   const HandleGoogle = (response) => {
     if (response.error) {
@@ -43,6 +60,11 @@ const LoginAdmin = () => {
       dispatch(LoginGooglAdminInitiate(response));
     }
   };
+  useEffect(() => {
+    if (foundUser) {
+      setState(foundUser);
+    }
+  }, []);
   useEffect(() => {
     if (admin && admin.status === 200) {
       if (location.state?.from) {
@@ -96,6 +118,39 @@ const LoginAdmin = () => {
             value={password}
             name="password"
             onChange={handleChange}
+          />
+          <br />
+          <br />
+          <div className="custom-control custom-checkbox">
+            <input
+              className="custom-control-input"
+              type="checkbox"
+              style={{
+                marginTop: "0",
+                padding: "0,0",
+                width: "25px",
+                float: "left",
+              }}
+              onChange={HandleRememberAdmin}
+            />
+            <label
+              style={{ float: "left", marginTop: "-5px" }}
+              className="custom-control-label "
+              htmlFor="flexCheckDefault"
+            >
+              Remember ?
+            </label>
+          </div>
+          <br />
+          <br />
+          <ReCAPTCHA
+            ref={reCaptcha}
+            sitekey="6LdHT3wcAAAAAJfSOX-t5x0EX_l6MVQ1zFjHH9es"
+            onChange={(token) => setToken(token)}
+            onExpired={(e) => setToken("")}
+            size="normal"
+            theme="light"
+            grecaptcha={grecaptchaObject}
           />
           {loading ? <Loading /> : <button type="submit">Login</button>}
           <p>
