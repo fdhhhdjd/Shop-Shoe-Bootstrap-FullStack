@@ -53,7 +53,10 @@ const Users = (props) => {
           Delete User
         </button>
         <div className="form-check">
-          <label className="form-check-label text-danger" for="defaultCheck1">
+          <label
+            htmlFor="defaultCheck1"
+            className="form-check-label text-danger"
+          >
             Choose All
           </label>
           <input

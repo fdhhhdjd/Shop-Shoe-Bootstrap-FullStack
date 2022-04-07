@@ -14,7 +14,6 @@ const ShopSection = React.forwardRef((props, ref) => {
   //Pagination
   const [currentPage, setcurrentPage] = useState(1);
   const [itemsPerPage, setitemsPerPage] = useState(6);
-  console.log(products);
 
   const [pageNumberLimit, setpageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);

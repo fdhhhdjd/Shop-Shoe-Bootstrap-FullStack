@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const OrderDetailInfo = (props) => {
-  const { detailOrder, loading, error } = useSelector((state) => ({
+  const { detailOrder } = useSelector((state) => ({
     ...state.order,
   }));
   const { order } = props;

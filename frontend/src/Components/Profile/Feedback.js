@@ -60,7 +60,7 @@ const Feedback = () => {
               className="form-control"
               type="type"
               required
-              value={fullname}
+              value={fullname || ""}
               name="fullname"
               onChange={handleChange}
             />
@@ -85,7 +85,7 @@ const Feedback = () => {
             <input
               className="form-control"
               type="type"
-              value={subject}
+              value={subject || ""}
               name="subject"
               onChange={handleChange}
             />
@@ -98,7 +98,7 @@ const Feedback = () => {
               className="form-control"
               cols="10"
               rows="5"
-              value={content}
+              value={content || ""}
               name="content"
               onChange={handleChange}
             ></textarea>

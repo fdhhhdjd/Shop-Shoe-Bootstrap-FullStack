@@ -1,7 +1,7 @@
 import lottie from "lottie-web";
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-const Carousel = ({ handleScrollMenu }) => {
+const Carousel = () => {
   const Scroll = useRef();
   const { Information } = useSelector((state) => ({ ...state.info }));
   useEffect(() => {

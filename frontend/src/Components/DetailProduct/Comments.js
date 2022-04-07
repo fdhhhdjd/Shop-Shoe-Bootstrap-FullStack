@@ -82,13 +82,10 @@ const Comments = ({
     <>
       {replies.length > 0 && (
         <div className="replies">
-          {replies.map((review) => {
+          {replies.map((review, index) => {
             return (
-              <Fragment>
-                <div
-                  key={review._id}
-                  className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded"
-                >
+              <Fragment key={index}>
+                <div className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded">
                   <strong>
                     {review.user && review.user.image && (
                       <img

@@ -179,8 +179,8 @@ const CartScreen = () => {
               </div>
               {/* cartiterm */}
               {cartItems &&
-                cartItems.map((item) => (
-                  <div className="cart-iterm row">
+                cartItems.map((item, index) => (
+                  <div className="cart-iterm row" key={index}>
                     <div
                       className="remove-button d-flex justify-content-center align-items-center"
                       onClick={() => removeFromCartHandle(item._id)}

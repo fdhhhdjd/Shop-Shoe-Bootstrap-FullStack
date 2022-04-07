@@ -48,7 +48,7 @@ const ChangePassword = () => {
               className="form-control"
               type="password"
               required
-              value={oldPassword}
+              value={oldPassword||""}
               name="oldPassword"
               onChange={handleChange}
             />
@@ -60,7 +60,7 @@ const ChangePassword = () => {
             <input
               className="form-control"
               type="password"
-              value={password}
+              value={password||""}
               name="password"
               onChange={handleChange}
             />
@@ -72,7 +72,7 @@ const ChangePassword = () => {
             <input
               className="form-control"
               type="password"
-              value={confirmPassword}
+              value={confirmPassword||""}
               name="confirmPassword"
               onChange={handleChange}
             />

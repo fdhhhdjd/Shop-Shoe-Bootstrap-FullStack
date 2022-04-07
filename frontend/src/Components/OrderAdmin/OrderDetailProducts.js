@@ -18,7 +18,7 @@ const OrderDetailProducts = (props) => {
       </thead>
       <tbody>
         {order.cart.map((item, index) => (
-          <tr key={index}>
+          <tr key={item._id}>
             <td>
               <Link className="itemside" to="#">
                 <div className="left">

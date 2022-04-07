@@ -174,10 +174,10 @@ const DetailProduct = () => {
                   </>
 
                   {productDetail.product &&
-                    productDetail.product.reviews.map((review) => {
+                    productDetail.product.reviews.map((review, index) => {
                       return (
                         <Comments
-                          keys={review._id}
+                          key={index}
                           replies={getReplies(review._id)}
                           setCallback={setCallback}
                           callback={callback}

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Loading, OrderDetailInfo, OrderDetailProducts } from "../../imports";
 
 const OrderDetailMain = () => {
-  const { detailOrder, loading, error } = useSelector((state) => ({
+  const { detailOrder, loading } = useSelector((state) => ({
     ...state.order,
   }));
 

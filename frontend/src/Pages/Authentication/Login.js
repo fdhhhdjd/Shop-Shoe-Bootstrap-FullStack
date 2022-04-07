@@ -60,13 +60,11 @@ const Login = () => {
       dispatch(LoginGoogleInitiate(response));
     }
   };
-  // useEffect(() => {
-  //   if (foundUser) {
-  //     setState(foundUser);
-  //   } else {
-  //     setState(initialState);
-  //   }
-  // }, [foundUser]);
+  useEffect(() => {
+    if (foundUser) {
+      setState(foundUser);
+    }
+  }, []);
   useEffect(() => {
     if (auth.status === 200) {
       if (location.state?.from) {

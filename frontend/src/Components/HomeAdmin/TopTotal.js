@@ -20,7 +20,6 @@ const TopTotal = (props) => {
       order.isPaid === true ? (totalSale = totalSale + order.totalPrice) : null
     );
   }
-
   return (
     <>
       <div className="row">

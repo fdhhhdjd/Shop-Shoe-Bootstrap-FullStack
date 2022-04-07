@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { Header, Loading } from "../../imports";
@@ -148,7 +148,7 @@ const OrderScreen = () => {
               {orderItem.cart &&
                 orderItem.cart.map((item, index) => {
                   return (
-                    <>
+                    <Fragment key={index}>
                       <div className="col-lg-8">
                         <>
                           <div className="order-product row" key={index}>
@@ -171,7 +171,7 @@ const OrderScreen = () => {
                           </div>
                         </>
                       </div>
-                    </>
+                    </Fragment>
                   );
                 })}
               {orderItem.cart && (

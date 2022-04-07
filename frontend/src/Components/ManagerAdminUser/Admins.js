@@ -55,7 +55,10 @@ const Admins = (props) => {
           Delete Admin
         </button>
         <div className="form-check">
-          <label className="form-check-label text-danger" for="defaultCheck1">
+          <label
+            className="form-check-label text-danger"
+            htmlFor="defaultCheck1"
+          >
             Choose All
           </label>
           <input
