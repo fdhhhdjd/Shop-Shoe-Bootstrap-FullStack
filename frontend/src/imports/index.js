@@ -1,6 +1,9 @@
 //!UseContext
 import { GlobalState } from "../Context/GlobalState";
+
 export { GlobalState };
+//!Utils
+
 //!Component
 export { default as Header } from "../Components/Header/Header";
 export { default as Profile } from "../Components/Profile/Profile";
