@@ -1591,6 +1591,10 @@ ul.row-sm {
   line-height: 0.7;
   vertical-align: bottom;
 }
+.btnFacebook {
+  background: #3b5998 !important;
+  color: white !important;
+}
 /* system */
 
 /*slider*/

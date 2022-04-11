@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import GoogleLogin from "react-google-login";
+import FacebookLogin from "react-facebook-login";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import {
   Header,
   Loading,
@@ -14,6 +16,7 @@ import {
 import { GlobalState } from "../../Context/GlobalState";
 import {
   LoginGoogleInitiate,
+  LoginFacebookInitiate,
   LoginInitial,
   reset,
 } from "../../Redux/AuthenticationSlice";
@@ -60,6 +63,10 @@ const Login = () => {
       dispatch(LoginGoogleInitiate(response));
     }
   };
+  const responseFacebook = (response) => {
+    console.log(response);
+    dispatch(LoginFacebookInitiate(response));
+  };
   useEffect(() => {
     if (foundUser) {
       setState(foundUser);
@@ -98,7 +105,16 @@ const Login = () => {
             onFailure={HandleGoogle}
             cookiePolicy={"single_host_origin"}
           />
+          <FacebookLogin
+            appId="1361366160990874"
+            autoLoad={false}
+            callback={responseFacebook}
+            icon="fa-facebook"
+            cssClass="btnFacebook"
+            textButton="&nbsp;&nbsp;Sign In with Facebook"
+          />
         </div>
+
         <form
           className="Login col-md-8 col-lg-4 col-11"
           onSubmit={submitHandler}

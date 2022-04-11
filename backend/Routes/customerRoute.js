@@ -36,6 +36,9 @@ router.put("/password/reset/:token", userCtrl.resetPassword);
 //Login Google
 router.post("/loginGoogle", userCtrl.LoginGoogle);
 
+//Login Facebook
+router.post("/loginFacebook", userCtrl.LoginFacebook);
+
 //Add To Cart
 router.patch("/addcart", auth, userCtrl.addCart);
 

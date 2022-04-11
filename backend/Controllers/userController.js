@@ -4,6 +4,7 @@ const Payments = require("../Model/PaymentModel");
 const Products = require("../Model/ProductModel");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const fetch = require("node-fetch");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const sendEmail = require("./SendEmail");
@@ -636,12 +637,95 @@ const userCtrl = {
                     accesstoken,
                     user: { _id, name, email, image },
                   });
-                  console.log(user);
                 });
               }
             }
           });
         }
+      });
+  },
+  LoginFacebook: async (req, res) => {
+    const { userID, accessToken } = req.body;
+    let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`;
+    fetch(urlGraphFacebook, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        const { email, name } = response;
+        Users.findOne({ email, role: 0 }).exec((error, user) => {
+          if (error) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Invalid Authentication",
+            });
+          } else {
+            if (user) {
+              const accesstoken = createAccessToken({
+                id: user._id,
+                role: user.role,
+              });
+              const refreshtoken = createRefreshToken({
+                id: user._id,
+                role: user.role,
+              });
+
+              res.cookie("refreshtoken", refreshtoken, {
+                httpOnly: true,
+                path: "/api/auth/refresh_token",
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+              });
+              const { _id, name, email } = user;
+              res.json({
+                status: 200,
+                success: true,
+                msg: "Login successfully",
+                accesstoken,
+                user: { _id, name, email },
+              });
+            } else {
+              let password = email + process.env.ACCESS_TOKEN_SECRET;
+              let newUser = new Users({
+                name: name,
+                email,
+                password,
+                verified: true,
+              });
+              newUser.save((err, data) => {
+                if (err) {
+                  return res.json({
+                    status: 400,
+                    success: false,
+                    msg: "Invalid Authentication",
+                  });
+                }
+                const accesstoken = createAccessToken({
+                  id: data._id,
+                  role: data.role,
+                });
+                const refreshtoken = createRefreshToken({
+                  id: data._id,
+                  role: data.role,
+                });
+
+                res.cookie("refreshtoken", refreshtoken, {
+                  httpOnly: true,
+                  path: "/api/auth/refresh_token",
+                  maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+                });
+                const { _id, name, email, image } = newUser;
+                res.json({
+                  status: 200,
+                  success: true,
+                  msg: "Register successfully",
+                  accesstoken,
+                  user: { _id, name, email },
+                });
+              });
+            }
+          }
+        });
       });
   },
 

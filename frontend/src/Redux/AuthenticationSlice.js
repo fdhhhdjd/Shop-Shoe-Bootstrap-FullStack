@@ -107,6 +107,21 @@ export const LoginGoogleInitiate = createAsyncThunk(
     return res;
   }
 );
+export const LoginFacebookInitiate = createAsyncThunk(
+  "auth/LoginFacebook",
+  async (response) => {
+    const res = await axios
+      .post("/api/auth/loginFacebook", {
+        accessToken: response.accessToken,
+        userID: response.userID,
+      })
+      .then((user) => user.data)
+      .catch((error) => {
+        console.log(error.data);
+      });
+    return res;
+  }
+);
 export const CheckPasswordInitiate = createAsyncThunk(
   "auth/CheckPassword",
   async ({ token, checkPass }) => {
@@ -242,7 +257,7 @@ const AuthenticationSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    //? Change Password
+    //? Login Google
     [LoginGoogleInitiate.pending]: (state, action) => {
       state.loading = false;
     },
@@ -251,6 +266,18 @@ const AuthenticationSlice = createSlice({
       state.auth = action.payload;
     },
     [LoginGoogleInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Login Facebook
+    [LoginFacebookInitiate.pending]: (state, action) => {
+      state.loading = false;
+    },
+    [LoginFacebookInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.auth = action.payload;
+    },
+    [LoginFacebookInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
