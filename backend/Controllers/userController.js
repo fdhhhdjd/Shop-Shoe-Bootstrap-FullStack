@@ -646,13 +646,13 @@ const userCtrl = {
   },
   LoginFacebook: async (req, res) => {
     const { userID, accessToken } = req.body;
-    let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`;
+    let urlGraphFacebook = `https://graph.facebook.com/v13.0/${userID}/?fields=picture.width(300).height(300),id,name,email&access_token=${accessToken}`;
     fetch(urlGraphFacebook, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((response) => {
-        const { email, name } = response;
+        const { email, name, picture } = response;
         Users.findOne({ email, role: 0 }).exec((error, user) => {
           if (error) {
             return res.json({
@@ -676,13 +676,13 @@ const userCtrl = {
                 path: "/api/auth/refresh_token",
                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
               });
-              const { _id, name, email } = user;
+              const { _id, name, email, image } = user;
               res.json({
                 status: 200,
                 success: true,
                 msg: "Login successfully",
                 accesstoken,
-                user: { _id, name, email },
+                user: { _id, name, email, image },
               });
             } else {
               let password = email + process.env.ACCESS_TOKEN_SECRET;
@@ -690,6 +690,10 @@ const userCtrl = {
                 name: name,
                 email,
                 password,
+                image: {
+                  public_id: password,
+                  url: picture.data.url,
+                },
                 verified: true,
               });
               newUser.save((err, data) => {
@@ -720,7 +724,7 @@ const userCtrl = {
                   success: true,
                   msg: "Register successfully",
                   accesstoken,
-                  user: { _id, name, email },
+                  user: { _id, name, email, image },
                 });
               });
             }
