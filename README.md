@@ -120,6 +120,7 @@
 - Quên mật khẩu tài khoản khách hàng: post --> http://localhost:5000/api/auth/forget
 - Link reset mật khẩu khi quên: put --> http://localhost:5000/api/auth/password/reset/:token
 - Đăng nhập google tài khoản khách hàng: post --> http://localhost:5000/api/auth/loginGoogle
+- Đăng nhập facebook tài khoản khách hàng: post --> http://localhost:5000/api/auth/loginFacebook
 
 - Thêm giày vào giỏ hàng: patch --> http://localhost:5000/api/auth/addCart
 
