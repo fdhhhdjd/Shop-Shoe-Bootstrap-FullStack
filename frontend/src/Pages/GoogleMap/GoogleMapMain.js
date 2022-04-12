@@ -19,8 +19,8 @@ import {
 import { useRef, useState } from "react";
 
 const center = {
-  lat: process.env.REACT_APP_GOOGLE_LAT,
-  lng: process.env.REACT_APP_GOOGLE_LNG,
+  lat: 12.270515836232429,
+  lng: 109.19842570483897,
 };
 
 function GoogleMapMain() {
