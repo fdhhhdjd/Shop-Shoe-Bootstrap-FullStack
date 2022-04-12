@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "../../imports/index";
 const NotFound = () => {
   const navigate = useNavigate();
+  console.log(process.env.REACT_APP_API);
   return (
     <>
       <Header />

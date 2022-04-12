@@ -12,6 +12,8 @@ const CLIENT_ID = process.env.GOOGLE_CLIENT_IDS;
 const client = new OAuth2Client(CLIENT_ID);
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
+const STORAGE = require("../utils/Storage");
+const CONSTANTS = require("../configs/contants");
 require("dotenv").config;
 
 const userCtrl = {
@@ -187,7 +189,10 @@ const userCtrl = {
             msg: "Please Login or Register",
           });
 
-        const accesstoken = createAccessToken({ id: user.id, role: user.role });
+        const accesstoken = STORAGE.createAccessToken({
+          id: user.id,
+          role: user.role,
+        });
         res.json({
           status: 200,
           success: true,
@@ -234,8 +239,8 @@ const userCtrl = {
         });
 
       // If login success , create access token and refresh token
-      const accessToken = createAccessToken({ id: user._id });
-      const refreshtoken = createRefreshToken({ id: user._id });
+      const accessToken = STORAGE.createAccessToken({ id: user._id });
+      const refreshtoken = STORAGE.createRefreshToken({ id: user._id });
 
       res.cookie("refreshtoken", refreshtoken, {
         httpOnly: true,
@@ -573,11 +578,11 @@ const userCtrl = {
               });
             } else {
               if (user) {
-                const accesstoken = createAccessToken({
+                const accesstoken = STORAGE.createAccessToken({
                   id: user._id,
                   role: user.role,
                 });
-                const refreshtoken = createRefreshToken({
+                const refreshtoken = STORAGE.createRefreshToken({
                   id: user._id,
                   role: user.role,
                 });
@@ -615,11 +620,11 @@ const userCtrl = {
                       msg: "Invalid Authentication",
                     });
                   }
-                  const accesstoken = createAccessToken({
+                  const accesstoken = STORAGE.createAccessToken({
                     id: data._id,
                     role: data.role,
                   });
-                  const refreshtoken = createRefreshToken({
+                  const refreshtoken = STORAGE.createRefreshToken({
                     id: data._id,
                     role: data.role,
                   });
@@ -646,7 +651,13 @@ const userCtrl = {
   },
   LoginFacebook: async (req, res) => {
     const { userID, accessToken } = req.body;
-    let urlGraphFacebook = `https://graph.facebook.com/v13.0/${userID}/?fields=picture.width(300).height(300),id,name,email&access_token=${accessToken}`;
+    let urlGraphFacebook = STORAGE.getURIFromTemplate(
+      CONSTANTS.STORAGE_GRAPH_FACEBOOK,
+      {
+        userID,
+        accessToken,
+      }
+    );
     fetch(urlGraphFacebook, {
       method: "GET",
     })
@@ -662,11 +673,11 @@ const userCtrl = {
             });
           } else {
             if (user) {
-              const accesstoken = createAccessToken({
+              const accesstoken = STORAGE.createAccessToken({
                 id: user._id,
                 role: user.role,
               });
-              const refreshtoken = createRefreshToken({
+              const refreshtoken = STORAGE.createRefreshToken({
                 id: user._id,
                 role: user.role,
               });
@@ -704,11 +715,11 @@ const userCtrl = {
                     msg: "Invalid Authentication",
                   });
                 }
-                const accesstoken = createAccessToken({
+                const accesstoken = STORAGE.createAccessToken({
                   id: data._id,
                   role: data.role,
                 });
-                const refreshtoken = createRefreshToken({
+                const refreshtoken = STORAGE.createRefreshToken({
                   id: data._id,
                   role: data.role,
                 });
@@ -886,7 +897,10 @@ const userCtrl = {
             msg: "Please Login or Register Admin",
           });
 
-        const accesstoken = createAccessToken({ id: user.id, role: user.role });
+        const accesstoken = STORAGE.createAccessToken({
+          id: user.id,
+          role: user.role,
+        });
         res.json({
           status: 200,
           success: true,
@@ -933,8 +947,11 @@ const userCtrl = {
         });
 
       // If login success , create access token and refresh token
-      const accessToken = createAccessToken({ id: user._id, role: user.role });
-      const refreshtoken = createRefreshToken({
+      const accessToken = STORAGE.createAccessToken({
+        id: user._id,
+        role: user.role,
+      });
+      const refreshtoken = STORAGE.createRefreshToken({
         id: user._id,
         role: user.role,
       });
@@ -1064,11 +1081,11 @@ const userCtrl = {
               });
             } else {
               if (user) {
-                const accesstoken = createAccessToken({
+                const accesstoken = STORAGE.createAccessToken({
                   id: user._id,
                   role: user.role,
                 });
-                const refreshtoken = createRefreshToken({
+                const refreshtoken = STORAGE.createRefreshToken({
                   id: user._id,
                   role: user.role,
                 });
@@ -1107,11 +1124,11 @@ const userCtrl = {
                       msg: "Account No Admin invalid",
                     });
                   }
-                  const accesstoken = createAccessToken({
+                  const accesstoken = STORAGE.createAccessToken({
                     id: data._id,
                     role: data.role,
                   });
-                  const refreshtoken = createRefreshToken({
+                  const refreshtoken = STORAGE.createRefreshToken({
                     id: data._id,
                     role: data.role,
                   });
@@ -1316,12 +1333,5 @@ const userCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
-};
-
-const createAccessToken = (user) => {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "2h" });
-};
-const createRefreshToken = (user) => {
-  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 };
 module.exports = userCtrl;
