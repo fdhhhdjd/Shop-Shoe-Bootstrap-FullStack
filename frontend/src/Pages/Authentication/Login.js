@@ -99,15 +99,15 @@ const Login = () => {
         )}
         <div className="Login col-md-8 col-lg-4 col-11">
           <GoogleLogin
-            clientId="1083950083676-fr9m6jsgig4aalf6mj81t8rlgl9v45bd.apps.googleusercontent.com"
+            clientId={process.env.REACT_APP_KEY_GOOGLE}
             buttonText="Login Google +"
             onSuccess={HandleGoogle}
             onFailure={HandleGoogle}
             cookiePolicy={"single_host_origin"}
           />
           <FacebookLogin
-            // appId="2732900180350170"
-            appId="1361366160990874"
+            appId={process.env.REACT_APP_KEY_FACEBOOK}
+            // appId={process.env.REACT_APP_KEY_FACEBOOK_TEST}
             autoLoad={false}
             callback={responseFacebook}
             icon="fa-facebook"
@@ -160,7 +160,7 @@ const Login = () => {
           <br />
           <ReCAPTCHA
             ref={reCaptcha}
-            sitekey="6LdHT3wcAAAAAJfSOX-t5x0EX_l6MVQ1zFjHH9es"
+            sitekey={process.env.REACT_APP_KEY_RECAPTCHA}
             onChange={(token) => setToken(token)}
             onExpired={(e) => setToken("")}
             size="normal"

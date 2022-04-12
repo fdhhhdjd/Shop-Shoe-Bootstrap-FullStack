@@ -18,12 +18,15 @@ import {
 } from "@react-google-maps/api";
 import { useRef, useState } from "react";
 
-const center = { lat: 12.270515836232429, lng: 109.19842570483897 };
+const center = {
+  lat: process.env.REACT_APP_GOOGLE_LAT,
+  lng: process.env.REACT_APP_GOOGLE_LNG,
+};
 
 function GoogleMapMain() {
   const { isLoaded } = useJsApiLoader({
-    // googleMapsApiKey: "AIzaSyAs-i53vnQKFEgZbpXxGt-wme6aj4mPU30",
-    googleMapsApiKey: "AIzaSyA66KwUrjxcFG5u0exynlJ45CrbrNe3hEc",
+    // googleMapsApiKey: process.env.REACT_APP_KEY_GOOGLE_MAP_MAIN,
+    googleMapsApiKey: process.env.REACT_APP_KEY_GOOGLE_MAP,
     libraries: ["places"],
   });
   const [map, setMap] = useState(null);
