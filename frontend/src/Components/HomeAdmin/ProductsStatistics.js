@@ -1,22 +1,53 @@
-import React from "react";
+import { Line } from "react-chartjs-2";
+import { Chart, registerables } from "chart.js";
+
+import { useSelector } from "react-redux";
+Chart.register(...registerables);
 
 const ProductsStatistics = () => {
+  const { RevenueNotReceivedMonthBefore } = useSelector((state) => ({
+    ...state.order,
+  }));
+  const data = {
+    labels:
+      RevenueNotReceivedMonthBefore.data &&
+      RevenueNotReceivedMonthBefore.data.map((x) => x._id?.month),
+    datasets: [
+      {
+        label: `${
+          RevenueNotReceivedMonthBefore.data &&
+          RevenueNotReceivedMonthBefore.data.length
+        } Not Received`,
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: "butt",
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: "miter",
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data:
+          RevenueNotReceivedMonthBefore.data &&
+          RevenueNotReceivedMonthBefore.data.map((x) => x.total_income),
+      },
+    ],
+  };
+
   return (
     <div className="col-xl-6 col-lg-12">
       <div className="card mb-4 shadow-sm">
         <article className="card-body">
           <h5 className="card-title">Products statistics</h5>
-          <iframe
-            style={{
-              background: "#FFFFFF",
-              border: "none",
-              borderRadius: "2px",
-              // boxShadow: "0 2px 10px 0 rgba(70, 76, 79, .2);",
-              width: "100%",
-              height: "350px",
-            }}
-            src="https://charts.mongodb.com/charts-shoeshoptutorial-bzbxw/embed/charts?id=1f926980-090b-44c6-b011-3e94b2efddca&maxDataAge=3600&theme=light&autoRefresh=true"
-          ></iframe>
+          <Line data={data} />
         </article>
       </div>
     </div>

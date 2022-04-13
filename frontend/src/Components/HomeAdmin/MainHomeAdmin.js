@@ -22,6 +22,7 @@ const MainHomeAdmin = () => {
       setOrders(orders);
     }
   }, [newUserBuy]);
+
   return (
     <>
       <section className="content-main">
