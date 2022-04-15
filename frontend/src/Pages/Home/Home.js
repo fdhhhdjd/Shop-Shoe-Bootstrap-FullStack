@@ -6,6 +6,7 @@ import {
   Footer,
   Header,
   ShopSection,
+  MetaData,
 } from "../../imports";
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
   };
   return (
     <>
+      <MetaData title={`Home Page`} />
       {token ? "" : <Carousel handleScrollMenu={handleScrollMenu} />}
       <Header />
       <ShopSection ref={menuRef} />

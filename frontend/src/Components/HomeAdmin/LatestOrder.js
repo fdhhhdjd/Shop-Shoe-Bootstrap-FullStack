@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import CountUp from "react-countup";
 import { Link } from "react-router-dom";
-import { Loading } from "../../imports/index";
+import { LazyLoadImg, Loading } from "../../imports/index";
 import Message from "../../Pages/Error/Message";
 const LatestOrder = (props) => {
   const { loading, error, orders } = props;
@@ -37,9 +37,8 @@ const LatestOrder = (props) => {
                         <td>
                           <div className="col-md-4 px-4">
                             {order.user_id && order.user_id.image && (
-                              <img
-                                src={order.user_id.image.url}
-                                alt=""
+                              <LazyLoadImg
+                                url={order.user_id.image.url}
                                 style={{
                                   width: "40px",
                                   height: "40px",
@@ -47,6 +46,16 @@ const LatestOrder = (props) => {
                                   objectFit: "cover",
                                 }}
                               />
+                              // <img
+                              //   src={order.user_id.image.url}
+                              //   alt=""
+                              //   style={{
+                              //     width: "40px",
+                              //     height: "40px",
+                              //     borderRadius: "50%",
+                              //     objectFit: "cover",
+                              //   }}
+                              // />
                             )}
                           </div>
                         </td>

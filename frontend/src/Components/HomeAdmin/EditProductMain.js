@@ -4,7 +4,12 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { UpdateProduct } from "../../imports/Import";
-import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
+import {
+  Loading,
+  SwaleMessage,
+  useUpDesImg,
+  MetaData,
+} from "../../imports/index";
 const initialState = {
   name: "",
   description: "",
@@ -78,6 +83,7 @@ const EditProductMain = () => {
   };
   return (
     <>
+      <MetaData title={`edit-${states.name}`} />
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit}>
           <div className="content-header">

@@ -5,7 +5,14 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
 import { AddToCart, TranSuccess } from "../../imports/Import";
-import { Header, Loading, Paypal, SwaleMessage } from "../../imports/index";
+import {
+  Header,
+  Loading,
+  MetaData,
+  Paypal,
+  SwaleMessage,
+  LazyLoadImg,
+} from "../../imports/index";
 import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
 const initialState = {
   voucher_code: "",
@@ -153,6 +160,8 @@ const CartScreen = () => {
     <>
       <>
         <Header />
+        <MetaData title={`Store Cart`} />
+
         {/* Cart */}
         <div className="container">
           {cartItems && cartItems.length === 0 ? (
@@ -187,9 +196,7 @@ const CartScreen = () => {
                       <i className="fas fa-times"></i>
                     </div>
                     <div className="cart-image col-md-3">
-                      {item.image && (
-                        <img src={item.image.url} alt={item.name} />
-                      )}
+                      {item.image && <LazyLoadImg url={item.image?.url} />}
                     </div>
                     <div className="cart-text col-md-5 d-flex align-items-center">
                       <Link to={`/products/${item.product}`}>

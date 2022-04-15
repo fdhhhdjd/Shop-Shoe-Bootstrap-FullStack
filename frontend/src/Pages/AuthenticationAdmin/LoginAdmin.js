@@ -85,7 +85,11 @@ const LoginAdmin = () => {
   window.scrollTo(0, 0);
   return (
     <>
-      <MetaData title="ShoeShop-Dev" />
+      {admin.status === 200 ? (
+        <MetaData title="Redirect Dashboard..." />
+      ) : (
+        <MetaData title="Login-Admin-ShopShoe" />
+      )}
       <HeaderLoginAdmin />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {admin && admin.status === 400 && (

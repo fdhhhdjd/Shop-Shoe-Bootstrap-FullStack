@@ -7,6 +7,8 @@ import {
   Order,
   ProfileTabs,
   Feedback,
+  MetaData,
+  LazyLoadImg,
 } from "../../imports/index";
 const Profile = () => {
   const { profile } = useSelector((state) => ({ ...state.data }));
@@ -30,6 +32,8 @@ const Profile = () => {
   return (
     <>
       <Header />
+      <MetaData title={`Profile - ${profile.user && profile?.user.name}`} />
+
       <div className="container mt-lg-5 mt-3">
         <div className="row align-items-start">
           <div className="col-lg-4 p-0 shadow ">
@@ -38,7 +42,7 @@ const Profile = () => {
               <div className="author-card-profile row">
                 <div className="author-card-avatar col-md-5">
                   {profile.user && (
-                    <img src={profile.user.image.url} alt="userprofileimage" />
+                    <LazyLoadImg url={profile?.user.image.url} />
                   )}
                 </div>
                 <div className="author-card-details col-md-7">

@@ -4,6 +4,7 @@ const CreateVoucher = () => {
   return (
     <>
       <Sidebar />
+
       <main className="main-wrap">
         <HeaderAdmin />
         <MainCreateVoucher />

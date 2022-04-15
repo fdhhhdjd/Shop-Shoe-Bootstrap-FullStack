@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { deleteUserAdmin } from "../../imports/Import";
-import { SwaleMessage, useDelete } from "../../imports/index";
+import { SwaleMessage, useDelete, LazyLoadImg } from "../../imports/index";
 const Users = (props) => {
   const { orders, visible, search } = props;
   const state = useContext(GlobalState);
@@ -108,9 +108,8 @@ const Users = (props) => {
                 <tr key={order._id}>
                   <td>
                     {order && order.image && (
-                      <img
-                        src={order.image.url}
-                        alt=""
+                      <LazyLoadImg
+                        url={order.image.url}
                         style={{
                           width: "25px",
                           height: "25px",

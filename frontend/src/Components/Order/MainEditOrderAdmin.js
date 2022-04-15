@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GlobalState } from "../../Context/GlobalState";
-import { SwaleMessage } from "../../imports/index";
+import { MetaData, SwaleMessage } from "../../imports/index";
 import { reset, UpdatePaymentStatusInitial } from "../../Redux/OrderSlice";
 const initialState = {
   order_status: "",
@@ -60,6 +60,7 @@ const MainEditOrderAdmin = () => {
 
   return (
     <>
+      <MetaData title={`Edit-Oder-${states.order_status}`} />
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit}>
           <div className="content-header">

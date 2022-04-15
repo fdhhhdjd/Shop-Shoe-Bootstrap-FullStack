@@ -12,7 +12,7 @@ import { Loading, Rating, MetaData } from "../../imports/index";
 import Message from "../../Pages/Error/Message";
 import { GlobalState } from "../../Context/GlobalState";
 import Comments from "./Comments";
-import { SwaleMessage } from "../../imports/index";
+import { SwaleMessage, LazyLoadImg } from "../../imports/index";
 const initialState = {
   comment: "",
   rating: 0,
@@ -103,9 +103,8 @@ const DetailProduct = () => {
                       <React.Fragment>
                         <div className="single-image">
                           <TransformComponent>
-                            <img
-                              src={productDetail.product.image.url}
-                              alt={productDetail.product.name}
+                            <LazyLoadImg
+                              url={productDetail.product?.image.url}
                             />
                           </TransformComponent>
                         </div>

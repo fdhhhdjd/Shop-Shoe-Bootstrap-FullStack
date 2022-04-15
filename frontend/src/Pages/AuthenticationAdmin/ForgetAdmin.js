@@ -46,7 +46,7 @@ const ForgetAdmin = () => {
   }, [forgetAdmin]);
   return (
     <>
-      <MetaData title="Forget-ShoeShop" />
+      <MetaData title="Forget-Admin-ShoeShop" />
       <HeaderLoginAdmin />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {forgetAdmin && forgetAdmin.status === 400 && (

@@ -2,7 +2,12 @@ import moment from "moment";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Loading, OrderDetailInfo, OrderDetailProducts } from "../../imports";
+import {
+  Loading,
+  MetaData,
+  OrderDetailInfo,
+  OrderDetailProducts,
+} from "../../imports";
 
 const OrderDetailMain = () => {
   const { detailOrder, loading } = useSelector((state) => ({
@@ -34,6 +39,7 @@ const OrderDetailMain = () => {
                     </span>
                     <br />
                     <small className="text-white mx-3 ">
+                      <MetaData title={`Detail-Oder-${order._id}`} />
                       Order ID: {order._id}
                     </small>
                   </div>

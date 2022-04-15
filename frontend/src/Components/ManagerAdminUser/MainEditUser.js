@@ -4,7 +4,12 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { updateUserAdmin } from "../../imports/Import";
-import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
+import {
+  Loading,
+  MetaData,
+  SwaleMessage,
+  useUpDesImg,
+} from "../../imports/index";
 const initialState = {
   name: "",
   date_of_birth: "",
@@ -68,6 +73,8 @@ const MainEditUser = () => {
   };
   return (
     <>
+      <MetaData title={`Edit-Customer-${states.name}`} />
+
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit}>
           <div className="content-header">

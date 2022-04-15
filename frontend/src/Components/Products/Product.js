@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useDelete } from "../../imports";
 import { deleteProduct } from "../../imports/Import";
+import { LazyLoadImg, useDelete } from "../../imports/index";
 const Product = (props) => {
   const { product, handleCheck } = props;
   const { refreshTokenAdmin } = useSelector((state) => ({
@@ -24,7 +24,7 @@ const Product = (props) => {
             checked={product.checked}
           />
           <Link to="#" className="img-wrap">
-            <img src={product.image && product.image.url} alt="Product" />
+            <LazyLoadImg url={product?.image.url} />
           </Link>
           <div className="info-wrap">
             <Link to="#" className="title text-truncate">

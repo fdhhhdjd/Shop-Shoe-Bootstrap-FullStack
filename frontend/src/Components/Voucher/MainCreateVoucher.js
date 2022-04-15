@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
+import { MetaData } from "../../imports";
 import {
   CreateVoucherInitial,
   reset,
@@ -95,6 +96,11 @@ const MainCreateVoucher = () => {
   }, [createVoucher, updateVoucher, onEdit]);
   return (
     <>
+      {onEdit ? (
+        <MetaData title={`Edit-Voucher-${states._id}`} />
+      ) : (
+        <MetaData title="Add Voucher" />
+      )}
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit}>
           <div className="content-header">

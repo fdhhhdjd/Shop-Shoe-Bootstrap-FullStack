@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { Header, Loading } from "../../imports";
+import { Header, Loading, MetaData } from "../../imports";
 const OrderScreen = () => {
   const { order, loading } = useSelector((state) => ({ ...state.products }));
 
@@ -50,6 +50,8 @@ const OrderScreen = () => {
   return (
     <>
       <Header />
+      <MetaData title={`Order Detail - ${orderItem._id}`} />
+
       <div className="container">
         {loading ? (
           <Loading />

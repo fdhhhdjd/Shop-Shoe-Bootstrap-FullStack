@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
 import { Loading } from "../../imports";
-import { Message, SwaleMessage } from "../../imports/index";
+import { Message, SwaleMessage, LazyLoadImg } from "../../imports/index";
 import {
   DeleteInformationInitial,
   reset,
@@ -135,9 +135,8 @@ const MainInformation = () => {
                                 </td>
                                 <td>
                                   {order && order.image && (
-                                    <img
-                                      src={order.image.url}
-                                      alt=""
+                                    <LazyLoadImg
+                                      url={order.image.url}
                                       style={{
                                         width: "45px",
                                         height: "45px",

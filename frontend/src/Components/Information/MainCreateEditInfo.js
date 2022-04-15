@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GlobalState } from "../../Context/GlobalState";
-import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
+import {
+  Loading,
+  MetaData,
+  SwaleMessage,
+  useUpDesImg,
+} from "../../imports/index";
 import {
   CreateInformationInitial,
   reset,
@@ -117,9 +122,13 @@ const MainCreateEditInfo = () => {
   const styleUpload = {
     display: images ? "block" : "none",
   };
-  console.log(error);
   return (
     <>
+      {onEdit ? (
+        <MetaData title={`Edit-Info-${states._id}`} />
+      ) : (
+        <MetaData title="Add Info " />
+      )}
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit}>
           <div className="content-header">

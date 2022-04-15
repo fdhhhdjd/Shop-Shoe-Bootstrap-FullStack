@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
-import { Loading, SwaleMessage } from "../../imports";
+import { LazyLoadImg, Loading, SwaleMessage } from "../../imports";
 import Message from "../../Pages/Error/Message";
 import { DeleteCategoriesInitial, reset } from "../../Redux/CategoryAdminSlice";
 const MainCategories = () => {
@@ -130,9 +130,8 @@ const MainCategories = () => {
                                 </td>
                                 <td>
                                   {order && order.image && (
-                                    <img
-                                      src={order.image.url}
-                                      alt=""
+                                    <LazyLoadImg
+                                      url={order.image.url}
                                       style={{
                                         width: "45px",
                                         height: "45px",

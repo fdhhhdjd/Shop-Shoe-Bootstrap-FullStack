@@ -47,7 +47,7 @@ const RegisterAdmin = () => {
   }, [registerAdmin]);
   return (
     <>
-      <MetaData title="Register-ShoeShop" />
+      <MetaData title="Register-Admin-ShoeShop" />
       <HeaderLoginAdmin />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {registerAdmin.status === 400 && (

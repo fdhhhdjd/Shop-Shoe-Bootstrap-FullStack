@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GlobalState } from "../../Context/GlobalState";
-import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
+import {
+  Loading,
+  SwaleMessage,
+  useUpDesImg,
+  MetaData,
+} from "../../imports/index";
 import {
   CreateCategoriesInitial,
   reset,
@@ -99,6 +104,12 @@ const MainEditCategories = () => {
   };
   return (
     <>
+      {onEdit ? (
+        <MetaData title={`Edit-${states.name}`} />
+      ) : (
+        <MetaData title="Add-Category" />
+      )}
+
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit}>
           <div className="content-header">

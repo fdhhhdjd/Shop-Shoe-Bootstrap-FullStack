@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
-import { Loading } from "../../imports";
+import { Loading, MetaData } from "../../imports";
 import { ReplyFeedbacksInitial, reset } from "../../Redux/FeedbackSlice";
 const initialState = {
   response_content: "",
@@ -58,6 +58,8 @@ const ReplyUserMain = () => {
   }, [replyFeedback]);
   return (
     <>
+      <MetaData title={`Reply-Customer`} />
+
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={handleSubmit}>
           <div className="content-header">

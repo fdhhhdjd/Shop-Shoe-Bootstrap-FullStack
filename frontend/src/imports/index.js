@@ -115,3 +115,4 @@ export { default as GoogleMapMain } from "../Pages/GoogleMap/GoogleMapMain";
 //!Custom Hook
 export { default as useUpDesImg } from "../CustomHook/useUpDesImg";
 export { default as useDelete } from "../CustomHook/useDelete";
+export { default as LazyLoadImg } from "../CustomHook/LazingLoading";

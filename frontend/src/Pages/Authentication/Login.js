@@ -91,7 +91,11 @@ const Login = () => {
   window.scrollTo(0, 0);
   return (
     <>
-      <MetaData title="Login-ShoeShop" />
+      {auth.status === 200 ? (
+        <MetaData title="Redirect Home..." />
+      ) : (
+        <MetaData title="Login-ShoeShop" />
+      )}
       <Header />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {auth.status === 400 && (

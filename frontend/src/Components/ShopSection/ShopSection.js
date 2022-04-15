@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { SwaleMessage } from "../../imports";
 import { Loading, Message, Rating } from "../../imports/index";
+import { LazyLoadImg } from "../../imports/index";
 const ShopSection = React.forwardRef((props, ref) => {
   const { loading, product, error } = useSelector((state) => ({
     ...state.products,
@@ -92,7 +93,7 @@ const ShopSection = React.forwardRef((props, ref) => {
   };
   const renderData = (data, index) => {
     return (
-      <>
+      <React.Fragment>
         {data &&
           data
             .filter((value) => {
@@ -113,7 +114,7 @@ const ShopSection = React.forwardRef((props, ref) => {
                   <Link to={`/products/${product._id}`}>
                     <div className="shopBack">
                       {product.image && (
-                        <img src={product.image.url} alt={product.name} />
+                        <LazyLoadImg url={product?.image.url} />
                       )}
                     </div>
                   </Link>
@@ -134,7 +135,7 @@ const ShopSection = React.forwardRef((props, ref) => {
                 </div>
               </div>
             ))}
-      </>
+      </React.Fragment>
     );
   };
   return (

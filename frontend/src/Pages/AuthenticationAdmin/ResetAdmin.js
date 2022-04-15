@@ -52,7 +52,7 @@ const ResetAdmin = () => {
   };
   return (
     <>
-      <MetaData title="Reset-ShoeShop" />
+      <MetaData title="Reset-Admin-ShoeShop" />
       <Header />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {resetAdmin && resetAdmin.status === 400 && (

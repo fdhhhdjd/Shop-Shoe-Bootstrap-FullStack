@@ -1,12 +1,10 @@
-import axios from "axios";
 import moment from "moment";
 import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
-import { SwaleMessage, useDelete } from "../../imports/index";
 import { deleteUserAdmin } from "../../imports/Import";
+import { LazyLoadImg, SwaleMessage, useDelete } from "../../imports/index";
 const Admins = (props) => {
   const { visible, search } = props;
   const state = useContext(GlobalState);
@@ -110,9 +108,8 @@ const Admins = (props) => {
                 <tr key={order._id}>
                   <td>
                     {order && order.image && (
-                      <img
-                        src={order.image.url}
-                        alt=""
+                      <LazyLoadImg
+                        url={order.image.url}
                         style={{
                           width: "25px",
                           height: "25px",
