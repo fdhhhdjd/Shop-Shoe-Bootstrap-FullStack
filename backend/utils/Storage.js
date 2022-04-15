@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-
+const Products = require("../Model/ProductModel");
 module.exports = {
   /**
    * from String template to URI
