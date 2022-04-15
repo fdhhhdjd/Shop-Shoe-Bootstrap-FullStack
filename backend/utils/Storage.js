@@ -27,4 +27,22 @@ module.exports = {
       expiresIn: process.env.EXPIRES_REFRESH_TOKEN,
     });
   },
+  //*Stock
+  async stock(id, quantity, countInStock) {
+    await Products.findOneAndUpdate(
+      { _id: id },
+      {
+        countInStock: countInStock - quantity,
+      }
+    );
+  },
+  //*Sold
+  async sold(id, quantity, oldSold) {
+    await Products.findOneAndUpdate(
+      { _id: id },
+      {
+        sold: quantity + oldSold,
+      }
+    );
+  },
 };

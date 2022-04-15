@@ -1,7 +1,7 @@
 const Payments = require("../Model/PaymentModel");
 const Users = require("../Model/userModel");
-const Products = require("../Model/ProductModel");
 const bcrypt = require("bcrypt");
+const STORAGE = require("../utils/Storage");
 const paymentCtrl = {
   //Get All Payment
   getPayments: async (req, res) => {
@@ -142,10 +142,10 @@ const paymentCtrl = {
       });
       console.log(newPayment);
       cart.filter((item) => {
-        return sold(item._id, item.quantity, item.sold);
+        return STORAGE.sold(item._id, item.quantity, item.sold);
       });
       cart.filter((item) => {
-        return stock(item._id, item.quantity, item.countInStock);
+        return STORAGE.stock(item._id, item.quantity, item.countInStock);
       });
 
       await newPayment.save();
@@ -550,25 +550,6 @@ const paymentCtrl = {
       });
     }
   },
-};
-
-const stock = async (id, quantity, countInStock) => {
-  await Products.findOneAndUpdate(
-    { _id: id },
-    {
-      countInStock: countInStock - quantity,
-    }
-  );
-  console.log();
-};
-const sold = async (id, quantity, oldSold) => {
-  await Products.findOneAndUpdate(
-    { _id: id },
-    {
-      sold: quantity + oldSold,
-    }
-  );
-  console.log();
 };
 
 module.exports = paymentCtrl;
