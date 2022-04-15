@@ -125,7 +125,6 @@ export const LoginFacebookInitiate = createAsyncThunk(
 export const CheckPasswordInitiate = createAsyncThunk(
   "auth/CheckPassword",
   async ({ token, checkPass }) => {
-    console.log(checkPass);
     const { data } = await axios.post(
       `/api/payment/checkPass`,
       { checkPassword: checkPass },

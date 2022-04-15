@@ -38,7 +38,8 @@
     "styled-components": "^5.3.3",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.4.8",
-    "toast": "^0.3.47"
+    "toast": "^0.3.47",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

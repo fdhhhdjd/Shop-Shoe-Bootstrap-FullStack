@@ -43,7 +43,6 @@ const MainEditCategories = () => {
         category.categories.forEach((product) => {
           if (product._id == id) {
             setState(product);
-            console.log(product);
             if (product.image === "") {
               setImages(product.image);
             } else {
@@ -98,7 +97,6 @@ const MainEditCategories = () => {
   const styleUpload = {
     display: images ? "block" : "none",
   };
-  console.log(error);
   return (
     <>
       <section className="content-main" style={{ maxWidth: "1200px" }}>

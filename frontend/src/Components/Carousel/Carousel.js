@@ -10,7 +10,7 @@ const Carousel = () => {
       renderer: "svg",
       loop: true,
       autoplay: true,
-      animationData: require("../utils/ScrollToTop.json"),
+      animationData: require("../../utils/json/ScrollToTop.json"),
     });
   }, []);
   const carousel = Information && Information.carousels;

@@ -92,7 +92,6 @@ export const LoginGooglAdminInitiate = createAsyncThunk(
       .catch((error) => {
         console.log(error.data);
       });
-    console.log(res);
     return res;
   }
 );

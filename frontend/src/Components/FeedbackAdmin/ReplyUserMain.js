@@ -19,7 +19,6 @@ const ReplyUserMain = () => {
   const { replyFeedback, loading } = useSelector((state) => ({
     ...state.feedbacks,
   }));
-  console.log(replyFeedback);
   const token = refreshTokenAdmin.accessToken && refreshTokenAdmin.accessToken;
   const { id } = useParams();
   const state = useContext(GlobalState);

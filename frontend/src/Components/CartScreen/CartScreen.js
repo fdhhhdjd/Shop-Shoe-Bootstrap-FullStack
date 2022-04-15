@@ -136,7 +136,6 @@ const CartScreen = () => {
     setCart([]);
     addToCart([]);
     SwaleMessage("You have successfully placed an order.", "success");
-    console.log(payment);
   };
 
   useEffect(() => {

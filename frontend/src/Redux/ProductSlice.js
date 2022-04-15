@@ -48,7 +48,6 @@ export const updateReviewProductDetailInitial = createAsyncThunk(
 export const DeleteProductDetailInitial = createAsyncThunk(
   "product/DeleteReview",
   async ({ productId, commentId, token }) => {
-    console.log(productId, commentId, token, "redux");
     const response = await axios.delete(
       `/api/product/${productId}/delete/review/${commentId}`,
       {
