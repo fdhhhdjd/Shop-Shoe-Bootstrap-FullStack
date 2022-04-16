@@ -62,7 +62,7 @@ const Order = () => {
               Swal.fire({
                 title: "Admin Thank You 😊!!",
                 imageUrl: `${profile.user && profile.user.image.url}`,
-                width: 600,
+                width: 400,
                 padding: "3em",
                 color: "#716add",
                 background: `#fff url(${True}) `,

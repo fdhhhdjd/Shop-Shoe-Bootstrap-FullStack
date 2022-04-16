@@ -14,6 +14,8 @@ import {
   ProfileInitiate,
   UploadProfileInitiate,
 } from "../../Redux/AuthenticationSlice";
+import { CheckPass, True } from "../../imports/Image";
+
 const Home = () => {
   const token = window.localStorage.getItem("firstLogin");
   const { refreshToken } = useSelector((state) => ({ ...state.data }));
@@ -38,9 +40,10 @@ const Home = () => {
           title: "Please Form Input",
           html: `<input type="phone" id="phone" class="swal2-input" placeholder="Phone Number">
           <input type="date" id="date" class="swal2-input" placeholder="Date">
-          
           `,
           confirmButtonText: "Enter",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
           focusConfirm: false,
           preConfirm: () => {
             const phone = Swal.getPopup().querySelector("#phone").value;
@@ -59,18 +62,25 @@ const Home = () => {
             dispatch(UploadProfileInitiate({ tokens, result }));
             dispatch(ProfileInitiate({ token: tokens }));
             setToastInput(false);
-            Swal.fire(
-              `
-              Phone: ${result.value.phone}
-              Date: ${result.value.date}
-            `.trim()
-            );
+            Swal.fire({
+              title: "Admin Thank You 😊!!",
+              imageUrl: `${profile.user && profile.user.image.url}`,
+              width: 400,
+              padding: "3em",
+              color: "#716add",
+              background: `#fff url(${True}) `,
+              backdrop: `
+                  rgba(0,0,123,0.4)
+                  url(${CheckPass})
+                  left top
+                  no-repeat
+                `,
+            });
           }
         });
       }
     }
   }, [profile?.user, result]);
-  console.log(result);
   return (
     <>
       <MetaData title={`Home Page`} />

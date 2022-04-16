@@ -21,11 +21,6 @@ function App() {
       }, [5000]);
     }
   }, []);
-  const refreshPage = () => {
-    setTimeout(() => {
-      window.location.reload(false);
-    }, 5000);
-  };
   useEffect(() => {
     connectInternet();
   }, [connectInternet]);
