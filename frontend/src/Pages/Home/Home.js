@@ -39,7 +39,7 @@ const Home = () => {
         Swal.fire({
           title: "Please Form Input",
           html: `<input type="phone" id="phone" class="swal2-input" placeholder="Phone Number">
-          <input type="date" id="date" class="swal2-input" placeholder="Date">
+          <input type="date" id="date" class="swal2-input" placeholder="Date" value=${profile?.user.date_of_birth}>
           `,
           confirmButtonText: "Enter",
           confirmButtonColor: "#3085d6",
@@ -52,7 +52,10 @@ const Home = () => {
               return Swal.showValidationMessage(`Please enter Phone and Date`);
             }
 
-            return { phone: phone, date: date };
+            return {
+              phone: phone,
+              date: date,
+            };
           },
         }).then((result) => {
           setResult(result);
@@ -81,6 +84,7 @@ const Home = () => {
       }
     }
   }, [profile?.user, result]);
+
   return (
     <>
       <MetaData title={`Home Page`} />
