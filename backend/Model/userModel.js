@@ -45,6 +45,7 @@ const UserSchema = new mongoose.Schema(
     },
     phone_number: {
       type: String,
+      default: "",
       required: false,
       trim: true,
     },
@@ -59,6 +60,7 @@ const UserSchema = new mongoose.Schema(
     },
     date_of_birth: {
       type: String,
+      default: "",
       required: false,
       trim: true,
     },

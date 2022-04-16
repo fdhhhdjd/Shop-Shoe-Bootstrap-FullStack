@@ -4,7 +4,6 @@ const EditProduct = () => {
   return (
     <>
       <Sidebar />
-
       <main className="main-wrap">
         <HeaderAdmin />
         <EditProductMain />

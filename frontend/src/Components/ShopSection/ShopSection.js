@@ -185,11 +185,13 @@ const ShopSection = React.forwardRef((props, ref) => {
                 <nav className="float-end mt-4" aria-label="Page navigation">
                   <ul className="pagination  justify-content-center">
                     <li className="page-item">
-                      <button className="page-link" onClick={handleLoadMore}>
-                        {itemsPerPage === products && products.length
-                          ? "it's over"
-                          : "Load More"}
-                      </button>
+                      {itemsPerPage > products?.length ? (
+                        ""
+                      ) : (
+                        <button className="page-link" onClick={handleLoadMore}>
+                          Load More
+                        </button>
+                      )}
                     </li>
                   </ul>
                 </nav>

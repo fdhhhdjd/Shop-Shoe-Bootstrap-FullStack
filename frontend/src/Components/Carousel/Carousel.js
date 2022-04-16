@@ -26,20 +26,20 @@ const Carousel = () => {
           <ol className="carousel-indicators">
             {carousel.map((item, index) => {
               return (
-                <>
+                <React.Fragment key={index}>
                   <li
                     data-target="#carouselExampleIndicators"
                     data-slide-to={index}
                     className={index === 0 ? "active" : ""}
                   />
-                </>
+                </React.Fragment>
               );
             })}
           </ol>
           <div className="carousel-inner">
             {carousel.map((item, index) => {
               return (
-                <>
+                <React.Fragment key={index}>
                   <div className={`carousel-item ${index === 0 && "active"}`}>
                     <img
                       className="d-block w-100"
@@ -51,7 +51,7 @@ const Carousel = () => {
                       <p>{item.description}</p>
                     </div>
                   </div>
-                </>
+                </React.Fragment>
               );
             })}
           </div>

@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div className="footer">
       <div className="justify-content-center d-flex">
-        {FooterData.map((item) => {
+        {FooterData.map((item, index) => {
           return (
             <div className="card-name" key={item.id}>
               <img alt={item.alt} src={item.img} />

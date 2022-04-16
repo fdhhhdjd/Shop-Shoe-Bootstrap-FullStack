@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import { SwaleMessage } from "../imports";
 import { DestroyImg, UploadImg } from "../imports/Import";
 const useUpDesImg = (token) => {
@@ -8,6 +9,27 @@ const useUpDesImg = (token) => {
   const [images, setImages] = useState(false);
   const handleUpload = async (e) => {
     e.preventDefault();
+    // const { value: file } = await Swal.fire({
+    //   title: "Select image",
+    //   input: "file",
+    //   inputAttributes: {
+    //     accept: "image/*",
+    //     "aria-label": "Upload your profile picture",
+    //   },
+    // });
+
+    // if (file) {
+    //   handleUpload();
+    //   const reader = new FileReader();
+    //   reader.onload = (e) => {
+    //     Swal.fire({
+    //       title: "Your uploaded picture",
+    //       imageUrl: e.target.result,
+    //       imageAlt: "The uploaded picture",
+    //     });
+    //   };
+    //   reader.readAsDataURL(file);
+    // }
     try {
       const file = e.target.files[0];
       if (!file) return SwaleMessage("File not Exists", "error");

@@ -11,7 +11,6 @@ const initialState = {
 };
 const ProfileTabs = () => {
   const [states, setState] = useState(initialState);
-  const dispatch = useDispatch();
 
   const state = useContext(GlobalState);
   const [callback, setCallback] = state.callback;
@@ -54,7 +53,7 @@ const ProfileTabs = () => {
         setImages(profile.user.image);
       }
     }
-  }, [profile]);
+  }, [profile?.user, setImages]);
   const styleUpload = {
     display: images ? "block" : "none",
   };

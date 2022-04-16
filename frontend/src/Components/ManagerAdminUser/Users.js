@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { deleteUserAdmin } from "../../imports/Import";
-import { SwaleMessage, useDelete, LazyLoadImg } from "../../imports/index";
+import { LazyLoadImg, SwaleMessage, useDelete } from "../../imports/index";
 const Users = (props) => {
   const { orders, visible, search } = props;
   const state = useContext(GlobalState);
@@ -132,14 +132,16 @@ const Users = (props) => {
                       ))}
                   </td>
                   <td>
-                    {(order.date_of_birth == undefined && (
-                      <b className="text-danger">No Date</b>
-                    )) ||
+                    {order.date_of_birth == undefined ||
+                      (order.date_of_birth == "" && (
+                        <b className="text-danger">No Date</b>
+                      )) ||
                       moment(order.date_of_birth).format("MMM Do YY")}
                   </td>
                   <td>
                     {order.phone_number ||
-                      (order.phone_number == undefined && (
+                      order.phone_number == undefined ||
+                      (order.phone_number == "" && (
                         <b className="text-danger">No Phone</b>
                       ))}
                   </td>

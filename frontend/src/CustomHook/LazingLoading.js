@@ -15,7 +15,7 @@ const LazyLoadImg = ({ url, style }) => {
     return () => {
       if (img) observer.unobserve(img);
     };
-  }, []);
+  }, [url]);
   return (
     <React.Fragment>
       {style ? (

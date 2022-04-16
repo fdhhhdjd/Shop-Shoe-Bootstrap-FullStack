@@ -132,14 +132,16 @@ const Admins = (props) => {
                       ))}
                   </td>
                   <td>
-                    {(order.date_of_birth == undefined && (
-                      <b className="text-danger">No Date</b>
-                    )) ||
+                    {order.date_of_birth == undefined ||
+                      (order.date_of_birth == "" && (
+                        <b className="text-danger">No Date</b>
+                      )) ||
                       moment(order.date_of_birth).format("MMM Do YY")}
                   </td>
                   <td>
                     {order.phone_number ||
-                      (order.phone_number == undefined && (
+                      order.phone_number == undefined ||
+                      (order.phone_number == "" && (
                         <b className="text-danger">No Phone</b>
                       ))}
                   </td>

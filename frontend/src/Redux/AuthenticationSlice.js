@@ -135,6 +135,20 @@ export const CheckPasswordInitiate = createAsyncThunk(
     return data;
   }
 );
+export const UploadProfileInitiate = createAsyncThunk(
+  "auth/uploadProfile",
+  async ({ tokens, result }) => {
+    console.log(result);
+    const { data } = await axios.patch(
+      `/api/auth/profile/update`,
+      { phone_number: result.value.phone, date_of_birth: result.value.date },
+      {
+        headers: { Authorization: tokens },
+      }
+    );
+    return data;
+  }
+);
 const initialState = {
   loading: false,
   error: null,
@@ -289,6 +303,18 @@ const AuthenticationSlice = createSlice({
       state.checkPass = action.payload;
     },
     [CheckPasswordInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    // https://
+
+    [UploadProfileInitiate.pending]: (state, action) => {
+      state.loading = false;
+    },
+    [UploadProfileInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [UploadProfileInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

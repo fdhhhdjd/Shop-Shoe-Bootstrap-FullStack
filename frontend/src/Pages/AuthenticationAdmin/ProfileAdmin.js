@@ -1,7 +1,11 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { ChangePasswordAdmin, ProfileTabAdmin } from "../../imports/index";
+import {
+  ChangePasswordAdmin,
+  ProfileTabAdmin,
+  LazyLoadImg,
+} from "../../imports/index";
 const ProfileAdmin = () => {
   const { profileAdmin } = useSelector((state) => ({ ...state.admin }));
   const { order } = useSelector((state) => ({
@@ -9,7 +13,6 @@ const ProfileAdmin = () => {
   }));
   const [total, setTotal] = useState(0);
   const orders = order.history && order.history;
-  console.log(profileAdmin);
   useEffect(() => {
     order.history &&
       order.history.map((item) => {
@@ -32,10 +35,7 @@ const ProfileAdmin = () => {
               <div className="author-card-profile row">
                 <div className="author-card-avatar col-md-5">
                   {profileAdmin.user && (
-                    <img
-                      src={profileAdmin.user.image.url}
-                      alt="userprofileimage"
-                    />
+                    <LazyLoadImg url={profileAdmin.user.image.url} />
                   )}
                 </div>
                 <div className="author-card-details col-md-7">

@@ -307,13 +307,6 @@ const userCtrl = {
   updateProfile: async (req, res) => {
     try {
       const { name, image, phone_number, sex, date_of_birth } = req.body;
-      if (!image)
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "No image upload",
-        });
-
       await Users.findOneAndUpdate(
         { _id: req.user.id },
         {
