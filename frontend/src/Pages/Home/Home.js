@@ -70,6 +70,7 @@ const Home = () => {
       }
     }
   }, [profile?.user, result]);
+  console.log(result);
   return (
     <>
       <MetaData title={`Home Page`} />

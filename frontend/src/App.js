@@ -17,7 +17,7 @@ function App() {
         "question"
       );
       return setTimeout(() => {
-        window.location.reload();
+        window.location.reload(false);
       }, [5000]);
     }
   }, []);
