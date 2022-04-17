@@ -95,34 +95,30 @@ const Home = () => {
           },
         }).then((result) => {
           setResult(result);
+          console.log(result);
           if (!result.dismiss == "backdrop") {
             return;
           } else if (result.value) {
-            dispatch(ChangePasswordLoginGgFbInitiate({ tokens, result })).then(
-              (res) => {
-                if (res.payload?.status === 200) {
-                  Swal.fire({
-                    title: "Admin Thank You 😊!!",
-                    imageUrl: `${profile.user && profile.user.image.url}`,
-                    width: 400,
-                    padding: "3em",
-                    color: "#716add",
-                    background: `#fff url(${True}) `,
-                    backdrop: `
-                      rgba(0,0,123,0.4)
-                      url(${CheckPass})
-                      left top
-                      no-repeat
-                    `,
-                  });
-                  dispatch(UploadProfileInitiate({ tokens, result }));
-                  dispatch(ProfileInitiate({ token: tokens }));
-                  setToastInput(false);
-                } else if (res.payload?.status === 400) {
-                  return Swal.showValidationMessage(`${res.payload?.msg}`);
-                }
-              }
-            );
+            if (result.value.password && result.value.confirmPassword) {
+              dispatch(ChangePasswordLoginGgFbInitiate({ tokens, result }));
+            }
+            dispatch(UploadProfileInitiate({ tokens, result }));
+            dispatch(ProfileInitiate({ token: tokens }));
+            setToastInput(false);
+            Swal.fire({
+              title: "Admin Thank You 😊!!",
+              imageUrl: `${profile.user && profile.user.image.url}`,
+              width: 400,
+              padding: "3em",
+              color: "#716add",
+              background: `#fff url(${True}) `,
+              backdrop: `
+                rgba(0,0,123,0.4)
+                url(${CheckPass})
+                left top
+                no-repeat
+              `,
+            });
           }
         });
       }
