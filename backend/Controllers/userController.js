@@ -653,6 +653,7 @@ const userCtrl = {
   ChangePassWordLoginGgFb: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select("+password");
+
       const { password, confirmPassword } = req.body;
       if (!password)
         return res.json({
@@ -697,7 +698,7 @@ const userCtrl = {
       const passwordHash = await bcrypt.hash(password, salt);
       await Users.findByIdAndUpdate(
         { _id: user.id },
-        { password: passwordHash },
+        { password: passwordHash, checkLogin: CONSTANTS.DELETED_ENABLE },
         { new: true }
       );
       return res.status(200).json({

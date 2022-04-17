@@ -11,6 +11,7 @@ import {
   ShopSection,
 } from "../../imports";
 import {
+  ChangePasswordLoginGgFbInitiate,
   ProfileInitiate,
   UploadProfileInitiate,
 } from "../../Redux/AuthenticationSlice";
@@ -32,59 +33,101 @@ const Home = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (
+      profile?.user?.checkLogin === false ||
       profile?.user?.phone_number == "" ||
       profile?.user?.date_of_birth == ""
     ) {
       if (ToastInput === true) {
         Swal.fire({
           title: "Please Form Input",
-          html: `<input type="phone" id="phone" class="swal2-input" placeholder="Phone Number">
-          <input type="date" id="date" class="swal2-input" placeholder="Date" value=${profile?.user.date_of_birth}>
+          html: `
+          ${
+            profile?.user?.checkLogin === false &&
+            `<input type="password" id="password" class="swal2-input" placeholder="Password">
+         <input type="password" id="confirmPassword" class="swal2-input" placeholder="confirmPassword">`
+          }
+          <input type="phone" id="phone" class="swal2-input" placeholder="Phone Number">
+          <input type="date" id="date" class="swal2-input" placeholder="Date" value=${
+            profile?.user.date_of_birth
+          }>
           `,
           confirmButtonText: "Enter",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           focusConfirm: false,
           preConfirm: () => {
-            const phone = Swal.getPopup().querySelector("#phone").value;
-            const date = Swal.getPopup().querySelector("#date").value;
-            if (!phone || !date) {
-              return Swal.showValidationMessage(`Please enter Phone and Date`);
+            if (profile?.user?.checkLogin === false) {
+              const password = Swal.getPopup().querySelector("#password").value;
+              const confirmPassword =
+                Swal.getPopup().querySelector("#confirmPassword").value;
+              const phone = Swal.getPopup().querySelector("#phone").value;
+              const date = Swal.getPopup().querySelector("#date").value;
+              if (!phone) {
+                return Swal.showValidationMessage(`Please enter Phone`);
+              } else if (!date) {
+                return Swal.showValidationMessage(`Please enter Date`);
+              } else if (!password) {
+                return Swal.showValidationMessage(`Please enter Password`);
+              } else if (!confirmPassword) {
+                return Swal.showValidationMessage(
+                  `Please enter confirmPassword`
+                );
+              }
+              return {
+                password: password,
+                confirmPassword: confirmPassword,
+                phone: phone,
+                date: date,
+              };
+            } else {
+              const phone = Swal.getPopup().querySelector("#phone").value;
+              const date = Swal.getPopup().querySelector("#date").value;
+              if (!phone) {
+                return Swal.showValidationMessage(`Please enter Phone`);
+              } else if (!date) {
+                return Swal.showValidationMessage(`Please enter Date`);
+              }
+              return {
+                phone: phone,
+                date: date,
+              };
             }
-
-            return {
-              phone: phone,
-              date: date,
-            };
           },
         }).then((result) => {
           setResult(result);
           if (!result.dismiss == "backdrop") {
             return;
           } else if (result.value) {
-            dispatch(UploadProfileInitiate({ tokens, result }));
-            dispatch(ProfileInitiate({ token: tokens }));
-            setToastInput(false);
-            Swal.fire({
-              title: "Admin Thank You 😊!!",
-              imageUrl: `${profile.user && profile.user.image.url}`,
-              width: 400,
-              padding: "3em",
-              color: "#716add",
-              background: `#fff url(${True}) `,
-              backdrop: `
-                  rgba(0,0,123,0.4)
-                  url(${CheckPass})
-                  left top
-                  no-repeat
-                `,
-            });
+            dispatch(ChangePasswordLoginGgFbInitiate({ tokens, result })).then(
+              (res) => {
+                if (res.payload?.status === 200) {
+                  Swal.fire({
+                    title: "Admin Thank You 😊!!",
+                    imageUrl: `${profile.user && profile.user.image.url}`,
+                    width: 400,
+                    padding: "3em",
+                    color: "#716add",
+                    background: `#fff url(${True}) `,
+                    backdrop: `
+                      rgba(0,0,123,0.4)
+                      url(${CheckPass})
+                      left top
+                      no-repeat
+                    `,
+                  });
+                  dispatch(UploadProfileInitiate({ tokens, result }));
+                  dispatch(ProfileInitiate({ token: tokens }));
+                  setToastInput(false);
+                } else if (res.payload?.status === 400) {
+                  return Swal.showValidationMessage(`${res.payload?.msg}`);
+                }
+              }
+            );
           }
         });
       }
     }
   }, [profile?.user, result]);
-
   return (
     <>
       <MetaData title={`Home Page`} />

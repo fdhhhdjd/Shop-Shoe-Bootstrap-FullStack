@@ -89,6 +89,7 @@ const Login = () => {
     }
   }, [auth]);
   window.scrollTo(0, 0);
+
   return (
     <>
       {auth.status === 200 ? (

@@ -95,6 +95,22 @@ export const ChangePasswordInitiate = createAsyncThunk(
     return data;
   }
 );
+export const ChangePasswordLoginGgFbInitiate = createAsyncThunk(
+  "auth/ChangePasswordLoginGgFb",
+  async ({ tokens, result }) => {
+    const { data } = await axios.patch(
+      `/api/auth/changePasswordGgFb`,
+      {
+        password: result.value.password,
+        confirmPassword: result.value.confirmPassword,
+      },
+      {
+        headers: { Authorization: tokens },
+      }
+    );
+    return data;
+  }
+);
 export const LoginGoogleInitiate = createAsyncThunk(
   "auth/LoginGoogle",
   async (response) => {
@@ -266,7 +282,15 @@ const AuthenticationSlice = createSlice({
       state.loading = false;
       state.changePass = action.payload;
     },
-    [ChangePasswordInitiate.rejected]: (state, action) => {
+    //? Change Password Google Facebook
+    [ChangePasswordLoginGgFbInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ChangePasswordLoginGgFbInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      // state.changePass = action.payload;
+    },
+    [ChangePasswordLoginGgFbInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
