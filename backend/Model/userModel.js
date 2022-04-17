@@ -58,6 +58,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    checkLogin: {
+      type: Boolean,
+      default: false,
+    },
     date_of_birth: {
       type: String,
       default: "",

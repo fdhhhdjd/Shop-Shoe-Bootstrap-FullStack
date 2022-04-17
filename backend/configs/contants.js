@@ -25,4 +25,7 @@ module.exports = {
   _1_DAY_S: 24 * 60 * 60,
   _1_HOURS_S: 60 * 60,
   _1_YEAR: 365 * 24 * 60 * 60 * 1000,
+
+  //*Password
+  PASSWORD_GOOGLE: null,
 };

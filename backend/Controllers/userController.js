@@ -145,8 +145,12 @@ const userCtrl = {
           if (isMatch) {
             await Users.findOneAndUpdate(
               { _id: userId },
-              { verified: CONSTANTS.DELETED_ENABLE }
+              {
+                verified: CONSTANTS.DELETED_ENABLE,
+                checkLogin: CONSTANTS.DELETED_ENABLE,
+              }
             );
+
             await UserVerifications.deleteOne({ userId });
 
             return res.sendFile(path.resolve(__dirname, "../index.html"));
@@ -645,6 +649,70 @@ const userCtrl = {
         }
       });
   },
+  //Change password Login Google and Facebook
+  ChangePassWordLoginGgFb: async (req, res) => {
+    try {
+      const user = await Users.findById(req.user.id).select("+password");
+      const { password, confirmPassword } = req.body;
+      if (!password)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Password are not empty.",
+        });
+
+      if (!confirmPassword)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: " Confirm are not empty.",
+        });
+
+      if (password.length < 6)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Password is at least 6 characters long.",
+        });
+
+      let reg = new RegExp(
+        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
+      ).test(password);
+      if (!reg) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Includes 6 characters, uppercase, lowercase and some and special characters.",
+        });
+      }
+      if (confirmPassword !== password) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Password and confirm password does not match!",
+        });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(password, salt);
+      await Users.findByIdAndUpdate(
+        { _id: user.id },
+        { password: passwordHash },
+        { new: true }
+      );
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Change Password Successfully 😂!",
+      });
+    } catch (err) {
+      return res.json({
+        status: 400,
+        msg: err.message,
+      });
+    }
+  },
+
   LoginFacebook: async (req, res) => {
     const { userID, accessToken } = req.body;
     let urlGraphFacebook = STORAGE.getURIFromTemplate(

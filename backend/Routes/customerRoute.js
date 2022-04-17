@@ -28,6 +28,9 @@ router.patch("/profile/update", auth, userCtrl.updateProfile);
 //Change Password
 router.patch("/changePassword", auth, userCtrl.ChangePassword);
 
+//Change Password
+router.patch("/changePasswordGgFb", auth, userCtrl.ChangePassWordLoginGgFb);
+
 //ForGet
 router.post("/forget", userCtrl.forgetPassword);
 
