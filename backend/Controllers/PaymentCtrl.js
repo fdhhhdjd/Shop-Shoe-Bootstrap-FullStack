@@ -430,6 +430,7 @@ const paymentCtrl = {
   async getIncomeCustomerNotReceivedThisAndLastMonth(req, res) {
     const thisMonth = new Date().getMonth() + 1;
     const lastMonth = new Date().getMonth();
+    const lastMonth1 = new Date().getMonth() + 2;
 
     try {
       let data = await Payments.aggregate([
@@ -442,7 +443,7 @@ const paymentCtrl = {
         },
         {
           $match: {
-            month: { $in: [lastMonth, thisMonth] },
+            month: { $in: [lastMonth, thisMonth, lastMonth1] },
             order_status: { $in: ["Ordered", "On Delivery"] },
           },
         },
