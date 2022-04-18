@@ -64,8 +64,7 @@ const Login = () => {
     }
   };
   const responseFacebook = (response) => {
-    console.log(response);
-    // dispatch(LoginFacebookInitiate(response));
+    dispatch(LoginFacebookInitiate(response));
   };
   useEffect(() => {
     if (foundUser) {
