@@ -65,7 +65,7 @@ const Login = () => {
   };
   const responseFacebook = (response) => {
     console.log(response);
-    dispatch(LoginFacebookInitiate(response));
+    // dispatch(LoginFacebookInitiate(response));
   };
   useEffect(() => {
     if (foundUser) {
@@ -88,8 +88,6 @@ const Login = () => {
       }, 3000);
     }
   }, [auth]);
-  window.scrollTo(0, 0);
-
   return (
     <>
       {auth.status === 200 ? (

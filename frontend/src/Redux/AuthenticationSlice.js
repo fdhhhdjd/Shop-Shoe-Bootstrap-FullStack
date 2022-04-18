@@ -45,11 +45,21 @@ export const LogoutInitiate = createAsyncThunk(
 );
 export const RegisterInitiate = createAsyncThunk(
   "auth/register",
-  async ({ name, email, password }) => {
+  async ({
+    name,
+    phone_number,
+    date_of_birth,
+    email,
+    password,
+    confirmPassword,
+  }) => {
     const response = await axios.post("/api/auth/register", {
       name,
+      phone_number,
+      date_of_birth,
       email,
       password,
+      confirmPassword,
     });
     return response.data;
   }

@@ -20,8 +20,15 @@ require("dotenv").config;
 const userCtrl = {
   register: async (req, res) => {
     try {
-      const { name, email, password, sex, date_of_birth, phone_number } =
-        req.body;
+      const {
+        name,
+        email,
+        password,
+        confirmPassword,
+        sex,
+        date_of_birth,
+        phone_number,
+      } = req.body;
 
       const user = await Users.findOne({ email });
 
@@ -48,6 +55,13 @@ const userCtrl = {
           status: 400,
           success: false,
           msg: "Password must contain at least one number and one uppercase and lowercase and special letter, and at least 6 or more characters ",
+        });
+      }
+      if (confirmPassword !== password) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Password and confirm password does not match!",
         });
       }
 

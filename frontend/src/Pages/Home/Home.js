@@ -32,24 +32,14 @@ const Home = () => {
   }));
   const dispatch = useDispatch();
   useEffect(() => {
-    if (
-      profile?.user?.checkLogin === false ||
-      profile?.user?.phone_number == "" ||
-      profile?.user?.date_of_birth == ""
-    ) {
+    if (profile?.user?.checkLogin === false) {
       if (ToastInput === true) {
         Swal.fire({
           title: "Please Form Input",
-          html: `
-          ${
-            profile?.user?.checkLogin === false &&
-            `<input type="password" id="password" class="swal2-input" placeholder="Password">
-         <input type="password" id="confirmPassword" class="swal2-input" placeholder="confirmPassword">`
-          }
+          html: `<input type="password" id="password" class="swal2-input" placeholder="Password">
+         <input type="password" id="confirmPassword" class="swal2-input" placeholder="confirmPassword">
           <input type="phone" id="phone" class="swal2-input" placeholder="Phone Number">
-          <input type="date" id="date" class="swal2-input" placeholder="Date" value=${
-            profile?.user.date_of_birth
-          }>
+          <input type="date" id="date" class="swal2-input" placeholder="Date" >
           `,
           confirmButtonText: "Enter",
           confirmButtonColor: "#3085d6",
@@ -95,13 +85,11 @@ const Home = () => {
           },
         }).then((result) => {
           setResult(result);
-          console.log(result);
+
           if (!result.dismiss == "backdrop") {
             return;
           } else if (result.value) {
-            if (result.value.password && result.value.confirmPassword) {
-              dispatch(ChangePasswordLoginGgFbInitiate({ tokens, result }));
-            }
+            dispatch(ChangePasswordLoginGgFbInitiate({ tokens, result }));
             dispatch(UploadProfileInitiate({ tokens, result }));
             dispatch(ProfileInitiate({ token: tokens }));
             setToastInput(false);

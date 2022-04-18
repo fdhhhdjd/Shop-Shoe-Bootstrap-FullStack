@@ -18,6 +18,7 @@ function App() {
       );
       return setTimeout(() => {
         window.location.reload(false);
+        window.scrollTo(0, 0);
       }, [5000]);
     }
   }, []);
