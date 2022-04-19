@@ -13,6 +13,17 @@ module.exports = {
     var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return emailRegex.test(email);
   },
+  isVietnamesePhoneNumber(phone_number) {
+    return /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/.test(
+      phone_number
+    );
+  },
+  isPassword(password) {
+    let reg = new RegExp(
+      "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
+    ).test(password);
+    return reg;
+  },
   randomString(length) {
     var result = "";
     var characters =

@@ -47,9 +47,7 @@ const userCtrl = {
         });
 
       //kiểm tra format password
-      let reg = new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-      ).test(password);
+      const reg = HELPER.isPassword(password);
       if (!reg) {
         return res.json({
           status: 400,
@@ -62,6 +60,21 @@ const userCtrl = {
           status: 400,
           success: false,
           msg: "Password and confirm password does not match!",
+        });
+      }
+      if (isNaN(phone_number)) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone is must be number.",
+        });
+      }
+      const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
+      if (CheckPhone === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect phone number.",
         });
       }
 
@@ -384,9 +397,7 @@ const userCtrl = {
           msg: "Password is at least 6 characters long.",
         });
 
-      let reg = new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-      ).test(password);
+      const reg = HELPER.isPassword(password);
       if (!reg) {
         return res.json({
           status: 400,
@@ -534,10 +545,7 @@ const userCtrl = {
         success: false,
         msg: "Password is at least 6 characters long.",
       });
-
-    let reg = new RegExp(
-      "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-    ).test(password);
+    const reg = HELPER.isPassword(password);
     if (!reg) {
       return res.json({
         status: 400,
@@ -668,7 +676,8 @@ const userCtrl = {
     try {
       const user = await Users.findById(req.user.id).select("+password");
 
-      const { password, confirmPassword } = req.body;
+      const { password, confirmPassword, phone_number, date_of_birth } =
+        req.body;
       if (!password)
         return res.json({
           status: 400,
@@ -689,10 +698,8 @@ const userCtrl = {
           success: false,
           msg: "Password is at least 6 characters long.",
         });
-
-      let reg = new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-      ).test(password);
+      const reg = HELPER.isPassword(password);
+      console.log(reg);
       if (!reg) {
         return res.json({
           status: 400,
@@ -707,18 +714,38 @@ const userCtrl = {
           msg: "Password and confirm password does not match!",
         });
       }
+      if (isNaN(phone_number)) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone is must be number.",
+        });
+      }
+      const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
+      if (CheckPhone === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect phone number.",
+        });
+      }
 
       const salt = await bcrypt.genSalt(10);
       const passwordHash = await bcrypt.hash(password, salt);
       await Users.findByIdAndUpdate(
         { _id: user.id },
-        { password: passwordHash, checkLogin: CONSTANTS.DELETED_ENABLE },
+        {
+          password: passwordHash,
+          checkLogin: CONSTANTS.DELETED_ENABLE,
+          phone_number,
+          date_of_birth,
+        },
         { new: true }
       );
       return res.status(200).json({
         status: 200,
         success: true,
-        msg: "Change Password Successfully 😂!",
+        msg: "Update Information Successfully 😂!",
       });
     } catch (err) {
       return res.json({

@@ -14,6 +14,7 @@ const { v4: uuidv4 } = require("uuid");
 const path = require("path");
 const STORAGE = require("../utils/Storage");
 const CONSTANTS = require("../configs/contants");
+const HELPER = require("../utils/helper");
 require("dotenv").config;
 
 const adminCtrl = {
@@ -41,15 +42,28 @@ const adminCtrl = {
         });
 
       //kiểm tra format password
-      let reg = new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-      ).test(password);
+      const reg=HELPER.isPassword(password)
       if (!reg) {
         return res.json({
           status: 400,
           success: false,
           message:
             "Password must contain at least one number and one uppercase and lowercase and special letter, and at least 6 or more characters ",
+        });
+      }
+      if(isNaN(phone_number)){
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone is must be number.",
+        });
+      }
+      const CheckPhone=HELPER.isVietnamesePhoneNumber(phone_number)
+      if (CheckPhone===false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect phone number.",
         });
       }
 

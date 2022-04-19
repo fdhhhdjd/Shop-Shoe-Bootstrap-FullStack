@@ -107,12 +107,11 @@ export const ChangePasswordInitiate = createAsyncThunk(
 );
 export const ChangePasswordLoginGgFbInitiate = createAsyncThunk(
   "auth/ChangePasswordLoginGgFb",
-  async ({ tokens, result }) => {
+  async ({ tokens, ...state }) => {
     const { data } = await axios.patch(
       `/api/auth/changePasswordGgFb`,
       {
-        password: result.value.password,
-        confirmPassword: result.value.confirmPassword,
+        ...state,
       },
       {
         headers: { Authorization: tokens },
@@ -187,6 +186,7 @@ const initialState = {
   profile: [],
   changePass: [],
   checkPass: [],
+  CheckCreate: [],
 };
 const AuthenticationSlice = createSlice({
   name: "auth",
@@ -199,6 +199,7 @@ const AuthenticationSlice = createSlice({
       state.resetForget = [];
       state.changePass = [];
       state.changePass = [];
+      state.CheckCreate = [];
     },
   },
   extraReducers: {
@@ -298,7 +299,7 @@ const AuthenticationSlice = createSlice({
     },
     [ChangePasswordLoginGgFbInitiate.fulfilled]: (state, action) => {
       state.loading = false;
-      // state.changePass = action.payload;
+      state.CheckCreate = action.payload;
     },
     [ChangePasswordLoginGgFbInitiate.rejected]: (state, action) => {
       state.loading = false;

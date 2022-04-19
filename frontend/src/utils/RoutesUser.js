@@ -10,7 +10,7 @@ import {
   Register,
   Reset,
 } from "../imports/index";
-import { Home } from "../imports/LazyRouter";
+import { Home, RegisterGgFb } from "../imports/LazyRouter";
 
 const RoutesDataUser = [
   //*Route User and Check not logout please authentication
@@ -39,6 +39,11 @@ const RoutesDataUser = [
     path: "",
     private: null,
     main: <Home />,
+  },
+  {
+    path: "/signing",
+    private: <PrivateRouter />,
+    main: <RegisterGgFb />,
   },
   {
     path: "profile",
