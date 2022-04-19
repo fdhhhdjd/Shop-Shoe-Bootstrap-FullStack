@@ -31,17 +31,15 @@ const Home = () => {
   }, [profile?.user]);
   return (
     <>
-      {profile?.user?.checkLogin === true && (
-        <>
-          <MetaData title={`Home Page`} />
-          {token ? "" : <Carousel handleScrollMenu={handleScrollMenu} />}
-          <Header />
-          <ShopSection ref={menuRef} />
-          <CalltoActionSection />
-          <ContactInfo />
-          <Footer />
-        </>
-      )}
+      <>
+        <MetaData title={`Home Page`} />
+        {token ? "" : <Carousel handleScrollMenu={handleScrollMenu} />}
+        <Header />
+        <ShopSection ref={menuRef} />
+        <CalltoActionSection />
+        <ContactInfo />
+        <Footer />
+      </>
     </>
   );
 };
