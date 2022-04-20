@@ -8,14 +8,11 @@ import {
   Footer,
   Header,
   MetaData,
+  PhoneRight,
   ShopSection,
 } from "../../imports";
 const Home = () => {
   const token = window.localStorage.getItem("firstLogin");
-  const { refreshToken, CheckCreate } = useSelector((state) => ({
-    ...state.data,
-  }));
-  const tokens = refreshToken.accessToken;
   const navigate = useNavigate();
   const menuRef = useRef();
   const handleScrollMenu = () => {
@@ -28,7 +25,7 @@ const Home = () => {
     if (profile?.user?.checkLogin === false) {
       navigate("/signing");
     }
-  }, [profile?.user]);
+  }, [profile?.user, navigate]);
   return (
     <>
       <>
@@ -39,6 +36,7 @@ const Home = () => {
         <CalltoActionSection />
         <ContactInfo />
         <Footer />
+        <PhoneRight />
       </>
     </>
   );

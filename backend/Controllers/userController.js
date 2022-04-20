@@ -31,7 +31,14 @@ const userCtrl = {
       } = req.body;
 
       const user = await Users.findOne({ email });
-
+      const CheckEmail = HELPER.validateEmail(email);
+      if (!CheckEmail) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "The email already Correct",
+        });
+      }
       if (user)
         return res.json({
           status: 400,
@@ -78,58 +85,74 @@ const userCtrl = {
         });
       }
 
+      const CheckDate = HELPER.validateDate(date_of_birth);
+      if (!date_of_birth) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Please Choose A Date",
+        });
+      } else if (CheckDate === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect Date .",
+        });
+      }
+
       // Password Encryption
       const passwordHash = await bcrypt.hash(password, 10);
-      const newUser = new Users({
-        name,
-        email,
-        password: passwordHash,
-        sex,
-        date_of_birth,
-        phone_number,
-      });
+      STORAGE.passwordEncryption(password, CONSTANTS.CHARACTER_NUMBER).then(
+        async (result) => {
+          const newUser = new Users({
+            name,
+            email,
+            password: result,
+            sex,
+            date_of_birth,
+            phone_number,
+          });
+          // Save mongodb
+          await newUser.save();
+          //url to be used in the email
+          const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
+          // const currentUrl = resetPasswordUrl;
+          const currentUrl = resetPasswordUrl;
 
-      // Save mongodb
-      await newUser.save();
+          const uniqueString = uuidv4() + newUser.id;
 
-      //url to be used in the email
-      const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
-      // const currentUrl = resetPasswordUrl;
-      const currentUrl = resetPasswordUrl;
+          //hash unique string
+          const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
+          console.log(hashedUniqueString);
+          const newVerification = new UserVerifications({
+            userId: newUser.id,
+            uniqueString: hashedUniqueString,
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 3600000,
+          });
 
-      const uniqueString = uuidv4() + newUser.id;
-
-      //hash unique string
-      const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
-      console.log(hashedUniqueString);
-      const newVerification = new UserVerifications({
-        userId: newUser.id,
-        uniqueString: hashedUniqueString,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 3600000,
-      });
-
-      await newVerification.save();
-      const confirmEmailUrl =
-        currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString;
-      //send email verification
-      await sendEmail({
-        from: process.env.SMPT_MAIL,
-        to: email,
-        subject: `Verify Your Email`,
-        template: "confirm-email",
-        attachments: [
-          {
-            filename: "netflix.png",
-            path: path.resolve("./views", "images", "netflix.jpg"),
-            cid: "netflix_logo",
-          },
-        ],
-        context: {
-          confirmEmailUrl,
-        },
-      });
-
+          await newVerification.save();
+          const confirmEmailUrl =
+            currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString;
+          //send email verification
+          await sendEmail({
+            from: process.env.SMPT_MAIL,
+            to: email,
+            subject: `Verify Your Email`,
+            template: "confirm-email",
+            attachments: [
+              {
+                filename: "netflix.png",
+                path: path.resolve("./views", "images", "netflix.jpg"),
+                cid: "netflix_logo",
+              },
+            ],
+            context: {
+              confirmEmailUrl,
+            },
+          });
+        }
+      );
       return res.json({
         status: 200,
         success: true,
@@ -341,6 +364,43 @@ const userCtrl = {
   updateProfile: async (req, res) => {
     try {
       const { name, image, phone_number, sex, date_of_birth } = req.body;
+
+      if (phone_number === "") {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Please phone Number.",
+        });
+      }
+      if (isNaN(phone_number)) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone is must be number.",
+        });
+      }
+      const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
+      if (CheckPhone === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect phone number.",
+        });
+      }
+      const CheckDate = HELPER.validateDate(date_of_birth);
+      if (!date_of_birth) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Please Choose A Date",
+        });
+      } else if (CheckDate === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect Date .",
+        });
+      }
       await Users.findOneAndUpdate(
         { _id: req.user.id },
         {

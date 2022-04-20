@@ -10,8 +10,11 @@ import {
 import Message from "../Error/Message";
 const initialState = {
   name: "",
+  phone_number: "",
+  date_of_birth: "",
   email: "",
   password: "",
+  confirmPassword: "",
 };
 const RegisterAdmin = () => {
   window.scrollTo(0, 0);
@@ -21,13 +24,29 @@ const RegisterAdmin = () => {
   const { loading, registerAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
-  const { name, email, password } = state;
+  const {
+    name,
+    email,
+    password,
+    confirmPassword,
+    date_of_birth,
+    phone_number,
+  } = state;
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
       return toast.error("Please Enter Input 🥲");
     }
-    dispatch(RegisterAdminInitial({ name, email, password }));
+    dispatch(
+      RegisterAdminInitial({
+        name,
+        phone_number,
+        date_of_birth,
+        email,
+        password,
+        confirmPassword,
+      })
+    );
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,10 +91,31 @@ const RegisterAdmin = () => {
             onChange={handleChange}
           />
           <input
+            type="phone"
+            placeholder="Phone"
+            value={phone_number}
+            name="phone_number"
+            onChange={handleChange}
+          />
+          <input
+            type="date"
+            placeholder="Date"
+            value={date_of_birth}
+            name="date_of_birth"
+            onChange={handleChange}
+          />
+          <input
             type="password"
             placeholder="Password"
             value={password}
             name="password"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            placeholder="confirmPassword"
+            value={confirmPassword}
+            name="confirmPassword"
             onChange={handleChange}
           />
           {loading ? <Loading /> : <button type="submit">Register</button>}

@@ -52,6 +52,7 @@ const Register = () => {
       dispatch(reset());
     }
     if (authRegister.status === 400) {
+      window.scrollTo(0, 0);
       setTimeout(() => {
         dispatch(reset());
       }, 3000);

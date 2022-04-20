@@ -26,7 +26,15 @@ const adminCtrl = {
       const { name, email, password, sex, date_of_birth, phone_number } =
         req.body;
 
-      const user = await Users.findOne({ email, role: 1 });
+      const user = await Users.findOne({ email });
+      const CheckEmail = HELPER.validateEmail(email);
+      if (!CheckEmail) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "The email already Correct",
+        });
+      }
       if (user)
         return res.json({
           status: 400,
@@ -42,7 +50,7 @@ const adminCtrl = {
         });
 
       //kiểm tra format password
-      const reg=HELPER.isPassword(password)
+      const reg = HELPER.isPassword(password);
       if (!reg) {
         return res.json({
           status: 400,
@@ -51,63 +59,79 @@ const adminCtrl = {
             "Password must contain at least one number and one uppercase and lowercase and special letter, and at least 6 or more characters ",
         });
       }
-      if(isNaN(phone_number)){
+      if (isNaN(phone_number)) {
         return res.json({
           status: 400,
           success: false,
           msg: "Phone is must be number.",
         });
       }
-      const CheckPhone=HELPER.isVietnamesePhoneNumber(phone_number)
-      if (CheckPhone===false) {
+      const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
+      if (CheckPhone === false) {
         return res.json({
           status: 400,
           success: false,
           msg: "Incorrect phone number.",
         });
       }
-
+      const CheckDate = HELPER.validateDate(date_of_birth);
+      if (!date_of_birth) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Please Choose A Date",
+        });
+      } else if (CheckDate === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect Date .",
+        });
+      }
       // Password Encryption
-      const passwordHash = await bcrypt.hash(password, 10);
-      const newUser = new Users({
-        name,
-        email,
-        password: passwordHash,
-        role: 1,
-        sex,
-        date_of_birth,
-        phone_number,
-      });
+      STORAGE.passwordEncryption(password, CONSTANTS.CHARACTER_NUMBER).then(
+        async (result) => {
+          const newUser = new Users({
+            name,
+            email,
+            password: result,
+            role: 1,
+            sex,
+            date_of_birth,
+            phone_number,
+          });
 
-      // Save mongodb
-      await newUser.save();
+          // Save mongodb
+          await newUser.save();
 
-      //url to be used in the email
-      const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
-      const currentUrl = resetPasswordUrl;
-      const uniqueString = uuidv4() + newUser.id;
+          //url to be used in the email
+          const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
+          const currentUrl = resetPasswordUrl;
+          const uniqueString = uuidv4() + newUser.id;
 
-      //hash unique string
-      const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
+          //hash unique string
+          const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
 
-      const newVerification = new UserVerifications({
-        userId: newUser.id,
-        uniqueString: hashedUniqueString,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 3600000,
-      });
+          const newVerification = new UserVerifications({
+            userId: newUser.id,
+            uniqueString: hashedUniqueString,
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 3600000,
+          });
 
-      await newVerification.save();
+          await newVerification.save();
 
-      //send email verification
-      await sendEmail({
-        from: process.env.SMPT_MAIL,
-        to: email,
-        subject: `Verify Your Email`,
-        html: `<p>Verify your email address to complete the signup and login into your account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Press <a href= ${
-          currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString
-        }>here</a> to proceed.</p>`,
-      });
+          //send email verification
+          await sendEmail({
+            from: process.env.SMPT_MAIL,
+            to: email,
+            subject: `Verify Your Email`,
+            html: `<p>Verify your email address to complete the signup and login into your account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Press <a href= ${
+              currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString
+            }>here</a> to proceed.</p>`,
+          });
+        }
+      );
 
       return res.json({
         status: 200,

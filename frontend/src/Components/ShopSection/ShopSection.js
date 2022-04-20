@@ -5,6 +5,7 @@ import { GlobalState } from "../../Context/GlobalState";
 import { SwaleMessage } from "../../imports";
 import { Loading, Message, Rating } from "../../imports/index";
 import { LazyLoadImg } from "../../imports/index";
+import { except } from "../../imports/importConstant";
 const ShopSection = React.forwardRef((props, ref) => {
   const { loading, product, error } = useSelector((state) => ({
     ...state.products,
@@ -85,12 +86,7 @@ const ShopSection = React.forwardRef((props, ref) => {
     }
     setitemsPerPage(itemsPerPage + 3);
   };
-  const except = (str) => {
-    if (str.length > 30) {
-      str = str.substring(0, 30) + " " + "...";
-    }
-    return str;
-  };
+
   const renderData = (data, index) => {
     return (
       <React.Fragment>
@@ -122,7 +118,7 @@ const ShopSection = React.forwardRef((props, ref) => {
                   <div className="shoptext">
                     <p>
                       <Link to={`/products/${product._id}`}>
-                        {except(product.name)}
+                        {except(product.name, 25)}
                       </Link>
                     </p>
 

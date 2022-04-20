@@ -10,19 +10,25 @@ module.exports = {
    */
   validateEmail(email) {
     //Validates the email address
-    var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var emailRegex = /^[^s@]+@[^s@]+.[^s@]+$/;
     return emailRegex.test(email);
   },
   isVietnamesePhoneNumber(phone_number) {
-    return /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/.test(
-      phone_number
-    );
+    var phoneRegex = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
+    return phoneRegex.test(phone_number);
   },
   isPassword(password) {
     let reg = new RegExp(
       "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
     ).test(password);
     return reg;
+  },
+  validateDate(date_of_birth) {
+    let regex = new RegExp(
+      "([0-9]{4}[-](0[1-9]|1[0-2])[-]([0-2]{1}[0-9]{1}|3[0-1]{1})|([0-2]{1}[0-9]{1}|3[0-1]{1})[-](0[1-9]|1[0-2])[-][0-9]{4})"
+    );
+
+    return regex.test(date_of_birth);
   },
   randomString(length) {
     var result = "";

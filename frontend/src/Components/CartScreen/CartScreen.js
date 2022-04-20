@@ -12,6 +12,7 @@ import {
   Paypal,
   SwaleMessage,
   LazyLoadImg,
+  PhoneRight,
 } from "../../imports/index";
 import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
 const initialState = {
@@ -161,7 +162,7 @@ const CartScreen = () => {
       <>
         <Header />
         <MetaData title={`Store Cart`} />
-
+        <PhoneRight />
         {/* Cart */}
         <div className="container">
           {cartItems && cartItems.length === 0 ? (

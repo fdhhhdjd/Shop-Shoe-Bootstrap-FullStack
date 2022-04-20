@@ -25,11 +25,21 @@ export const LoginAdminInitial = createAsyncThunk(
 );
 export const RegisterAdminInitial = createAsyncThunk(
   "admin/Register",
-  async ({ name, email, password }) => {
+  async ({
+    name,
+    phone_number,
+    date_of_birth,
+    email,
+    password,
+    confirmPassword,
+  }) => {
     const response = await axios.post("/api/auth/RegisterAdmin", {
       name,
+      phone_number,
+      date_of_birth,
       email,
       password,
+      confirmPassword,
     });
     return response.data;
   }

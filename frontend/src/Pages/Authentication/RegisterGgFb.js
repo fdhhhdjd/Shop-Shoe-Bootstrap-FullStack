@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GlobalState } from "../../Context/GlobalState";
 import {
   Header,
   Loading,
@@ -23,7 +22,6 @@ const initialState = {
   date_of_birth: "",
 };
 const RegisterGgFb = () => {
-  const states = useContext(GlobalState);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -73,6 +71,7 @@ const RegisterGgFb = () => {
       }
 
       if (CheckCreate.status === 400) {
+        window.scrollTo(0, 0);
         setTimeout(() => {
           dispatch(reset());
         }, 3000);

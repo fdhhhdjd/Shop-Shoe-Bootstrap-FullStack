@@ -23,17 +23,27 @@ const ProfileTabAdmin = () => {
     e.preventDefault();
     if (!images) return SwaleMessage("No Image Upload 😅.", "error");
     try {
-      await axios.patch(
-        `/api/auth/profile/update`,
-        { ...states, image: images },
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
-      SwaleMessage("Edit Admin profile Successfully", "success");
-      setCallbackAdmin(!callbackAdmin);
+      await axios
+        .patch(
+          `/api/auth/profile/update`,
+          { ...states, image: images },
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          if (response?.data?.status === 400) {
+            SwaleMessage(`${response.data.msg}`, "error");
+          } else if (response?.data?.status === 200) {
+            SwaleMessage("Edit profile Successfully", "success");
+          }
+          setCallbackAdmin(!callbackAdmin);
+        })
+        .catch((err) => {
+          SwaleMessage(`${err.data}`, "error");
+        });
     } catch (error) {
       alert(error.response.data.msg);
     }
@@ -176,7 +186,7 @@ const ProfileTabAdmin = () => {
         </div>
         <div className="col-md-6">
           <div className="form">
-            <label htmlFor="account-pass">Phone Number</label>
+            <label htmlFor="account-pass">Date or Birth</label>
             <input
               className="form-control"
               type="date"

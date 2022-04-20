@@ -81,6 +81,7 @@ export { default as ReplyUserMain } from "../Components/FeedbackAdmin/ReplyUserM
 export { default as ManagerUnchecked } from "../Components/ManagerAdminUser/ManagerUnchecked";
 export { default as ManagerUncheckedMain } from "../Components/ManagerAdminUser/ManagerUncheckedMain";
 export { default as UsersUncheck } from "../Components/ManagerAdminUser/UsersUncheck";
+export { default as PhoneRight } from "../Components/PhoneRight/PhoneRight";
 //!Page
 export { default as Loading } from "../Pages/Loading/Loading";
 export { default as Login } from "../Pages/Authentication/Login";

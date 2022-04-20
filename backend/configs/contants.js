@@ -28,4 +28,6 @@ module.exports = {
 
   //*Password
   PASSWORD_GOOGLE: null,
+  //*Character
+  CHARACTER_NUMBER: 10,
 };
