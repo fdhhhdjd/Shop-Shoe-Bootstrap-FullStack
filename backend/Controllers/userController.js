@@ -30,13 +30,13 @@ const userCtrl = {
         phone_number,
       } = req.body;
 
-      const user = await Users.findOne({ email });
+      const user = await Users.findOne({ $or: [{ email }, { phone_number }] });
       const CheckEmail = HELPER.validateEmail(email);
       if (!CheckEmail) {
         return res.json({
           status: 400,
           success: false,
-          msg: "The email already Correct",
+          msg: "Email or Phone number already exists",
         });
       }
       if (user)
@@ -101,7 +101,7 @@ const userCtrl = {
       }
 
       // Password Encryption
-      const passwordHash = await bcrypt.hash(password, 10);
+      // const passwordHash = await bcrypt.hash(password, 10);
       STORAGE.passwordEncryption(password, CONSTANTS.CHARACTER_NUMBER).then(
         async (result) => {
           const newUser = new Users({
@@ -319,6 +319,45 @@ const userCtrl = {
       });
     }
   },
+
+  //Login Phone Number
+  loginPhone: async (req, res) => {
+    try {
+      const { phone_number } = req.body;
+
+      const user = await Users.findOne({ phone_number: phone_number, role: 0 });
+      if (!user)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "User does not exist.",
+        });
+
+      // If login success , create access token and refresh token
+      const accessToken = STORAGE.createAccessToken({ id: user._id });
+      const refreshtoken = STORAGE.createRefreshToken({ id: user._id });
+
+      res.cookie("refreshtoken", refreshtoken, {
+        httpOnly: true,
+        path: "/api/auth/refresh_token",
+        maxAge: CONSTANTS._7_DAY,
+      });
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        accessToken,
+        msg: "Login Successfully 😍 !",
+      });
+    } catch (err) {
+      return res.json({
+        status: 400,
+        success: false,
+        msg: err.message,
+      });
+    }
+  },
+
   //Logout
   logout: async (req, res) => {
     try {
@@ -364,8 +403,15 @@ const userCtrl = {
   updateProfile: async (req, res) => {
     try {
       const { name, image, phone_number, sex, date_of_birth } = req.body;
-
-      if (phone_number === "") {
+      const checkPhoneDatabase =await Users.findOne({phone_number });
+      console.log(checkPhoneDatabase,"----checkPhoneDatabase----")
+      if (checkPhoneDatabase) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone number Already Exists.",
+        });
+      } else if (phone_number === "") {
         return res.json({
           status: 400,
           success: false,
@@ -735,9 +781,10 @@ const userCtrl = {
   ChangePassWordLoginGgFb: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select("+password");
-
       const { password, confirmPassword, phone_number, date_of_birth } =
         req.body;
+      const checkPhoneDatabase =await Users.findOne({phone_number });
+
       if (!password)
         return res.json({
           status: 400,
@@ -765,6 +812,19 @@ const userCtrl = {
           status: 400,
           success: false,
           msg: "Includes 6 characters, uppercase, lowercase and some and special characters.",
+        });
+      }
+      if (checkPhoneDatabase) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone number Already Exists.",
+        });
+      } else if (phone_number === "") {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Please phone Number.",
         });
       }
       if (confirmPassword !== password) {

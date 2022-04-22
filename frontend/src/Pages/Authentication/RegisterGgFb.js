@@ -51,31 +51,24 @@ const RegisterGgFb = () => {
     }
     dispatch(ChangePasswordLoginGgFbInitiate({ tokens, ...state }));
   };
-
   useEffect(() => {
     if (profile?.user?.checkLogin === true) {
+      window.location.href = "/";
+    }
+    if (CheckCreate.status === 200) {
       if (location.state?.from) {
         navigate(location.state.from);
         window.location.reload();
       } else {
         window.location.href = "/";
       }
-    } else {
-      if (CheckCreate.status === 200) {
-        if (location.state?.from) {
-          navigate(location.state.from);
-          window.location.reload();
-        } else {
-          window.location.href = "/";
-        }
-      }
+    }
 
-      if (CheckCreate.status === 400) {
-        window.scrollTo(0, 0);
-        setTimeout(() => {
-          dispatch(reset());
-        }, 3000);
-      }
+    if (CheckCreate.status === 400) {
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        dispatch(reset());
+      }, 3000);
     }
   }, [CheckCreate, profile?.user]);
 

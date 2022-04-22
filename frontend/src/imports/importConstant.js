@@ -1,2 +1,2 @@
-import except from "../CustomHook/ContainShare";
-export { except };
+import { except, setUpRecapCha } from "../CustomHook/ContainShare";
+export { except, setUpRecapCha };

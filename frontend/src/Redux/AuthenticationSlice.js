@@ -174,6 +174,20 @@ export const UploadProfileInitiate = createAsyncThunk(
     return data;
   }
 );
+export const LoginPhoneInitial = createAsyncThunk(
+  "auth/Login",
+  async ({ number, toast }) => {
+    number = "0" + number.slice(3);
+    const response = await axios.post("/api/auth/loginPhone", {
+      phone_number: number,
+    });
+    if (response.data.status === 200) {
+      toast.success("Login User Successfully 🥰");
+    }
+    return response.data;
+  }
+);
+
 const initialState = {
   loading: false,
   error: null,
@@ -212,6 +226,18 @@ const AuthenticationSlice = createSlice({
       state.auth = action.payload;
     },
     [LoginInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Login Phone
+    [LoginPhoneInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [LoginPhoneInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.auth = action.payload;
+    },
+    [LoginPhoneInitial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

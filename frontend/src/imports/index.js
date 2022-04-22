@@ -114,6 +114,7 @@ export { default as Message } from "../Pages/Error/Message";
 export { default as GoogleMap } from "../Pages/GoogleMap/GoogleMap";
 export { default as GoogleMapMain } from "../Pages/GoogleMap/GoogleMapMain";
 export { default as RegisterGgFb } from "../Pages/Authentication/RegisterGgFb";
+export { default as LoginPhone } from "../Pages/Authentication/LoginPhone";
 //!Custom Hook
 export { default as useUpDesImg } from "../CustomHook/useUpDesImg";
 export { default as useDelete } from "../CustomHook/useDelete";

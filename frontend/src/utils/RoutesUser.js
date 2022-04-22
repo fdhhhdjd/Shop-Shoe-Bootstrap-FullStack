@@ -9,6 +9,7 @@ import {
   Profile,
   Register,
   Reset,
+  LoginPhone,
 } from "../imports/index";
 import { Home, RegisterGgFb } from "../imports/LazyRouter";
 
@@ -18,6 +19,11 @@ const RoutesDataUser = [
     path: "login",
     private: <PrivateRouterAuth />,
     main: <Login />,
+  },
+  {
+    path: "loginphone",
+    private: <PrivateRouterAuth />,
+    main: <LoginPhone />,
   },
   {
     path: "register",

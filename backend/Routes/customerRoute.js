@@ -13,6 +13,9 @@ router.get("/verify/:userId/:uniqueString", userCtrl.verifyEmail);
 //Login
 router.post("/login", userCtrl.login);
 
+//Login
+router.post("/loginPhone", userCtrl.loginPhone);
+
 //refresh token
 router.get("/refresh_token", userCtrl.refreshToken);
 

@@ -26,7 +26,7 @@ const adminCtrl = {
       const { name, email, password, sex, date_of_birth, phone_number } =
         req.body;
 
-      const user = await Users.findOne({ email });
+      const user = await Users.findOne({ $or: [{ email }, { phone_number }] });
       const CheckEmail = HELPER.validateEmail(email);
       if (!CheckEmail) {
         return res.json({
