@@ -197,6 +197,8 @@
 
 - Đăng nhập tài khoản khách hàng : post --> http://localhost:5000/api/auth/login
 
+- Đăng nhập tài khoản bằng phone: post --> http://localhost:5000/api/auth/loginPhone
+
 - Đăng xuất tài khoản: get --> http://localhost:5000/api/auth/logout
 
 - Xem profile: get --> http://localhost:5000/api/auth/profile
