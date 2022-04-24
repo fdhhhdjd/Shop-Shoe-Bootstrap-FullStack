@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-const RelationProduct = ({ product: { image, name, slug, price, _id } }) => {
+const RelationProduct = ({ product: { image, name, price, _id } }) => {
   return (
     <div>
       <Link to={`/products/${_id}`}>

@@ -207,7 +207,6 @@ const DetailProduct = () => {
               <div className="marquee">
                 <div className="maylike-products-container track">
                   {products?.map((item) => {
-                    console.log(productDetail?.product, "gao do");
                     return item?.categories?._id ===
                       productDetail?.product?.categories ? (
                       <RelationProduct key={item._id} product={item} />
