@@ -1,34 +1,37 @@
 # !file này thiết lập tự động buil,deploy,build run,tên,run
-  version: '3'
+version: "3.6"
 
+services:
+  shop-shoe-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shop-shoe-api-1
+    restart: unless-stopped
+    volumes:
+      - ./src:/usr/src/app/src
+    environment:
+      NODE_ENV: "development"
+    networks:
+      - upload-network
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    command: npm start
 
-  services:
-    shop-shoe-api:
-      build: 
-        context: .
-        dockerfile: Dockerfile
-      container_name: shop-shoe-api-1
-      restart: unless-stopped
-      env_file:
-            - .env
-      ports: 
-        - '5000:5000'   
-    
-  
-    frontend:
-      build: 
-        context: ./frontend
-        dockerfile: ./frontend/Dockerfile
-      container_name: frontend
-      restart: unless-stopped
-      ports: 
-        - '3000:3000'
-      volumes:
-      - ./frontend/src:/app/src   
-      depends_on:
-      - shop-shoe-api
-
-
-    
-
-  
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: ./frontend/Dockerfile
+  #   container_name: frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - '3000:3000'
+  #   volumes:
+  #   - ./frontend/src:/app/src
+  #   depends_on:
+  #   - shop-shoe-api
+networks:
+  upload-network:
+    driver: bridge

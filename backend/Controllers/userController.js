@@ -36,14 +36,14 @@ const userCtrl = {
         return res.json({
           status: 400,
           success: false,
-          msg: "Email or Phone number already exists",
+          msg: "Email or Phone number already exists.",
         });
       }
       if (user)
         return res.json({
           status: 400,
           success: false,
-          msg: "The email already exists",
+          msg: "The email already exists.",
         });
 
       if (password.length < 6)
@@ -403,8 +403,8 @@ const userCtrl = {
   updateProfile: async (req, res) => {
     try {
       const { name, image, phone_number, sex, date_of_birth } = req.body;
-      const checkPhoneDatabase =await Users.findOne({phone_number });
-      console.log(checkPhoneDatabase,"----checkPhoneDatabase----")
+      const checkPhoneDatabase = await Users.findOne({ phone_number });
+      console.log(checkPhoneDatabase, "----checkPhoneDatabase----");
       if (checkPhoneDatabase) {
         return res.json({
           status: 400,
@@ -783,7 +783,7 @@ const userCtrl = {
       const user = await Users.findById(req.user.id).select("+password");
       const { password, confirmPassword, phone_number, date_of_birth } =
         req.body;
-      const checkPhoneDatabase =await Users.findOne({phone_number });
+      const checkPhoneDatabase = await Users.findOne({ phone_number });
 
       if (!password)
         return res.json({

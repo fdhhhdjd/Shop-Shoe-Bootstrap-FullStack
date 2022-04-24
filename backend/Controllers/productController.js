@@ -88,7 +88,6 @@ const productCtrl = {
         .sorting();
 
       const products = await features.query.populate("categories");
-
       res.json({
         status: 200,
         success: true,

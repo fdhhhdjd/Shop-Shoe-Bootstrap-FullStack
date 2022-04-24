@@ -1,4 +1,4 @@
-#!@ Nguyen Tien Tai 
+#!@ Nguyen Tien Tai
 
 default:
 	docker ps
@@ -9,4 +9,4 @@ devdown:
 stg:
 	docker-compose up -d
 run-dev:
-	docker-compose -f docker-compose.yml up -d
+	docker-compose -f docker-compose.yml up -d --build
