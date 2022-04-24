@@ -12,7 +12,7 @@ const RelationProduct = ({ product: { image, name, price, _id } }) => {
             width={250}
             height={250}
             className="product-image"
-            alt=""
+            alt="img"
           />
           <p className="product-name123">{except(name, 15)}</p>
           <p className="product-price">${price}</p>
