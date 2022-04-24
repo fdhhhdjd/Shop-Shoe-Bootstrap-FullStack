@@ -1,18 +1,18 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
 import { AddToCart, TranSuccess } from "../../imports/Import";
 import {
   Header,
+  LazyLoadImg,
   Loading,
   MetaData,
   Paypal,
-  SwaleMessage,
-  LazyLoadImg,
   PhoneRight,
+  SwaleMessage,
 } from "../../imports/index";
 import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
 const initialState = {
@@ -25,6 +25,7 @@ const CartScreen = () => {
   const { totals, Message, loadings } = useSelector((state) => ({
     ...state.vouchers,
   }));
+  const navigate = useNavigate();
   const refreshTokens = refreshToken.accessToken;
   const token = refreshToken.accessToken;
   const [total, setTotal] = useState(0);
@@ -140,10 +141,11 @@ const CartScreen = () => {
         headers: { Authorization: refreshTokens },
       }
     );
-    window.location.reload();
+
     setCart([]);
     addToCart([]);
     SwaleMessage("You have successfully placed an order.", "success");
+    window.location.href = "/success";
   };
 
   useEffect(() => {

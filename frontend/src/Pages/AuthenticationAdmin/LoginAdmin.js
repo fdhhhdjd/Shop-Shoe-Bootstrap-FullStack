@@ -76,13 +76,14 @@ const LoginAdmin = () => {
       localStorage.setItem("firstLoginAdmin", true);
     }
     if (admin && admin.status === 400) {
+      window.scrollTo(0, 0);
+
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
     }
   }, [admin]);
 
-  window.scrollTo(0, 0);
   return (
     <>
       {admin.status === 200 ? (

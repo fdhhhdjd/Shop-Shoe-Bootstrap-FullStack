@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login";
+import GoogleLogin from "react-google-login";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button } from "react-bootstrap";
+import { GlobalState } from "../../Context/GlobalState";
 import {
   Header,
   Loading,
@@ -13,10 +13,9 @@ import {
   MetaData,
   SwaleMessage,
 } from "../../imports/index";
-import { GlobalState } from "../../Context/GlobalState";
 import {
-  LoginGoogleInitiate,
   LoginFacebookInitiate,
+  LoginGoogleInitiate,
   LoginInitial,
   reset,
 } from "../../Redux/AuthenticationSlice";

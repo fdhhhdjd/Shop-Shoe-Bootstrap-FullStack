@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
@@ -134,6 +134,7 @@ const ShopSection = React.forwardRef((props, ref) => {
       </React.Fragment>
     );
   };
+
   return (
     <>
       <div className="container" ref={ref}>

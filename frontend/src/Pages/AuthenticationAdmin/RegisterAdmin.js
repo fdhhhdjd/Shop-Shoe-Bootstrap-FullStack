@@ -59,6 +59,8 @@ const RegisterAdmin = () => {
       dispatch(reset());
     }
     if (registerAdmin.status === 400) {
+      window.scrollTo(0, 0);
+
       setTimeout(() => {
         dispatch(reset());
       }, [3000]);

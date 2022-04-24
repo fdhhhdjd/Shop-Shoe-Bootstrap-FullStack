@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { Header } from "../../imports/index";
+import { Header, RelationProduct } from "../../imports/index";
+import { RelatedProductStyle } from "../../Styles/RelatedProductStyle";
 import {
   GetProductDetailInitial,
   reset,
@@ -23,14 +24,18 @@ const DetailProduct = () => {
   const [user, setUser] = useState();
   const [onEdit, setOnEdit] = useState(false);
   const dispatch = useDispatch();
+
   const state = useContext(GlobalState);
   const addCart = state.UserApi.addCart;
+
   const [callback, setCallback] = state.callback;
   const { loadings, productDetail, error, reviews, product } = useSelector(
     (state) => ({
       ...state.products,
     })
   );
+  const products = product.products && product.products;
+
   const { profile, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
@@ -77,7 +82,6 @@ const DetailProduct = () => {
   useEffect(() => {
     profile.user && setUser(profile.user._id);
   }, [profile]);
-
   return (
     <>
       <Header />
@@ -135,6 +139,7 @@ const DetailProduct = () => {
                     )}
                   </TransformWrapper>
                 </div>
+
                 <div className="col-md-6">
                   <div className="product-dtl">
                     <div className="product-info">
@@ -196,6 +201,21 @@ const DetailProduct = () => {
                 </div>
               </div>
             )}
+            <RelatedProductStyle />
+            <div className="maylike-products-wrapper">
+              <h2>Relation Product Forme </h2>
+              <div className="marquee">
+                <div className="maylike-products-container track">
+                  {products?.map((item) => {
+                    console.log(productDetail?.product, "gao do");
+                    return item?.categories?._id ===
+                      productDetail?.product?.categories ? (
+                      <RelationProduct key={item._id} product={item} />
+                    ) : null;
+                  })}
+                </div>
+              </div>
+            </div>
             {/* RATING */}
             {productDetail.status === 200 && (
               <div className="row my-5">

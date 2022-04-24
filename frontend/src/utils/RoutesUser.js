@@ -9,6 +9,7 @@ import {
   Profile,
   Register,
   Reset,
+  CartBuySuccess,
   LoginPhone,
 } from "../imports/index";
 import { Home, RegisterGgFb } from "../imports/LazyRouter";
@@ -65,6 +66,11 @@ const RoutesDataUser = [
     path: "cart",
     private: <PrivateRouter />,
     main: <CartScreen />,
+  },
+  {
+    path: "success",
+    private: <PrivateRouter />,
+    main: <CartBuySuccess />,
   },
   {
     path: "order/:id",

@@ -3,7 +3,7 @@ import { GlobalState } from "../Context/GlobalState";
 
 export { GlobalState };
 //!Utils
-
+export { default as runFireworks } from "../utils/Fireworks/runFireworks";
 //!Component
 export { default as Header } from "../Components/Header/Header";
 export { default as Profile } from "../Components/Profile/Profile";
@@ -82,6 +82,8 @@ export { default as ManagerUnchecked } from "../Components/ManagerAdminUser/Mana
 export { default as ManagerUncheckedMain } from "../Components/ManagerAdminUser/ManagerUncheckedMain";
 export { default as UsersUncheck } from "../Components/ManagerAdminUser/UsersUncheck";
 export { default as PhoneRight } from "../Components/PhoneRight/PhoneRight";
+export { default as CartBuySuccess } from "../Components/CartBuySuccess/CartBuySuccess";
+export { default as RelationProduct } from "../Components/DetailProduct/RelationProduct";
 //!Page
 export { default as Loading } from "../Pages/Loading/Loading";
 export { default as Login } from "../Pages/Authentication/Login";
