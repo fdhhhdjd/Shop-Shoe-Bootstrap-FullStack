@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Header, RelationProduct } from "../../imports/index";
+import { except } from "../../imports/importConstant";
 import { RelatedProductStyle } from "../../Styles/RelatedProductStyle";
 import {
   GetProductDetailInitial,
@@ -144,7 +145,7 @@ const DetailProduct = () => {
                   <div className="product-dtl">
                     <div className="product-info">
                       <div className="product-name">
-                        {productDetail.product.name}
+                        {except(productDetail.product.name, 35)}
                       </div>
                     </div>
                     <p>{productDetail.product.description}</p>

@@ -65,7 +65,7 @@ const RegisterAdmin = () => {
         dispatch(reset());
       }, [3000]);
     }
-  }, [registerAdmin]);
+  }, [registerAdmin, dispatch, navigate]);
   return (
     <>
       <MetaData title="Register-Admin-ShoeShop" />

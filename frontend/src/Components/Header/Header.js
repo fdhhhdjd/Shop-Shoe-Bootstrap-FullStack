@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GlobalState } from "../../Context/GlobalState";
+import { except } from "../../imports/importConstant";
 import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
 import HeaderData from "../../utils/data/HeaderData";
-import { except } from "../../imports/importConstant";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const Header = () => {
     ...state.data,
   }));
   const state = useContext(GlobalState);
-  const [cart, setCart] = state.UserApi.cart;
+  const [cart] = state.UserApi.cart;
   const [search, setSearch] = state.ProductApi.search;
   const cartItems = cart;
 
