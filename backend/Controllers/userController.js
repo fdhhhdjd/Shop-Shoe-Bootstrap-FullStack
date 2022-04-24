@@ -90,7 +90,7 @@ const userCtrl = {
         return res.json({
           status: 400,
           success: false,
-          msg: "Please Choose A Date",
+          msg: "Please Choose A Date.",
         });
       } else if (CheckDate === false) {
         return res.json({
