@@ -30,7 +30,15 @@ const userCtrl = {
         phone_number,
       } = req.body;
 
-      const user = await Users.findOne({ $or: [{ email }, { phone_number }] });
+      const user = await Users.findOne({
+        email,
+
+      });
+      const Phone_User = await Users.findOne({
+        phone_number,
+
+      });
+
       const CheckEmail = HELPER.validateEmail(email);
       if (!CheckEmail) {
         return res.json({
@@ -43,7 +51,13 @@ const userCtrl = {
         return res.json({
           status: 400,
           success: false,
-          msg: "The email already exists.",
+          msg: "The email User already exists",
+        });
+      if (Phone_User)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone User already exists",
         });
 
       if (password.length < 6)
@@ -550,14 +564,14 @@ const userCtrl = {
     const user = await Users.findOne({ email: req.body.email, role: 0 });
     const { email } = req.body;
     if (!email) {
-      res.json({
+      return res.json({
         status: 400,
         success: false,
         msg: "Email are not empty. ",
       });
     }
     if (!user) {
-      res.json({
+      return res.json({
         status: 400,
         success: false,
         msg: "Account Not Exit",

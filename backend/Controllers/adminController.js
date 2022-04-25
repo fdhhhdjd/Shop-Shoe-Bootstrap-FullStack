@@ -26,7 +26,13 @@ const adminCtrl = {
       const { name, email, password, sex, date_of_birth, phone_number } =
         req.body;
 
-      const user = await Users.findOne({ $or: [{ email }, { phone_number }] });
+      const user = await Users.findOne({
+        email,
+      });
+      const Phone_Admin = await Users.findOne({
+        phone_number,
+      });
+
       const CheckEmail = HELPER.validateEmail(email);
       if (!CheckEmail) {
         return res.json({
@@ -40,6 +46,12 @@ const adminCtrl = {
           status: 400,
           success: false,
           msg: "The email already exists",
+        });
+      if (Phone_Admin)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone Admin already exists",
         });
 
       if (password.length < 6)
@@ -270,14 +282,14 @@ const adminCtrl = {
     const user = await Users.findOne({ email: req.body.email, role: 1 });
     const { email } = req.body;
     if (!email) {
-      res.json({
+      return res.json({
         status: 400,
         success: false,
         msg: "Email are not empty. ",
       });
     }
     if (!user) {
-      res.json({
+      return res.json({
         status: 400,
         success: false,
         msg: "Account Admin Not Exit",

@@ -87,7 +87,8 @@ export const LogoutAdminInitiate = createAsyncThunk(
 export const ForgetAdminInitiate = createAsyncThunk(
   "auth/ForgetAdmin",
   async ({ email }) => {
-    const response = await axios.post("/api/auth/forgetAdmin", {
+    console.log(email);
+    const response = await axios.post("/api/auth/ForgetAdmin", {
       email,
     });
     return response.data;

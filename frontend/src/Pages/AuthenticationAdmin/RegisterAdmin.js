@@ -17,7 +17,6 @@ const initialState = {
   confirmPassword: "",
 };
 const RegisterAdmin = () => {
-  window.scrollTo(0, 0);
   const [state, setState] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();

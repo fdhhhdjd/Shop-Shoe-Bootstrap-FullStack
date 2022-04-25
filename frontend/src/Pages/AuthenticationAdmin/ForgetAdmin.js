@@ -40,8 +40,12 @@ const ForgetAdmin = () => {
       });
       setState({ email: "" });
       dispatch(reset());
+    } else if (forgetAdmin.status === 400) {
+      setTimeout(() => {
+        dispatch(reset());
+      }, [3000]);
     }
-  }, [forgetAdmin, dispatch]);
+  }, [forgetAdmin]);
   return (
     <>
       <MetaData title="Forget-Admin-ShoeShop" />
