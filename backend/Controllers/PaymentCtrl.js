@@ -2,7 +2,7 @@ const Payments = require("../Model/PaymentModel");
 const Users = require("../Model/userModel");
 const bcrypt = require("bcrypt");
 const STORAGE = require("../utils/Storage");
-const Stripe = require("Stripe");
+// const Stripe = require("Stripe");
 // const stripe = Stripe(process.env.STRIPE_KEY);
 const paymentCtrl = {
   //Get All Payment
