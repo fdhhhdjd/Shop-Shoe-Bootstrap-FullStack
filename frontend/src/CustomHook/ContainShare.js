@@ -18,7 +18,7 @@ export const except = (str, number) => {
   return str;
 };
 export const setUpRecapCha = (number) => {
-  console.log(number, "----phone_number----");
+  console.log(number, "-----phone_number----");
   const recaptchaVerifier = new RecaptchaVerifier(
     "recaptcha-container",
     {},
