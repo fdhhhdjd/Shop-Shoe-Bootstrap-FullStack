@@ -3,7 +3,7 @@ const Users = require("../Model/userModel");
 const bcrypt = require("bcrypt");
 const STORAGE = require("../utils/Storage");
 const Stripe = require("Stripe");
-const stripe = Stripe(process.env.STRIPE_PUBLIC);
+const stripe = Stripe(process.env.STRIPE_KEY);
 const paymentCtrl = {
   //Get All Payment
   getPayments: async (req, res) => {
