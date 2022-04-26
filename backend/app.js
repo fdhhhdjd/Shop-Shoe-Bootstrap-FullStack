@@ -15,6 +15,11 @@ app.use(
     useTempFiles: true,
   })
 );
+app.use(
+  express.json({
+    verify: (req, res, buffer) => (req["rawBody"] = buffer),
+  })
+);
 
 //!router import
 const customer = require("./Routes/customerRoute.js");
