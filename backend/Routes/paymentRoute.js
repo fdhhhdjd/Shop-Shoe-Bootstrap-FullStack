@@ -59,6 +59,6 @@ router.get(
   paymentCtrl.getMonthlyIncomeCustomerReceived
 );
 //Payment Stripe
-router.post("/paymentStripe", paymentCtrl.StripePayments);
+// router.post("/paymentStripe", paymentCtrl.StripePayments);
 
 module.exports = router;
