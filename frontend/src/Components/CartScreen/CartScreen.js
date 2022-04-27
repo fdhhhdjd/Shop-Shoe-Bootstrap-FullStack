@@ -15,7 +15,7 @@ import {
   SwaleMessage,
 } from "../../imports/index";
 import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
-// import PayButton from "../Stripe/PayButton";
+import PayButton from "../Stripe/PayButton";
 const initialState = {
   voucher_code: "",
 };
@@ -334,9 +334,9 @@ const CartScreen = () => {
                     <Paypal total={total} tranSuccess={tranSuccess} />
                   </button>
                 </div>
-                {/* <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
+                <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
                   <PayButton />
-                </div> */}
+                </div>
 
                 {/* )} */}
               </div>
