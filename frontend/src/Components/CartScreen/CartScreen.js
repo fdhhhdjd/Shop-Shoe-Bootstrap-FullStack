@@ -324,7 +324,7 @@ const CartScreen = () => {
 
               <div className="cart-buttons d-flex align-items-center row">
                 <Link to="/" className="col-md-6 ">
-                  <button>Continue To Shopping</button>
+                  <button>Continue To Shopping.</button>
                 </Link>
                 {/* {total > 0 && ( */}
                 {/* // */}
