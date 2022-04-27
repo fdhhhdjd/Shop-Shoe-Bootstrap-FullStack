@@ -1,6 +1,7 @@
 const Payments = require("../Model/PaymentModel");
 const Users = require("../Model/userModel");
 const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
 const STORAGE = require("../utils/Storage");
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.STRIPE_KEY);
@@ -90,8 +91,8 @@ const paymentCtrl = {
       customer_email: req.body.email,
       line_items,
       mode: "payment",
-      success_url: `https://shopshoetaiheo.herokuapp.com/success`,
-      cancel_url: `https://shopshoetaiheo.herokuapp.com/cart`,
+      success_url: `${process.env.FRONTEND_URL}/success`,
+      cancel_url: `${process.env.FRONTEND_URL}/cart`,
     });
     res.send({ url: session.url });
   },
