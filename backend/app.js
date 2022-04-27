@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const path = require("path");
+app.enable("trust proxy");
 const bodyParser = require("body-parser");
 app.use(express.json());
 app.use(cookieParser());
