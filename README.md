@@ -249,6 +249,7 @@
 
 - Thanh toán đơn hàng bằng Paypal: post --> http://localhost:5000/api/payment/payments
 
+
 - Tính tiền bằng Stripe Quản lý bắng Stripe: post --> http://localhost:5000/api/payment/paymentStripe
 
 
