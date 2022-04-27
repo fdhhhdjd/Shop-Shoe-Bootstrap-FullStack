@@ -122,8 +122,8 @@ const paymentCtrl = {
           };
         }),
 
-        success_url: `${req.headers.origin}success`,
-        cancel_url: `${req.headers.origin}cart`,
+        success_url: `${req.protocol}://${req.get("host")}/success`,
+        cancel_url: `${req.protocol}://${req.get("host")}/cart`,
       };
 
       // Create Checkout Sessions from body params.
