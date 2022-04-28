@@ -32,11 +32,9 @@ const userCtrl = {
 
       const user = await Users.findOne({
         email,
-
       });
       const Phone_User = await Users.findOne({
         phone_number,
-
       });
 
       const CheckEmail = HELPER.validateEmail(email);

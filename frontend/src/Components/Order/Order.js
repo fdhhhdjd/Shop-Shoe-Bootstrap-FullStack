@@ -116,7 +116,7 @@ const Order = () => {
                       <th>STATUS BILL</th>
                       <th>DATE</th>
                       <th>TOTAL</th>
-                      <th>Action</th>
+                      <th>ACTION</th>
                     </tr>
                   </thead>
                   <tbody>

@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { setUpRecapCha } from "../../imports/importConstant";
 import { Header, MetaData, Loading } from "../../imports/index";
 import { toast } from "react-toastify";
+import toastHot from "react-hot-toast";
 import { LoginPhoneInitial } from "../../Redux/AuthenticationSlice";
 import { useDispatch, useSelector } from "react-redux";
 const LoginPhone = () => {
@@ -63,6 +64,7 @@ const LoginPhone = () => {
   };
   useEffect(() => {
     if (auth.status === 200) {
+      toastHot.loading("Redirecting...");
       if (location.state?.from) {
         navigate(location.state.from);
         window.location.reload();
@@ -96,7 +98,7 @@ const LoginPhone = () => {
               <div id="recaptcha-container"></div>
             </Form.Group>
             <div className="button-right">
-              <Link to="/loginphone">
+              <Link to="/login">
                 <Button variant="secondary">Cancel</Button>
               </Link>
               &nbsp;
@@ -122,9 +124,11 @@ const LoginPhone = () => {
                 <Loading />
               ) : (
                 <>
-                  <Link to="/loginphone">
-                    <Button variant="secondary">Cancel</Button>
-                  </Link>
+                  {/* <Link to="/loginphone"> */}
+                  <Button variant="secondary" onClick={() => setFlag(false)}>
+                    Cancel
+                  </Button>
+                  {/* </Link> */}
                   &nbsp;
                   <Button type="submit" variant="primary">
                     Verify

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { stripes } from "../../imports/Image";
 const FooterData = [
   {
     id: uuidv4(),
@@ -14,6 +15,11 @@ const FooterData = [
     id: uuidv4(),
     img: "https://pbs.twimg.com/media/EfTZlEnWAAMn1lX.png",
     alt: "paypal",
+  },
+  {
+    id: uuidv4(),
+    img: stripes,
+    alt: "Stripe",
   },
   {
     id: uuidv4(),

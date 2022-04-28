@@ -29,6 +29,35 @@ export const SendFeedbacksInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const ReadingFeedbacksInitial = createAsyncThunk(
+  "Feedbacks/Reading",
+  async (id) => {
+    const response = await axios.get(`/api/feedback/reading/${id}`);
+    return response.data;
+  }
+);
+export const SearchDateInitial = createAsyncThunk(
+  "Feedbacks/SearchDate",
+  async ({ DateFrom, DateTo }) => {
+    const response = await axios.post(`/api/feedback/search`, {
+      search_text: "",
+      DateFrom,
+      DateTo,
+      limit: 100,
+      page: 1,
+    });
+    return response.data;
+  }
+);
+export const FilterSeenAndNotSeenInitial = createAsyncThunk(
+  "Feedbacks/FilterSeenAndNotSeen",
+  async ({ sort }) => {
+    const response = await axios.post(`/api/feedback/filterEmail`, {
+      checked: sort,
+    });
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   error: null,
@@ -79,6 +108,41 @@ const FeedbacksSlice = createSlice({
       state.sendFeedback = action.payload;
     },
     [SendFeedbacksInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Reading Feedback
+    [ReadingFeedbacksInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ReadingFeedbacksInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [ReadingFeedbacksInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Search Date Feedback
+    [SearchDateInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [SearchDateInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.feedback = action.payload;
+    },
+    [SearchDateInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Filter Feedback
+    [FilterSeenAndNotSeenInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [FilterSeenAndNotSeenInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.feedback = action.payload;
+    },
+    [FilterSeenAndNotSeenInitial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

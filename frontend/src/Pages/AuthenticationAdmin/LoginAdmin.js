@@ -3,6 +3,7 @@ import GoogleLogin from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import toastHot from "react-hot-toast";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
   HeaderLoginAdmin,
@@ -48,7 +49,13 @@ const LoginAdmin = () => {
       SwaleMessage("Mời bạn xác thực đầy đủ !", "error");
       return;
     }
-    dispatch(LoginAdminInitial({ email, password, toast, remembererAdmin }));
+    dispatch(
+      LoginAdminInitial({ email, password, toast, remembererAdmin })
+    ).then((item) => {
+      if (item.payload.status === 200) {
+        toastHot.loading("Redirecting...");
+      }
+    });
   };
   const HandleRememberAdmin = () => {
     setRememberMeAdmin(!remembererAdmin);
@@ -57,6 +64,7 @@ const LoginAdmin = () => {
     if (response.error) {
       return toast.error(response.error);
     } else {
+      toastHot.loading("Redirecting...");
       dispatch(LoginGooglAdminInitiate(response));
     }
   };

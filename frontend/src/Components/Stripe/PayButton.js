@@ -27,12 +27,10 @@ const PayButton = () => {
         email: profile?.user?.email,
       })
       .then(async (response) => {
-        console.log(response);
-
         if (response.data.url) {
-          // setCart([]);
-          // addToCart([]);
           toast.loading("Redirecting...");
+          setCart([]);
+          addToCart([]);
           window.location.href = response.data.url;
         }
       })
@@ -41,7 +39,9 @@ const PayButton = () => {
 
   return (
     <>
-      <button onClick={() => handleCheckout()}>Check out</button>
+      <button onClick={() => handleCheckout()} className="stripe">
+        <i className="fab fa-stripe"></i> {"  "}Stripe
+      </button>
     </>
   );
 };

@@ -6,6 +6,7 @@ import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
 import { AddToCart, TranSuccess } from "../../imports/Import";
 import {
+  Footer,
   Header,
   LazyLoadImg,
   Loading,
@@ -334,6 +335,14 @@ const CartScreen = () => {
                     <Paypal total={total} tranSuccess={tranSuccess} />
                   </button>
                 </div>
+
+                {/* )} */}
+              </div>
+              <div className="cart-buttons d-flex align-items-center row">
+                <Link to="/" className="col-md-6 "></Link>
+                {/* {total > 0 && ( */}
+                {/* // */}
+
                 <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
                   <PayButton />
                 </div>
@@ -343,6 +352,7 @@ const CartScreen = () => {
             </>
           )}
         </div>
+        {cart.length > 0 && <Footer />}
       </>
     </>
   );

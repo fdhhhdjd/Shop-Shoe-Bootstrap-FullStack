@@ -18,6 +18,9 @@ textarea:focus,
 .paypal {
   background-color: rgb(0, 156, 222) !important;
 }
+.stripe {
+  background-color: rgb(99, 91, 255) !important;
+}
 
 a {
   text-decoration: none;

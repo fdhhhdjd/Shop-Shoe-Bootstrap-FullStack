@@ -21,7 +21,6 @@ app.use(
     verify: (req, res, buffer) => (req["rawBody"] = buffer),
   })
 );
-
 //!router import
 const customer = require("./Routes/customerRoute.js");
 const product = require("./Routes/ProductRoute.js");

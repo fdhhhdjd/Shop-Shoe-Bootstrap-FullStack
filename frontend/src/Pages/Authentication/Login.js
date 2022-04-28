@@ -5,6 +5,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import toastHot from "react-hot-toast";
 import { GlobalState } from "../../Context/GlobalState";
 import {
   Header,
@@ -53,17 +54,29 @@ const Login = () => {
       SwaleMessage("Mời bạn xác thực đầy đủ !", "error");
       return;
     }
-    dispatch(LoginInitial({ email, password, toast, rememberer }));
+    dispatch(LoginInitial({ email, password, toast, rememberer })).then(
+      (item) => {
+        if (item.payload.status === 200) {
+          toastHot.loading("Redirecting...");
+        }
+      }
+    );
   };
   const HandleGoogle = (response) => {
     if (response.error) {
       return toast.error(response.error);
     } else {
+      toastHot.loading("Redirecting...");
       dispatch(LoginGoogleInitiate(response));
     }
   };
   const responseFacebook = (response) => {
-    dispatch(LoginFacebookInitiate(response));
+    if (response.accessToken) {
+      toastHot.loading("Redirecting...");
+      dispatch(LoginFacebookInitiate(response));
+    } else {
+      return toast.error(response.error);
+    }
   };
   useEffect(() => {
     if (foundUser) {
