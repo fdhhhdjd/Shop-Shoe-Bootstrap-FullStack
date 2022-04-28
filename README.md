@@ -180,6 +180,7 @@
 
 - Lấy ra những đơn hàng được thanh toán trong 3 ngày gần nhất : get --> http://localhost:5000/api/payment/newPayment
 
+
 ## 2. API dành cho khách hàng
 
 ## Upload:
@@ -246,7 +247,10 @@
 
 ## Payment
 
-- Thanh toán đơn hàng: post --> http://localhost:5000/api/payment/payments
+- Thanh toán đơn hàng bằng Paypal: post --> http://localhost:5000/api/payment/payments
+
+
+- Tính tiền bằng Stripe Quản lý bắng Stripe: post --> http://localhost:5000/api/payment/paymentStripe
 
 
 - Xóa mem payment : patch -->http://localhost:5000/api/payment/deletePayments/:id
