@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import toastHot from "react-hot-toast";
 import { GlobalState } from "../../Context/GlobalState";
 import { except } from "../../imports/importConstant";
 import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
 import HeaderData from "../../utils/data/HeaderData";
+import {MetaData} from "../../imports/index"
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,12 +21,16 @@ const Header = () => {
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    dispatch(LogoutInitiate({ navigate, toast }));
+    dispatch(LogoutInitiate({ navigate, toast })).then((item) => {
+      if(item.payload.status === 200) {
+        <MetaData title={`Home Page`} />
+        toastHot.loading("Redirecting...");
+      }
+    })
   };
   const submitHandler = (e) => {
     e.preventDefault();
   };
-
   return (
     <div>
       <div className="Announcement ">

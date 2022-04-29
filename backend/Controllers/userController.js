@@ -416,64 +416,84 @@ const userCtrl = {
     try {
       const { name, image, phone_number, sex, date_of_birth } = req.body;
       const checkPhoneDatabase = await Users.findOne({ phone_number });
-      console.log(checkPhoneDatabase, "----checkPhoneDatabase----");
-      if (checkPhoneDatabase) {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Phone number Already Exists.",
+      const user = await Users.findById(req.user.id).select("-password");
+      if (user.phone_number === phone_number) {
+        await Users.findOneAndUpdate(
+          { _id: req.user.id },
+          {
+            name,
+            image,
+            phone_number,
+            sex,
+            date_of_birth,
+          }
+        );
+        res.status(200).json({
+          status: 200,
+          success: true,
+          msg: "Updated Profile Successfully !",
         });
-      } else if (phone_number === "") {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Please phone Number.",
-        });
-      }
-      if (isNaN(phone_number)) {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Phone is must be number.",
-        });
-      }
-      const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
-      if (CheckPhone === false) {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Incorrect phone number.",
-        });
-      }
-      const CheckDate = HELPER.validateDate(date_of_birth);
-      if (!date_of_birth) {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Please Choose A Date",
-        });
-      } else if (CheckDate === false) {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Incorrect Date .",
-        });
-      }
-      await Users.findOneAndUpdate(
-        { _id: req.user.id },
-        {
-          name,
-          image,
-          phone_number,
-          sex,
-          date_of_birth,
+      } else if (user.phone_number != phone_number) {
+        if (checkPhoneDatabase == null) {
+          if (phone_number === "") {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Please phone Number.",
+            });
+          }
+          if (isNaN(phone_number)) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Phone is must be number.",
+            });
+          }
+          const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
+          if (CheckPhone === false) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Incorrect phone number.",
+            });
+          }
+          const CheckDate = HELPER.validateDate(date_of_birth);
+          if (!date_of_birth) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Please Choose A Date",
+            });
+          } else if (CheckDate === false) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Incorrect Date .",
+            });
+          }
+          await Users.findOneAndUpdate(
+            { _id: req.user.id },
+            {
+              name,
+              image,
+              phone_number,
+              sex,
+              date_of_birth,
+            }
+          );
+          res.status(200).json({
+            status: 200,
+            success: true,
+            msg: "Updated Profile Successfully !",
+          });
+        } else if (checkPhoneDatabase) {
+          return res.json({
+            status: 400,
+            success: false,
+            msg: "Phone Already Exists .",
+          });
         }
-      );
-      res.status(200).json({
-        status: 200,
-        success: true,
-        msg: "Updated Profile Successfully !",
-      });
+      }
     } catch (err) {
       return res.json({
         status: 400,

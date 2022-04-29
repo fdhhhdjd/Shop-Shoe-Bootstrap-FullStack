@@ -162,7 +162,7 @@ const ProfileTabAdmin = () => {
               value="1"
               id="sex"
               name="sex"
-              checked={states.sex === 1 || ""}
+              checked={states.sex == 1 || ""}
               onChange={handleChange}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault1">
@@ -176,7 +176,7 @@ const ProfileTabAdmin = () => {
               value="0"
               id="sex"
               name="sex"
-              checked={states.sex === 0 || ""}
+              checked={states.sex == 0 || ""}
               onChange={handleChange}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault2">

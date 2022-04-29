@@ -15,7 +15,7 @@ const ShopSection = React.forwardRef((props, ref) => {
   const [search] = state.ProductApi.search;
   //Pagination
   const [currentPage, setcurrentPage] = useState(1);
-  const [itemsPerPage, setitemsPerPage] = useState(6);
+  const [itemsPerPage, setitemsPerPage] = useState(12);
 
   const [pageNumberLimit, setpageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
@@ -24,18 +24,23 @@ const ShopSection = React.forwardRef((props, ref) => {
     setcurrentPage(Number(event.target.id));
   };
   const pages = [];
-  for (
-    let i = 1;
-    i <= Math.ceil(products && products.length / itemsPerPage);
-    i++
-  ) {
-    pages.push(i);
+  if (!search) {
+    for (
+      let i = 1;
+      i <= Math.ceil(products && products.length / itemsPerPage);
+      i++
+    ) {
+      pages.push(i);
+    }
   }
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems =
-    products && products.slice(indexOfFirstItem, indexOfLastItem);
+
+  const currentItems = search
+    ? products
+    : products && products.slice(indexOfFirstItem, indexOfLastItem);
+
   const renderPageNumbers = pages.map((number) => {
     if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
       return (

@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import swal from "sweetalert";
 import {
   Header,
   Loading,
-  MetaData,
   Message,
+  MetaData,
   SwaleMessage,
 } from "../../imports/index";
 import { ForgetInitiate, reset } from "../../Redux/AuthenticationSlice";
@@ -44,10 +43,12 @@ const Forget = () => {
       }, 3000);
     }
   }, [forget]);
+
   return (
     <>
       <MetaData title="Forget-ShoeShop" />
       <Header />
+
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {forget && forget.status === 400 && (
           <Message variant="alert-danger">{forget.msg}</Message>

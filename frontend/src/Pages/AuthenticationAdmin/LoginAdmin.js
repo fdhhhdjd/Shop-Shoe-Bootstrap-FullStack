@@ -64,8 +64,11 @@ const LoginAdmin = () => {
     if (response.error) {
       return toast.error(response.error);
     } else {
-      toastHot.loading("Redirecting...");
-      dispatch(LoginGooglAdminInitiate(response));
+      dispatch(LoginGooglAdminInitiate(response)).then((item) => {
+        if(item.payload.status === 200) {
+          toastHot.loading("Redirecting...");
+        }
+      })
     }
   };
   useEffect(() => {

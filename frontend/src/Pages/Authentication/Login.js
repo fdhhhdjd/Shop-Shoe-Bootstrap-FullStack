@@ -66,14 +66,21 @@ const Login = () => {
     if (response.error) {
       return toast.error(response.error);
     } else {
-      toastHot.loading("Redirecting...");
-      dispatch(LoginGoogleInitiate(response));
+      dispatch(LoginGoogleInitiate(response)).then((item) => {
+        if(item.payload.status === 200) {
+          toastHot.loading("Redirecting...");
+        }
+      })
     }
   };
   const responseFacebook = (response) => {
     if (response.accessToken) {
       toastHot.loading("Redirecting...");
-      dispatch(LoginFacebookInitiate(response));
+      dispatch(LoginFacebookInitiate(response)).then((item) => {
+        if(item.payload.status === 200) {
+          toastHot.loading("Redirecting...");
+        }
+      })
     } else {
       return toast.error(response.error);
     }
