@@ -1,12 +1,17 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GlobalState } from "../../imports";
+import { StripeInitial } from "../../Redux/OrderSlice";
 import { AddToCart } from "../../utils/Api";
 const PayButton = () => {
   const { profile, refreshToken } = useSelector((state) => ({ ...state.data }));
+  const { paymentStripe, loading } = useSelector((state) => ({
+    ...state.order,
+  }));
   const state = useContext(GlobalState);
+  const dispatch = useDispatch();
   const [cart, setCart] = state.UserApi.cart;
   const refreshTokens = refreshToken.accessToken;
   let cartItems = profile?.user?.cart;
@@ -20,28 +25,40 @@ const PayButton = () => {
     );
   };
   const handleCheckout = async () => {
-    await axios
-      .post("/api/payment/paymentStripe", {
+    dispatch(
+      StripeInitial({
         cartItems,
         userId: profile._id,
         email: profile?.user?.email,
       })
-      .then(async (response) => {
-        if (response.data.url) {
-          toast.loading("Redirecting...");
-          setCart([]);
-          addToCart([]);
-          window.location.href = response.data.url;
-        }
-      })
-      .catch((err) => console.log(err.message));
+    );
   };
-
+  useEffect(() => {
+    if (paymentStripe?.url) {
+      toast.loading("Redirecting...");
+      setCart([]);
+      addToCart([]);
+      window.location.href = paymentStripe.url;
+    }
+  }, [paymentStripe?.url]);
+  useEffect(() => {
+    if (loading == true) {
+      toast.loading("Processing Payment...");
+    }
+  }, [loading]);
   return (
     <>
-      <button onClick={() => handleCheckout()} className="stripe">
-        <i className="fab fa-stripe"></i> {"  "}Stripe
-      </button>
+      {loading ? (
+        <button className="stripe1">
+          <div className="spinner-grow text-info" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </button>
+      ) : (
+        <button onClick={handleCheckout} className="stripe">
+          <i className="fab fa-stripe"></i> {"  "}Stripe
+        </button>
+      )}
     </>
   );
 };

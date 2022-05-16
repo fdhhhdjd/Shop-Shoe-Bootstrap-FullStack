@@ -7,7 +7,7 @@ import { GlobalState } from "../../Context/GlobalState";
 import { except } from "../../imports/importConstant";
 import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
 import HeaderData from "../../utils/data/HeaderData";
-import {MetaData} from "../../imports/index"
+import { MetaData } from "../../imports/index";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,11 +22,11 @@ const Header = () => {
   const logoutHandler = (e) => {
     e.preventDefault();
     dispatch(LogoutInitiate({ navigate, toast })).then((item) => {
-      if(item.payload.status === 200) {
-        <MetaData title={`Home Page`} />
+      if (item.payload.status === 200) {
+        <MetaData title={`Home Page`} />;
         toastHot.loading("Redirecting...");
       }
-    })
+    });
   };
   const submitHandler = (e) => {
     e.preventDefault();
@@ -168,9 +168,17 @@ const Header = () => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
-                  <button type="submit" className="search-button">
-                    search
-                  </button>
+                  {search ? (
+                    <button className="search-button1">
+                      <div className="spinner-grow text-success" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>
+                    </button>
+                  ) : (
+                    <button type="submit" className="search-button">
+                      search
+                    </button>
+                  )}
                 </form>
               </div>
               <div className="col-md-3 d-flex align-items-center justify-content-end Login-Register">

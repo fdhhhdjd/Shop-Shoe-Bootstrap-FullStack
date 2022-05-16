@@ -21,6 +21,9 @@ textarea:focus,
 .stripe {
   background-color: rgb(99, 91, 255) !important;
 }
+.stripe1 {
+  background-color: white !important;
+}
 
 a {
   text-decoration: none;
@@ -83,6 +86,14 @@ textarea:focus {
   background-color: black;
   color: white;
   border: 0;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.search-button1 {
+  width: 20%;
+  background-color: white;
+  color: white;
+  border: none;
   text-transform: uppercase;
   font-size: 12px;
 }
