@@ -15,6 +15,7 @@ const path = require("path");
 const STORAGE = require("../utils/Storage");
 const CONSTANTS = require("../configs/contants");
 const HELPER = require("../utils/helper");
+const PASSWORD = require("../utils/Password");
 require("dotenv").config;
 
 const userCtrl = {
@@ -114,61 +115,70 @@ const userCtrl = {
 
       // Password Encryption
       // const passwordHash = await bcrypt.hash(password, 10);
-      STORAGE.passwordEncryption(password, CONSTANTS.CHARACTER_NUMBER).then(
-        async (result) => {
-          const newUser = new Users({
-            name,
-            email,
-            password: result,
-            sex,
-            date_of_birth,
-            phone_number,
+      await STORAGE.passwordEncryption(
+        password,
+        CONSTANTS.CHARACTER_NUMBER
+      ).then(async (result) => {
+        const newUser = new Users({
+          name,
+          email,
+          password: result,
+          sex,
+          date_of_birth,
+          phone_number,
+        });
+        // Save mongodb
+        await newUser.save();
+        //url to be used in the email
+        const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
+        // const currentUrl = resetPasswordUrl;
+        const currentUrl = resetPasswordUrl;
+
+        const uniqueString = uuidv4() + newUser.id;
+
+        //hash unique string
+        const hashedUniqueString = await PASSWORD.encodePassword(uniqueString);
+        console.log(hashedUniqueString);
+        const newVerification = new UserVerifications({
+          userId: newUser.id,
+          uniqueString: hashedUniqueString,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 3600000,
+        });
+
+        await newVerification
+          .save()
+          .then((item) => {
+            if (item) {
+              return res.json({
+                status: 200,
+                success: true,
+                msg: `Verification email sent to ${email} `,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
           });
-          // Save mongodb
-          await newUser.save();
-          //url to be used in the email
-          const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
-          // const currentUrl = resetPasswordUrl;
-          const currentUrl = resetPasswordUrl;
-
-          const uniqueString = uuidv4() + newUser.id;
-
-          //hash unique string
-          const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
-          console.log(hashedUniqueString);
-          const newVerification = new UserVerifications({
-            userId: newUser.id,
-            uniqueString: hashedUniqueString,
-            createdAt: Date.now(),
-            expiresAt: Date.now() + 3600000,
-          });
-
-          await newVerification.save();
-          const confirmEmailUrl =
-            currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString;
-          //send email verification
-          await sendEmail({
-            from: process.env.SMPT_MAIL,
-            to: email,
-            subject: `Verify Your Email`,
-            template: "confirm-email",
-            attachments: [
-              {
-                filename: "netflix.png",
-                path: path.resolve("./views", "images", "netflix.jpg"),
-                cid: "netflix_logo",
-              },
-            ],
-            context: {
-              confirmEmailUrl,
+        const confirmEmailUrl =
+          currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString;
+        //send email verification
+        await sendEmail({
+          from: process.env.SMPT_MAIL,
+          to: email,
+          subject: `Verify Your Email`,
+          template: "confirm-email",
+          attachments: [
+            {
+              filename: "netflix.png",
+              path: path.resolve("./views", "images", "netflix.jpg"),
+              cid: "netflix_logo",
             },
-          });
-        }
-      );
-      return res.json({
-        status: 200,
-        success: true,
-        msg: `Verification email sent to ${email} `,
+          ],
+          context: {
+            confirmEmailUrl,
+          },
+        });
       });
     } catch (err) {
       return res.json({
@@ -298,30 +308,31 @@ const userCtrl = {
           msg: "Email hasn't been verified. Please check email inbox",
         });
       }
+      await PASSWORD.comparePassword(password, user.password).then((item) => {
+        if (item) {
+          // If login success , create access token and refresh token
+          const accessToken = STORAGE.createAccessToken({ id: user._id });
+          const refreshtoken = STORAGE.createRefreshToken({ id: user._id });
 
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch)
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Incorrect password.",
-        });
+          res.cookie("refreshtoken", refreshtoken, {
+            httpOnly: true,
+            path: "/api/auth/refresh_token",
+            maxAge: CONSTANTS._7_DAY,
+          });
 
-      // If login success , create access token and refresh token
-      const accessToken = STORAGE.createAccessToken({ id: user._id });
-      const refreshtoken = STORAGE.createRefreshToken({ id: user._id });
-
-      res.cookie("refreshtoken", refreshtoken, {
-        httpOnly: true,
-        path: "/api/auth/refresh_token",
-        maxAge: CONSTANTS._7_DAY,
-      });
-
-      res.status(200).json({
-        status: 200,
-        success: true,
-        accessToken,
-        msg: "Login Successfully 😍 !",
+          res.status(200).json({
+            status: 200,
+            success: true,
+            accessToken,
+            msg: "Login Successfully 😍 !",
+          });
+        } else {
+          return res.json({
+            status: 400,
+            success: false,
+            msg: "Incorrect password.",
+          });
+        }
       });
     } catch (err) {
       return res.json({
@@ -331,7 +342,6 @@ const userCtrl = {
       });
     }
   },
-
   //Login Phone Number
   loginPhone: async (req, res) => {
     try {

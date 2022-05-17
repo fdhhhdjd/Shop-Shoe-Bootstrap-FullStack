@@ -30,4 +30,7 @@ module.exports = {
   PASSWORD_GOOGLE: null,
   //*Character
   CHARACTER_NUMBER: 10,
+
+  //* Hash password
+  SALT_ROUNDS: 10,
 };
