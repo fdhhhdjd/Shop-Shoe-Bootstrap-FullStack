@@ -8,8 +8,28 @@ const path = require("path");
 app.enable("trust proxy");
 const bodyParser = require("body-parser");
 const compression = require("compression");
-// const helmet = require("helmet");
-// app.use(helmet());
+const helmet = require("helmet");
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        blockAllMixedContent: [],
+        fontSrc: ["'self'", "https:", "data:"],
+        frameAncestors: ["'self'", "https://accounts.google.com/"],
+        frameSrc: ["'self'", "https://accounts.google.com/"],
+        imgSrc: ["'self'", "data:"],
+        objectSrc: ["'self'", "blob:"],
+        mediaSrc: ["'self'", "blob:", "data:"],
+        scriptSrc: ["'self'", "https://apis.google.com"],
+        scriptSrcAttr: ["'none'"],
+        styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+        upgradeInsecureRequests: [],
+        connectSrc: ["'self'", "https://my-app.herokuapp.com"],
+      },
+    },
+  })
+);
 app.use(
   compression({
     level: 6,
