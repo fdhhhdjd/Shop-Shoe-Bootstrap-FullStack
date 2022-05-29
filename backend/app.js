@@ -8,8 +8,8 @@ const path = require("path");
 app.enable("trust proxy");
 const bodyParser = require("body-parser");
 const compression = require("compression");
-const helmet = require("helmet");
-app.use(helmet());
+// const helmet = require("helmet");
+// app.use(helmet());
 app.use(
   compression({
     level: 6,
