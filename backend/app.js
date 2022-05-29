@@ -8,15 +8,15 @@ const path = require("path");
 app.enable("trust proxy");
 const bodyParser = require("body-parser");
 const compression = require("compression");
-const helmet = require("helmet");
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "trusted-cdn.com"],
-    },
-  })
-);
+// const helmet = require("helmet");
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", "trusted-cdn.com"],
+//     },
+//   })
+// );
 app.use(
   compression({
     level: 6,
