@@ -26,6 +26,7 @@
     "express-async-handler": "^1.2.0",
     "express-fileupload": "^1.2.1",
     "google-auth-library": "^7.11.0",
+    "helmet": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.4",
     "node-fetch": "^2.6.7",
