@@ -10,8 +10,11 @@ const bodyParser = require("body-parser");
 const compression = require("compression");
 const helmet = require("helmet");
 app.use(
-  helmet({
-    contentSecurityPolicy: false,
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "trusted-cdn.com"],
+    },
   })
 );
 app.use(
