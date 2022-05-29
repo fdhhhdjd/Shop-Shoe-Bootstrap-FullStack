@@ -11,23 +11,7 @@ const compression = require("compression");
 const helmet = require("helmet");
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        blockAllMixedContent: [],
-        fontSrc: ["'self'", "https:", "data:"],
-        frameAncestors: ["'self'", "https://accounts.google.com/"],
-        frameSrc: ["'self'", "https://accounts.google.com/"],
-        imgSrc: ["'self'", "https://res.cloudinary.com/"],
-        objectSrc: ["'self'", "blob:"],
-        mediaSrc: ["'self'", "blob:", "data:"],
-        scriptSrc: ["'self'", "https://apis.google.com"],
-        scriptSrcAttr: ["'none'"],
-        styleSrc: ["'self'", "https:", "'unsafe-inline'"],
-        upgradeInsecureRequests: [],
-        connectSrc: ["'self'", "https://shopshoetaiheo.herokuapp.com/"],
-      },
-    },
+    contentSecurityPolicy: false,
   })
 );
 app.use(
