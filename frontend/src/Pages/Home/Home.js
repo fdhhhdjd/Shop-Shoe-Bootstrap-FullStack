@@ -30,8 +30,8 @@ const Home = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (
-      profile?.user?.phone_number == "" ||
-      profile?.user?.date_of_birth == ""
+      profile?.user?.phone_number === "" ||
+      profile?.user?.date_of_birth === ""
     ) {
       if (ToastInput === true) {
         Swal.fire({
@@ -53,7 +53,7 @@ const Home = () => {
           },
         }).then((result) => {
           setResult(result);
-          if (!result.dismiss == "backdrop") {
+          if (!result.dismiss === "backdrop") {
             return;
           } else if (result.value) {
             dispatch(UploadProfileInitiate({ tokens, result }));
@@ -70,7 +70,6 @@ const Home = () => {
       }
     }
   }, [profile?.user, result]);
-  console.log(result);
   return (
     <>
       <MetaData title={`Home Page`} />

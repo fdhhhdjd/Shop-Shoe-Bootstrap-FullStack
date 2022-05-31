@@ -1,13 +1,13 @@
-import React, { Suspense, useCallback, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useEffect } from "react";
+import { Detector } from "react-detect-offline";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
 import "./App.css";
 import { Loadings, NotFound, ScrollTop } from "./imports/index";
 import "./responsive.css";
 import RoutesDataAdmin from "./utils/RoutesAdmin";
 import RoutesDataUser from "./utils/RoutesUser";
-import { Detector } from "react-detect-offline";
-import Swal from "sweetalert2";
 function App() {
   const connectInternet = useCallback((online) => {
     if (online === false) {
@@ -21,11 +21,6 @@ function App() {
       }, [5000]);
     }
   }, []);
-  const refreshPage = () => {
-    setTimeout(() => {
-      window.location.reload(false);
-    }, 5000);
-  };
   useEffect(() => {
     connectInternet();
   }, [connectInternet]);
