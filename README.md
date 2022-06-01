@@ -10,7 +10,9 @@
 
 ## Mk: Taideptrai123
 
-## Api Online thay localhost: https://shopshoetaiheo.herokuapp.com/
+## Api Online ( Heroku ) thay localhost: https://shopshoetaiheo.herokuapp.com/
+
+## Api Online ( Aws ): http://18.141.183.61:5000/
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄
 
