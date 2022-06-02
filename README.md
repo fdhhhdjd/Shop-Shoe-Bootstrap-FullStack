@@ -10,7 +10,9 @@
 
 ## Mk: Taideptrai123
 
-## Api Online ( Heroku ) thay localhost: https://shopshoetaiheo.herokuapp.com/
+## Note: Thay localhost bằng Api
+
+## Api Online ( Heroku ): https://shopshoetaiheo.herokuapp.com/
 
 ## Api Online ( Aws ): http://18.141.183.61:5000/
 
