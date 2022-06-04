@@ -14,7 +14,7 @@
 
 ## Api Online ( Heroku ): https://shopshoetaiheo.herokuapp.com/
 
-## Api Online ( Aws ): http://18.141.183.61:5000/
+## Api Online ( Aws ): http://18.138.235.4:5002/
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄
 
