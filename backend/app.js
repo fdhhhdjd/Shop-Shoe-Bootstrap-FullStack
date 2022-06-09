@@ -8,15 +8,9 @@ const path = require("path");
 app.enable("trust proxy");
 const bodyParser = require("body-parser");
 const compression = require("compression");
-// const helmet = require("helmet");
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       scriptSrc: ["'self'", "trusted-cdn.com"],
-//     },
-//   })
-// );
+const cron = require("node-cron");
+const CronAdminController = require("./Controllers/CronController");
+
 app.use(
   compression({
     level: 6,
@@ -64,6 +58,10 @@ app.use("/api/voucher", vouchers);
 app.use("/api/carousel", carousel);
 app.use("/api/feedback", feedback);
 
+//! Run Cron
+cron.schedule("*/10 * * * *", function () {
+  CronAdminController.GetAllUserUnCheck();
+});
 //!upload
 app.use("/api", upload);
 

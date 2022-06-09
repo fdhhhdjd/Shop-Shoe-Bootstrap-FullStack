@@ -19,6 +19,7 @@ const PASSWORD = require("../utils/Password");
 require("dotenv").config;
 
 const userCtrl = {
+  //Register
   register: async (req, res) => {
     try {
       const {

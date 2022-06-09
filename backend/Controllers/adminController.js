@@ -452,31 +452,29 @@ const adminCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
+
   //Get all Uncheck User
   GetAllUserUnCheck: async (req, res) => {
     try {
-      const data = await UserVerifications.find({
-        expiresAt: { $lt: Date.now() },
-      }).select("userId");
-
-      const users = await Users.find({
-        verified: CONSTANTS.DELETED_DISABLE,
-      }).select("_id");
-
-      for (var i = 0; i < data.length; i++) {
-        for (var j = 0; j < users.length; j++) {
-          if (data[i].userId == users[j].id) {
-            await Users.deleteOne({ _id: users[j].id });
-            await UserVerifications.deleteOne({ userId: data[i].userId });
-          }
-        }
-      }
+      // const data = await UserVerifications.find({
+      //   expiresAt: { $lt: Date.now() },
+      // }).select("userId");
+      // const users = await Users.find({
+      //   verified: CONSTANTS.DELETED_DISABLE,
+      // }).select("_id");
+      // for (var i = 0; i < data.length; i++) {
+      //   for (var j = 0; j < users.length; j++) {
+      //     if (data[i].userId == users[j].id) {
+      //       await Users.deleteOne({ _id: users[j].id });
+      //       await UserVerifications.deleteOne({ userId: data[i].userId });
+      //     }
+      //   }
+      // }
 
       const usersUncheck = await Users.find({
         verified: false,
         role: 0,
       }).select("-password");
-
       res.json({
         status: 200,
         success: true,

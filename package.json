@@ -29,6 +29,7 @@
     "helmet": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.4",
+    "node-cron": "^3.0.1",
     "node-fetch": "^2.6.7",
     "nodemailer": "^6.7.2",
     "nodemailer-express-handlebars": "^4.0.0",
