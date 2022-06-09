@@ -59,8 +59,7 @@ app.use("/api/carousel", carousel);
 app.use("/api/feedback", feedback);
 
 //! Run Cron
-cron.schedule("*/10 * * * *", function () {
-  // cron.schedule("* * * * * *", function () {
+cron.schedule("*/5 * * * *", function () {
   CronAdminController.GetAllUserUnCheck();
 });
 //!upload

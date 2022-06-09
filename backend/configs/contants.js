@@ -20,6 +20,7 @@ module.exports = {
   //*Time RefreshToken exist
   _1_MINUTES: 60 * 1000,
   _5_MINUTES: 5 * 60 * 1000,
+  _45_MINUTES: 45 * 60 * 1000,
   _1_DAY: 24 * 60 * 60 * 1000,
   _7_DAY: 7 * 24 * 60 * 60 * 1000,
   _1_DAY_S: 24 * 60 * 60,

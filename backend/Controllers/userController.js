@@ -144,7 +144,7 @@ const userCtrl = {
           userId: newUser.id,
           uniqueString: hashedUniqueString,
           createdAt: Date.now(),
-          expiresAt: Date.now() + 3600000,
+          expiresAt: Date.now() + CONSTANTS._45_MINUTES,
         });
 
         await newVerification
