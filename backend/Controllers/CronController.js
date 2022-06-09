@@ -13,7 +13,6 @@ module.exports = {
     const users = await Users.find({
       verified: CONSTANTS.DELETED_DISABLE,
     }).select("_id");
-    console.log(data);
     for (var i = 0; i < data.length; i++) {
       for (var j = 0; j < users.length; j++) {
         if (data[i].userId == users[j].id) {

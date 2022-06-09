@@ -60,6 +60,7 @@ app.use("/api/feedback", feedback);
 
 //! Run Cron
 cron.schedule("*/10 * * * *", function () {
+  // cron.schedule("* * * * * *", function () {
   CronAdminController.GetAllUserUnCheck();
 });
 //!upload

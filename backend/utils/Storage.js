@@ -34,20 +34,34 @@ module.exports = {
   },
   //*Stock
   async stock(id, quantity, countInStock) {
-    await Products.findOneAndUpdate(
-      { _id: id },
-      {
-        countInStock: countInStock - quantity,
-      }
-    );
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        {
+          countInStock: countInStock - quantity,
+        }
+      );
+    } catch (error) {
+      console.error(
+        "----------------------Stock--------error------------",
+        error
+      );
+    }
   },
   //*Sold
   async sold(id, quantity, oldSold) {
-    await Products.findOneAndUpdate(
-      { _id: id },
-      {
-        sold: quantity + oldSold,
-      }
-    );
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        {
+          sold: quantity + oldSold,
+        }
+      );
+    } catch (error) {
+      console.error(
+        "----------------------Sold--------error------------",
+        error
+      );
+    }
   },
 };
