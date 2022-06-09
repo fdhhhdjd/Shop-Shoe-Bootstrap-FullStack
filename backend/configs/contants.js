@@ -12,7 +12,6 @@ module.exports = {
   //* Connect Take Data
   STORAGE_GRAPH_FACEBOOK:
     "https://graph.facebook.com/v13.0/${userID}/?fields=picture.width(300).height(300),id,name,email&access_token=${accessToken}",
-
   //*Flag Delete
   DELETED_ENABLE: true,
   DELETED_DISABLE: false,

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from "react-toastify";
 import { Header, Loading, Message, MetaData } from "../../imports/index";
 import { RegisterInitiate, reset } from "../../Redux/AuthenticationSlice";
@@ -16,6 +17,7 @@ const Register = () => {
   const [state, setState] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const reCaptcha = useRef();
   const { loading, authRegister } = useSelector((state) => ({ ...state.data }));
   const {
     name,
@@ -25,11 +27,12 @@ const Register = () => {
     date_of_birth,
     phone_number,
   } = state;
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (!name || !email || !password || !confirmPassword) {
       return toast.error("Please Enter Input 🥲");
     }
+    const token = await reCaptcha.current.executeAsync();
     dispatch(
       RegisterInitiate({
         name,
@@ -38,8 +41,10 @@ const Register = () => {
         email,
         password,
         confirmPassword,
+        token,
       })
     );
+    reCaptcha.current.reset();
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -111,6 +116,12 @@ const Register = () => {
             value={confirmPassword}
             name="confirmPassword"
             onChange={handleChange}
+          />
+          <ReCAPTCHA
+            size="invisible"
+            ref={reCaptcha}
+            sitekey={process.env.REACT_APP_KEY_RECAPTCHA_V3}
+            theme="light"
           />
           {loading ? <Loading /> : <button type="submit">Register</button>}
           <p>
