@@ -186,6 +186,8 @@ const Login = () => {
             ref={reCaptcha}
             sitekey={process.env.REACT_APP_KEY_RECAPTCHA_V3}
             theme="light"
+            badge="bottomleft"
+            grecaptcha={grecaptchaObject}
           />
           {loading ? <Loading /> : <button type="submit">Login</button>}
           <p>

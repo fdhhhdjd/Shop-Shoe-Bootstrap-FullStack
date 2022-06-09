@@ -18,6 +18,7 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const reCaptcha = useRef();
+  const grecaptchaObject = window.grecaptcha;
   const { loading, authRegister } = useSelector((state) => ({ ...state.data }));
   const {
     name,
@@ -44,7 +45,6 @@ const Register = () => {
         token,
       })
     );
-    reCaptcha.current.reset();
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,17 +52,20 @@ const Register = () => {
   };
   useEffect(() => {
     if (authRegister.status === 200) {
+      reCaptcha.current.reset();
       navigate("/login");
       toast.success(authRegister.msg);
       dispatch(reset());
     }
     if (authRegister.status === 400) {
+      reCaptcha.current.reset();
       window.scrollTo(0, 0);
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
     }
-  }, [authRegister, dispatch, navigate]);
+  }, [authRegister, dispatch]);
+
   return (
     <>
       <MetaData title="Register-ShoeShop" />
@@ -122,6 +125,8 @@ const Register = () => {
             ref={reCaptcha}
             sitekey={process.env.REACT_APP_KEY_RECAPTCHA_V3}
             theme="light"
+            badge="bottomleft"
+            grecaptcha={grecaptchaObject}
           />
           {loading ? <Loading /> : <button type="submit">Register</button>}
           <p>
