@@ -8,7 +8,7 @@ const path = require("path");
 app.enable("trust proxy");
 const bodyParser = require("body-parser");
 const compression = require("compression");
-const cron = require("node-cron");
+// const cron = require("node-cron");
 const CronAdminController = require("./Controllers/CronController");
 
 app.use(
@@ -59,9 +59,9 @@ app.use("/api/carousel", carousel);
 app.use("/api/feedback", feedback);
 
 //! Run Cron
-cron.schedule("*/5 * * * *", function () {
-  CronAdminController.GetAllUserUnCheck();
-});
+// cron.schedule("*/5 * * * *", function () {
+//   CronAdminController.GetAllUserUnCheck();
+// });
 //!upload
 app.use("/api", upload);
 
