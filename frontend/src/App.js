@@ -13,7 +13,7 @@ function App() {
   const connectInternet = useCallback((online) => {
     if (online === false) {
       Swal.fire(
-        "The Internet?",
+        "The Internet ?",
         "No Internet,Please Connection Network",
         "question"
       );
