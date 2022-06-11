@@ -6,8 +6,8 @@ import swal from "sweetalert";
 import {
   HeaderLoginAdmin,
   Loading,
-  MetaData,
   Message,
+  MetaData,
 } from "../../imports/index";
 import {
   ForgetAdminInitiate,
@@ -17,10 +17,8 @@ const initialState = {
   email: "",
 };
 const ForgetAdmin = () => {
-  window.scrollTo(0, 0);
   const [state, setState] = useState(initialState);
-  const [password, setPassword] = useState("");
-  const error = true;
+
   const dispatch = useDispatch();
   const { email } = state;
   const { loading, forgetAdmin } = useSelector((state) => ({ ...state.admin }));
@@ -42,6 +40,10 @@ const ForgetAdmin = () => {
       });
       setState({ email: "" });
       dispatch(reset());
+    } else if (forgetAdmin.status === 400) {
+      setTimeout(() => {
+        dispatch(reset());
+      }, [3000]);
     }
   }, [forgetAdmin]);
   return (

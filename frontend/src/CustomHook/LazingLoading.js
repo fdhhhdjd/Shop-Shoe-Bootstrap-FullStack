@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { CheckPass } from "../imports/Image";
 const LazyLoadImg = ({ url, style }) => {
   const imgRef = useRef();
   useEffect(() => {
@@ -16,12 +17,18 @@ const LazyLoadImg = ({ url, style }) => {
       if (img) observer.unobserve(img);
     };
   }, [url]);
+
   return (
     <React.Fragment>
       {style ? (
-        <img alt={url} ref={imgRef} className="lazy-load" style={style} />
+        <img
+          alt="...loading"
+          ref={imgRef}
+          className="lazy-load"
+          style={style}
+        />
       ) : (
-        <img alt={url} ref={imgRef} className="lazy-load" />
+        <img alt="...loading" ref={imgRef} className="lazy-load" />
       )}
     </React.Fragment>
   );

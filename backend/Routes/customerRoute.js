@@ -1,4 +1,5 @@
 const userCtrl = require("../Controllers/userController");
+const adminCtrl = require("../Controllers/adminController");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/authAdmin");
 const router = require("express").Router();
@@ -11,6 +12,9 @@ router.get("/verify/:userId/:uniqueString", userCtrl.verifyEmail);
 
 //Login
 router.post("/login", userCtrl.login);
+
+//Login
+router.post("/loginPhone", userCtrl.loginPhone);
 
 //refresh token
 router.get("/refresh_token", userCtrl.refreshToken);
@@ -26,6 +30,9 @@ router.patch("/profile/update", auth, userCtrl.updateProfile);
 
 //Change Password
 router.patch("/changePassword", auth, userCtrl.ChangePassword);
+
+//Change Password
+router.patch("/changePasswordGgFb", auth, userCtrl.ChangePassWordLoginGgFb);
 
 //ForGet
 router.post("/forget", userCtrl.forgetPassword);
@@ -46,39 +53,39 @@ router.patch("/addcart", auth, userCtrl.addCart);
 router.get("/history", auth, userCtrl.historyCart);
 //!Admin
 //Register Admin
-router.post("/registerAdmin", userCtrl.registerAdmin);
+router.post("/registerAdmin", adminCtrl.registerAdmin);
 
 //RefreshToken Admin
-router.get("/refreshTokenAdmin", userCtrl.refreshTokenAdmin);
+router.get("/refreshTokenAdmin", adminCtrl.refreshTokenAdmin);
 
 //Login Admin
-router.post("/loginAdmin", userCtrl.loginAdmin);
+router.post("/loginAdmin", adminCtrl.loginAdmin);
 
 //Logout Admin
-router.get("/logoutAdmin", userCtrl.LogoutAdmin);
+router.get("/logoutAdmin", adminCtrl.LogoutAdmin);
 
 //Forget Admin
-router.post("/ForgetAdmin", userCtrl.ForgetAdmin);
+router.post("/ForgetAdmin", adminCtrl.ForgetAdmin);
 
 //Login Google
-router.post("/loginGoogleAdmin", userCtrl.loginGoogleAdmin);
+router.post("/loginGoogleAdmin", adminCtrl.loginGoogleAdmin);
 
 //Get All Users
-router.get("/getAllUser", auth, admin, userCtrl.GetAllUser);
+router.get("/getAllUser", auth, admin, adminCtrl.GetAllUser);
 
 //Get All unCheck
-router.get("/getAllUserUncheck", auth, admin, userCtrl.GetAllUserUnCheck);
+router.get("/getAllUserUncheck", auth, admin, adminCtrl.GetAllUserUnCheck);
 
 //Update User or Admin
-router.patch("/updateUserAdmin/:id", auth, admin, userCtrl.updateUserOrAdmin);
+router.patch("/updateUserAdmin/:id", auth, admin, adminCtrl.updateUserOrAdmin);
 
 //Delete User or Admin
-router.delete("/deleteUserAdmin/:id", auth, admin, userCtrl.deleteUserOrAdmin);
+router.delete("/deleteUserAdmin/:id", auth, admin, adminCtrl.deleteUserOrAdmin);
 
 //Get New User 3 Day
-router.get("/getUserDay", auth, admin, userCtrl.getUserAllday);
+router.get("/getUserDay", auth, admin, adminCtrl.getUserAllday);
 
 //Get All Admin
-router.get("/getAllAdmin", auth, admin, userCtrl.GetAllAdmin);
+router.get("/getAllAdmin", auth, admin, adminCtrl.GetAllAdmin);
 
 module.exports = router;

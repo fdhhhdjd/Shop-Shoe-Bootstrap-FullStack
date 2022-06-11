@@ -45,11 +45,21 @@ export const LogoutInitiate = createAsyncThunk(
 );
 export const RegisterInitiate = createAsyncThunk(
   "auth/register",
-  async ({ name, email, password }) => {
+  async ({
+    name,
+    phone_number,
+    date_of_birth,
+    email,
+    password,
+    confirmPassword,
+  }) => {
     const response = await axios.post("/api/auth/register", {
       name,
+      phone_number,
+      date_of_birth,
       email,
       password,
+      confirmPassword,
     });
     return response.data;
   }
@@ -90,6 +100,21 @@ export const ChangePasswordInitiate = createAsyncThunk(
       { ...state },
       {
         headers: { Authorization: token },
+      }
+    );
+    return data;
+  }
+);
+export const ChangePasswordLoginGgFbInitiate = createAsyncThunk(
+  "auth/ChangePasswordLoginGgFb",
+  async ({ tokens, ...state }) => {
+    const { data } = await axios.patch(
+      `/api/auth/changePasswordGgFb`,
+      {
+        ...state,
+      },
+      {
+        headers: { Authorization: tokens },
       }
     );
     return data;
@@ -149,6 +174,20 @@ export const UploadProfileInitiate = createAsyncThunk(
     return data;
   }
 );
+export const LoginPhoneInitial = createAsyncThunk(
+  "auth/Login",
+  async ({ number, toast }) => {
+    number = "0" + number.slice(3);
+    const response = await axios.post("/api/auth/loginPhone", {
+      phone_number: number,
+    });
+    if (response.data.status === 200) {
+      toast.success("Login User Successfully 🥰");
+    }
+    return response.data;
+  }
+);
+
 const initialState = {
   loading: false,
   error: null,
@@ -161,6 +200,7 @@ const initialState = {
   profile: [],
   changePass: [],
   checkPass: [],
+  CheckCreate: [],
 };
 const AuthenticationSlice = createSlice({
   name: "auth",
@@ -173,6 +213,7 @@ const AuthenticationSlice = createSlice({
       state.resetForget = [];
       state.changePass = [];
       state.changePass = [];
+      state.CheckCreate = [];
     },
   },
   extraReducers: {
@@ -185,6 +226,18 @@ const AuthenticationSlice = createSlice({
       state.auth = action.payload;
     },
     [LoginInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Login Phone
+    [LoginPhoneInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [LoginPhoneInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.auth = action.payload;
+    },
+    [LoginPhoneInitial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -266,7 +319,15 @@ const AuthenticationSlice = createSlice({
       state.loading = false;
       state.changePass = action.payload;
     },
-    [ChangePasswordInitiate.rejected]: (state, action) => {
+    //? Change Password Google Facebook
+    [ChangePasswordLoginGgFbInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [ChangePasswordLoginGgFbInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.CheckCreate = action.payload;
+    },
+    [ChangePasswordLoginGgFbInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

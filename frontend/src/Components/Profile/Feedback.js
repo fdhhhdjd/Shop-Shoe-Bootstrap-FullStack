@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading, Message, SwaleMessage } from "../../imports/index";
 import { reset, SendFeedbacksInitial } from "../../Redux/FeedbackSlice";
+import { toast } from "react-toastify";
 const initialState = {
   fullname: "",
   email: "",
@@ -18,20 +19,17 @@ const Feedback = () => {
     ...state.feedbacks,
   }));
   const { fullname, email, content, subject } = state;
-  const token = refreshToken.accessToken;
   const user = profile && profile.user;
   const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
-  useEffect(() => {
-    if (user) {
-      user && setState(user);
-    }
-  }, [user]);
   const submitHandler = (e) => {
     e.preventDefault();
+    if (!fullname || !email || !subject || !content) {
+      return toast.error("Please Enter Input 🥲");
+    }
     dispatch(SendFeedbacksInitial({ ...state }));
   };
   useEffect(() => {
@@ -40,13 +38,21 @@ const Feedback = () => {
       setTimeout(() => {
         dispatch(reset());
       }, 2000);
-      setState({ fullname: "", content: "", subject: "" });
+      setState({ content: "", subject: "" });
     } else if (sendFeedback.status === 400) {
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
     }
   }, [sendFeedback]);
+  useEffect(() => {
+    if (user) {
+      setState({
+        fullname: user.name,
+        email: user.email,
+      });
+    }
+  }, [user, sendFeedback]);
   return (
     <>
       {sendFeedback.status === 400 && (
@@ -63,6 +69,7 @@ const Feedback = () => {
               value={fullname || ""}
               name="fullname"
               onChange={handleChange}
+              disabled={true}
             />
           </div>
         </div>
@@ -72,7 +79,7 @@ const Feedback = () => {
             <input
               className="form-control"
               type="type"
-              value={state.email || email}
+              value={email || ""}
               name="email"
               onChange={handleChange}
               disabled={true}

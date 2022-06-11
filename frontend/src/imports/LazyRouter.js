@@ -9,6 +9,14 @@ export const HomeAdmin = lazy(() => {
 });
 export const Home = lazy(() => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(import("../Pages/Home/Home")), 1500);
+    setTimeout(() => resolve(import("../Pages/Home/Home")), 1800);
+  });
+});
+export const RegisterGgFb = lazy(() => {
+  return new Promise((resolve) => {
+    setTimeout(
+      () => resolve(import("../Pages/Authentication/RegisterGgFb")),
+      1800
+    );
   });
 });

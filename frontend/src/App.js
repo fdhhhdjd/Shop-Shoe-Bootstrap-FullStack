@@ -2,6 +2,7 @@ import React, { Suspense, useCallback, useEffect } from "react";
 import { Detector } from "react-detect-offline";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import "./App.css";
 import { Loadings, NotFound, ScrollTop } from "./imports/index";
@@ -18,6 +19,7 @@ function App() {
       );
       return setTimeout(() => {
         window.location.reload(false);
+        window.scrollTo(0, 0);
       }, [5000]);
     }
   }, []);
@@ -29,6 +31,7 @@ function App() {
     <>
       <Suspense fallback={<Loadings />}>
         <ToastContainer position="top-center" />
+        <Toaster />
         <ScrollTop />
         <Detector
           render={({ online }) => <div onClick={connectInternet(online)}></div>}

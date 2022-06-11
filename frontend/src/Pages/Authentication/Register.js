@@ -6,22 +6,40 @@ import { Header, Loading, Message, MetaData } from "../../imports/index";
 import { RegisterInitiate, reset } from "../../Redux/AuthenticationSlice";
 const initialState = {
   name: "",
+  phone_number: "",
+  date_of_birth: "",
   email: "",
   password: "",
+  confirmPassword: "",
 };
 const Register = () => {
-  window.scrollTo(0, 0);
   const [state, setState] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, authRegister } = useSelector((state) => ({ ...state.data }));
-  const { name, email, password } = state;
+  const {
+    name,
+    email,
+    password,
+    confirmPassword,
+    date_of_birth,
+    phone_number,
+  } = state;
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
       return toast.error("Please Enter Input 🥲");
     }
-    dispatch(RegisterInitiate({ name, email, password }));
+    dispatch(
+      RegisterInitiate({
+        name,
+        phone_number,
+        date_of_birth,
+        email,
+        password,
+        confirmPassword,
+      })
+    );
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,6 +52,7 @@ const Register = () => {
       dispatch(reset());
     }
     if (authRegister.status === 400) {
+      window.scrollTo(0, 0);
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
@@ -66,10 +85,31 @@ const Register = () => {
             onChange={handleChange}
           />
           <input
+            type="phone"
+            placeholder="Phone"
+            value={phone_number}
+            name="phone_number"
+            onChange={handleChange}
+          />
+          <input
+            type="date"
+            placeholder="Date"
+            value={date_of_birth}
+            name="date_of_birth"
+            onChange={handleChange}
+          />
+          <input
             type="password"
             placeholder="Password"
             value={password}
             name="password"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            placeholder="confirmPassword"
+            value={confirmPassword}
+            name="confirmPassword"
             onChange={handleChange}
           />
           {loading ? <Loading /> : <button type="submit">Register</button>}

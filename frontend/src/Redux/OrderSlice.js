@@ -110,6 +110,17 @@ export const RevenueReceivedEveryMonthInitial = createAsyncThunk(
     return response.data;
   }
 );
+export const StripeInitial = createAsyncThunk(
+  "order/Stripe",
+  async ({ cartItems, userId, email }) => {
+    const response = await axios.post("/api/payment/paymentStripe", {
+      cartItems,
+      userId,
+      email,
+    });
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   error: null,
@@ -124,6 +135,7 @@ const initialState = {
   RevenueReceivedMonthBefore: [],
   RevenueNotReceivedMonthBefore: [],
   RevenueReceivedEveryMonth: [],
+  paymentStripe: [],
 };
 const OrderSlice = createSlice({
   name: "order",
@@ -217,6 +229,18 @@ const OrderSlice = createSlice({
       state.totalPayment = action.payload;
     },
     [GetOrderTotalInitial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //Get Total Payment
+    [StripeInitial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [StripeInitial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.paymentStripe = action.payload;
+    },
+    [StripeInitial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login";
+import GoogleLogin from "react-google-login";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import toastHot from "react-hot-toast";
+import { GlobalState } from "../../Context/GlobalState";
 import {
   Header,
   Loading,
@@ -13,10 +14,9 @@ import {
   MetaData,
   SwaleMessage,
 } from "../../imports/index";
-import { GlobalState } from "../../Context/GlobalState";
 import {
-  LoginGoogleInitiate,
   LoginFacebookInitiate,
+  LoginGoogleInitiate,
   LoginInitial,
   reset,
 } from "../../Redux/AuthenticationSlice";
@@ -54,18 +54,35 @@ const Login = () => {
       SwaleMessage("Mời bạn xác thực đầy đủ !", "error");
       return;
     }
-    dispatch(LoginInitial({ email, password, toast, rememberer }));
+    dispatch(LoginInitial({ email, password, toast, rememberer })).then(
+      (item) => {
+        if (item.payload.status === 200) {
+          toastHot.loading("Redirecting...");
+        }
+      }
+    );
   };
   const HandleGoogle = (response) => {
     if (response.error) {
       return toast.error(response.error);
     } else {
-      dispatch(LoginGoogleInitiate(response));
+      dispatch(LoginGoogleInitiate(response)).then((item) => {
+        if (item.payload.status === 200) {
+          toastHot.loading("Redirecting...");
+        }
+      });
     }
   };
   const responseFacebook = (response) => {
-    console.log(response);
-    dispatch(LoginFacebookInitiate(response));
+    if (response.accessToken) {
+      dispatch(LoginFacebookInitiate(response)).then((item) => {
+        if (item.payload.status === 200) {
+          toastHot.loading("Redirecting...");
+        }
+      });
+    } else {
+      return toast.error(response.error);
+    }
   };
   useEffect(() => {
     if (foundUser) {
@@ -88,7 +105,6 @@ const Login = () => {
       }, 3000);
     }
   }, [auth]);
-  window.scrollTo(0, 0);
   return (
     <>
       {auth.status === 200 ? (
@@ -118,6 +134,9 @@ const Login = () => {
             cssClass="btnFacebook"
             textButton="&nbsp;&nbsp;Sign In with Facebook"
           />
+          <button onClick={() => navigate("/loginphone")}>
+            Sign In Phone Number
+          </button>
         </div>
 
         <form

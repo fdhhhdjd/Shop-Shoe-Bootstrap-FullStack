@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { SwaleMessage } from "../../imports";
 import { Loading, Message, Rating } from "../../imports/index";
 import { LazyLoadImg } from "../../imports/index";
+import { except } from "../../imports/importConstant";
 const ShopSection = React.forwardRef((props, ref) => {
   const { loading, product, error } = useSelector((state) => ({
     ...state.products,
@@ -14,7 +15,7 @@ const ShopSection = React.forwardRef((props, ref) => {
   const [search] = state.ProductApi.search;
   //Pagination
   const [currentPage, setcurrentPage] = useState(1);
-  const [itemsPerPage, setitemsPerPage] = useState(6);
+  const [itemsPerPage, setitemsPerPage] = useState(12);
 
   const [pageNumberLimit, setpageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
@@ -23,18 +24,23 @@ const ShopSection = React.forwardRef((props, ref) => {
     setcurrentPage(Number(event.target.id));
   };
   const pages = [];
-  for (
-    let i = 1;
-    i <= Math.ceil(products && products.length / itemsPerPage);
-    i++
-  ) {
-    pages.push(i);
+  if (!search) {
+    for (
+      let i = 1;
+      i <= Math.ceil(products && products.length / itemsPerPage);
+      i++
+    ) {
+      pages.push(i);
+    }
   }
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems =
-    products && products.slice(indexOfFirstItem, indexOfLastItem);
+
+  const currentItems = search
+    ? products
+    : products && products.slice(indexOfFirstItem, indexOfLastItem);
+
   const renderPageNumbers = pages.map((number) => {
     if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
       return (
@@ -85,12 +91,7 @@ const ShopSection = React.forwardRef((props, ref) => {
     }
     setitemsPerPage(itemsPerPage + 3);
   };
-  const except = (str) => {
-    if (str.length > 30) {
-      str = str.substring(0, 30) + " " + "...";
-    }
-    return str;
-  };
+
   const renderData = (data, index) => {
     return (
       <React.Fragment>
@@ -122,7 +123,7 @@ const ShopSection = React.forwardRef((props, ref) => {
                   <div className="shoptext">
                     <p>
                       <Link to={`/products/${product._id}`}>
-                        {except(product.name)}
+                        {except(product.name, 25)}
                       </Link>
                     </p>
 
@@ -138,6 +139,7 @@ const ShopSection = React.forwardRef((props, ref) => {
       </React.Fragment>
     );
   };
+
   return (
     <>
       <div className="container" ref={ref}>

@@ -5,7 +5,51 @@ const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const path = require("path");
+const session = require("express-session");
+const CONSTANTS = require("./configs/contants");
+app.enable("trust proxy");
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  app.use(
+    session({
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        secure: false,
+        httpOnly: true,
+        maxAge: CONSTANTS._7_DAY,
+      },
+    })
+  );
+} else {
+  app.use(
+    session({
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        secure: true,
+        httpOnly: true,
+        maxAge: CONSTANTS._7_DAY,
+      },
+    })
+  );
+}
+
 const bodyParser = require("body-parser");
+const compression = require("compression");
+app.use(
+  compression({
+    level: 6,
+    threshold: 100 * 1000,
+    filter: (req, res) => {
+      if (req.headers["x-no-compression"]) {
+        return false;
+      }
+      return compression.filter(req, res);
+    },
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
@@ -15,7 +59,11 @@ app.use(
     useTempFiles: true,
   })
 );
-
+app.use(
+  express.json({
+    verify: (req, res, buffer) => (req["rawBody"] = buffer),
+  })
+);
 //!router import
 const customer = require("./Routes/customerRoute.js");
 const product = require("./Routes/ProductRoute.js");

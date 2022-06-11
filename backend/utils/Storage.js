@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const Products = require("../Model/ProductModel");
 module.exports = {
   /**
@@ -10,6 +11,10 @@ module.exports = {
    *
    * @returns {string}
    */
+  //*Password Encryption
+  async passwordEncryption(password, number) {
+    return await bcrypt.hash(password, number);
+  },
   //*Url navigate Login
   getURIFromTemplate(template, data) {
     const { userID, accessToken } = data;

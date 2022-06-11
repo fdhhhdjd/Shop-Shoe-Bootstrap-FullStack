@@ -1,29 +1,36 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import toastHot from "react-hot-toast";
 import { GlobalState } from "../../Context/GlobalState";
+import { except } from "../../imports/importConstant";
 import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
+import HeaderData from "../../utils/data/HeaderData";
+import { MetaData } from "../../imports/index";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { refreshToken, profile } = useSelector((state) => ({
     ...state.data,
   }));
   const state = useContext(GlobalState);
-  const [cart, setCart] = state.UserApi.cart;
+  const [cart] = state.UserApi.cart;
   const [search, setSearch] = state.ProductApi.search;
   const cartItems = cart;
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    dispatch(LogoutInitiate({ navigate, toast }));
+    dispatch(LogoutInitiate({ navigate, toast })).then((item) => {
+      if (item.payload.status === 200) {
+        <MetaData title={`Home Page`} />;
+        toastHot.loading("Redirecting...");
+      }
+    });
   };
   const submitHandler = (e) => {
     e.preventDefault();
   };
-
   return (
     <div>
       <div className="Announcement ">
@@ -45,31 +52,15 @@ const Header = () => {
               </p>
             </div>
             <div className=" col-12 col-lg-6 justify-content-center justify-content-lg-end d-flex align-items-center">
-              <a
-                href="https://www.facebook.com/profile.php?id=100006139249437"
-                target="_blank"
-              >
-                <i className="fab fa-facebook-f"></i>
-              </a>
-
-              <a
-                href="https://www.instagram.com/nguyentientai10/"
-                target="_blank"
-              >
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/ti%E1%BA%BFn-t%C3%A0i-nguy%E1%BB%85n-787545213/"
-                target="_blank"
-              >
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-              <a href="https://profile-forme.surge.sh/" target="_blank">
-                <i className="far fa-id-badge"></i>
-              </a>
-              <a href="https://profile-forme.surge.sh/" target="_blank">
-                <i className="fas fa-user"></i>
-              </a>
+              {HeaderData.map((item) => {
+                return (
+                  <React.Fragment key={item.id}>
+                    <a href={item.address} target={item.navigate}>
+                      <i className={item.icon}></i>
+                    </a>
+                  </React.Fragment>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -177,9 +168,17 @@ const Header = () => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
-                  <button type="submit" className="search-button">
-                    search
-                  </button>
+                  {search ? (
+                    <button className="search-button1">
+                      <div className="spinner-grow text-success" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>
+                    </button>
+                  ) : (
+                    <button type="submit" className="search-button">
+                      search
+                    </button>
+                  )}
                 </form>
               </div>
               <div className="col-md-3 d-flex align-items-center justify-content-end Login-Register">
@@ -192,7 +191,7 @@ const Header = () => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      Hi, {profile.user && profile.user.name}
+                      Hi, {profile.user && except(profile.user.name, 18)}
                     </button>
                     <div className="dropdown-menu">
                       <Link className="dropdown-item" to="/profile">

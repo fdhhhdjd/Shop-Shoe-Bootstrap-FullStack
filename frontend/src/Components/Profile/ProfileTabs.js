@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { GlobalState } from "../../Context/GlobalState";
 import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
 const initialState = {
@@ -25,17 +25,27 @@ const ProfileTabs = () => {
     e.preventDefault();
     if (!images) return SwaleMessage("No Image Upload 😅 !", "error");
     try {
-      await axios.patch(
-        `/api/auth/profile/update`,
-        { ...states, image: images },
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
-      SwaleMessage("Edit profile Successfully", "success");
-      setCallback(!callback);
+      await axios
+        .patch(
+          `/api/auth/profile/update`,
+          { ...states, image: images },
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          if (response?.data?.status === 400) {
+            SwaleMessage(`${response.data.msg}`, "error");
+          } else if (response?.data?.status === 200) {
+            SwaleMessage("Edit profile Successfully", "success");
+          }
+          setCallback(!callback);
+        })
+        .catch((err) => {
+          SwaleMessage(`${err.data}`, "error");
+        });
     } catch (error) {
       alert(error.response.data.msg);
     }
@@ -178,7 +188,7 @@ const ProfileTabs = () => {
         </div>
         <div className="col-md-6">
           <div className="form">
-            <label htmlFor="account-pass">Phone Number</label>
+            <label htmlFor="account-pass">Date or Birth</label>
             <input
               className="form-control"
               type="date"

@@ -11,7 +11,7 @@ const ProfileAdmin = () => {
   const { order } = useSelector((state) => ({
     ...state.products,
   }));
-  const [total, setTotal] = useState(0);
+  const [setTotal] = useState(0);
   const orders = order.history && order.history;
   useEffect(() => {
     order.history &&
@@ -23,8 +23,9 @@ const ProfileAdmin = () => {
           setTotal(total);
         };
         getTotal();
+        return item;
       });
-  }, [orders]);
+  }, [orders, setTotal, order]);
   return (
     <>
       <div className="container mt-lg-5 mt-3">

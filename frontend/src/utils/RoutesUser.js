@@ -9,8 +9,10 @@ import {
   Profile,
   Register,
   Reset,
+  CartBuySuccess,
+  LoginPhone,
 } from "../imports/index";
-import { Home } from "../imports/LazyRouter";
+import { Home, RegisterGgFb } from "../imports/LazyRouter";
 
 const RoutesDataUser = [
   //*Route User and Check not logout please authentication
@@ -18,6 +20,11 @@ const RoutesDataUser = [
     path: "login",
     private: <PrivateRouterAuth />,
     main: <Login />,
+  },
+  {
+    path: "loginphone",
+    private: <PrivateRouterAuth />,
+    main: <LoginPhone />,
   },
   {
     path: "register",
@@ -41,6 +48,11 @@ const RoutesDataUser = [
     main: <Home />,
   },
   {
+    path: "/signing",
+    private: <PrivateRouter />,
+    main: <RegisterGgFb />,
+  },
+  {
     path: "profile",
     private: <PrivateRouter />,
     main: <Profile />,
@@ -54,6 +66,11 @@ const RoutesDataUser = [
     path: "cart",
     private: <PrivateRouter />,
     main: <CartScreen />,
+  },
+  {
+    path: "success",
+    private: <PrivateRouter />,
+    main: <CartBuySuccess />,
   },
   {
     path: "order/:id",

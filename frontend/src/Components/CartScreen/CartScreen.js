@@ -1,19 +1,22 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
 import { AddToCart, TranSuccess } from "../../imports/Import";
 import {
+  Footer,
   Header,
+  LazyLoadImg,
   Loading,
   MetaData,
   Paypal,
+  PhoneRight,
   SwaleMessage,
-  LazyLoadImg,
 } from "../../imports/index";
 import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
+import PayButton from "../Stripe/PayButton";
 const initialState = {
   voucher_code: "",
 };
@@ -24,6 +27,7 @@ const CartScreen = () => {
   const { totals, Message, loadings } = useSelector((state) => ({
     ...state.vouchers,
   }));
+  const navigate = useNavigate();
   const refreshTokens = refreshToken.accessToken;
   const token = refreshToken.accessToken;
   const [total, setTotal] = useState(0);
@@ -139,10 +143,11 @@ const CartScreen = () => {
         headers: { Authorization: refreshTokens },
       }
     );
-    window.location.reload();
+
     setCart([]);
     addToCart([]);
     SwaleMessage("You have successfully placed an order.", "success");
+    window.location.href = "/success";
   };
 
   useEffect(() => {
@@ -161,7 +166,7 @@ const CartScreen = () => {
       <>
         <Header />
         <MetaData title={`Store Cart`} />
-
+        <PhoneRight />
         {/* Cart */}
         <div className="container">
           {cartItems && cartItems.length === 0 ? (
@@ -320,7 +325,7 @@ const CartScreen = () => {
 
               <div className="cart-buttons d-flex align-items-center row">
                 <Link to="/" className="col-md-6 ">
-                  <button>Continue To Shopping</button>
+                  <button>Continue To Shopping.</button>
                 </Link>
                 {/* {total > 0 && ( */}
                 {/* // */}
@@ -333,9 +338,21 @@ const CartScreen = () => {
 
                 {/* )} */}
               </div>
+              <div className="cart-buttons d-flex align-items-center row">
+                <Link to="/" className="col-md-6 "></Link>
+                {/* {total > 0 && ( */}
+                {/* // */}
+
+                <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
+                  <PayButton />
+                </div>
+
+                {/* )} */}
+              </div>
             </>
           )}
         </div>
+        {cart.length > 0 && <Footer />}
       </>
     </>
   );

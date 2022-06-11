@@ -3,7 +3,7 @@ import { GlobalState } from "../Context/GlobalState";
 
 export { GlobalState };
 //!Utils
-
+export { default as runFireworks } from "../utils/Fireworks/runFireworks";
 //!Component
 export { default as Header } from "../Components/Header/Header";
 export { default as Profile } from "../Components/Profile/Profile";
@@ -81,6 +81,9 @@ export { default as ReplyUserMain } from "../Components/FeedbackAdmin/ReplyUserM
 export { default as ManagerUnchecked } from "../Components/ManagerAdminUser/ManagerUnchecked";
 export { default as ManagerUncheckedMain } from "../Components/ManagerAdminUser/ManagerUncheckedMain";
 export { default as UsersUncheck } from "../Components/ManagerAdminUser/UsersUncheck";
+export { default as PhoneRight } from "../Components/PhoneRight/PhoneRight";
+export { default as CartBuySuccess } from "../Components/CartBuySuccess/CartBuySuccess";
+export { default as RelationProduct } from "../Components/DetailProduct/RelationProduct";
 //!Page
 export { default as Loading } from "../Pages/Loading/Loading";
 export { default as Login } from "../Pages/Authentication/Login";
@@ -112,6 +115,8 @@ export { default as SwaleMessage } from "../Pages/Notification/SwaleMessage";
 export { default as Message } from "../Pages/Error/Message";
 export { default as GoogleMap } from "../Pages/GoogleMap/GoogleMap";
 export { default as GoogleMapMain } from "../Pages/GoogleMap/GoogleMapMain";
+export { default as RegisterGgFb } from "../Pages/Authentication/RegisterGgFb";
+export { default as LoginPhone } from "../Pages/Authentication/LoginPhone";
 //!Custom Hook
 export { default as useUpDesImg } from "../CustomHook/useUpDesImg";
 export { default as useDelete } from "../CustomHook/useDelete";

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import toastHot from "react-hot-toast";
 import {
   Header,
   Loading,
@@ -28,6 +29,8 @@ const Reset = () => {
     if (!password || !confirmPassword) {
       return toast.error("Please Enter Input 🥲");
     }
+    toastHot.loading("Redirecting...");
+
     dispatch(ResetInitiate({ token, password, confirmPassword }));
   };
   useEffect(() => {

@@ -14,22 +14,49 @@ const { v4: uuidv4 } = require("uuid");
 const path = require("path");
 const STORAGE = require("../utils/Storage");
 const CONSTANTS = require("../configs/contants");
+const HELPER = require("../utils/helper");
+const PASSWORD = require("../utils/Password");
 require("dotenv").config;
 
 const userCtrl = {
-  //!User
   register: async (req, res) => {
     try {
-      const { name, email, password, sex, date_of_birth, phone_number } =
-        req.body;
+      const {
+        name,
+        email,
+        password,
+        confirmPassword,
+        sex,
+        date_of_birth,
+        phone_number,
+      } = req.body;
 
-      const user = await Users.findOne({ email });
+      const user = await Users.findOne({
+        email,
+      });
+      const Phone_User = await Users.findOne({
+        phone_number,
+      });
 
+      const CheckEmail = HELPER.validateEmail(email);
+      if (!CheckEmail) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Email or Phone number already exists.",
+        });
+      }
       if (user)
         return res.json({
           status: 400,
           success: false,
-          msg: "The email already exists",
+          msg: "The email User already exists",
+        });
+      if (Phone_User)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone User already exists",
         });
 
       if (password.length < 6)
@@ -40,9 +67,7 @@ const userCtrl = {
         });
 
       //kiểm tra format password
-      let reg = new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-      ).test(password);
+      const reg = HELPER.isPassword(password);
       if (!reg) {
         return res.json({
           status: 400,
@@ -50,63 +75,110 @@ const userCtrl = {
           msg: "Password must contain at least one number and one uppercase and lowercase and special letter, and at least 6 or more characters ",
         });
       }
+      if (confirmPassword !== password) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Password and confirm password does not match!",
+        });
+      }
+      if (isNaN(phone_number)) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone is must be number.",
+        });
+      }
+      const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
+      if (CheckPhone === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect phone number.",
+        });
+      }
+
+      const CheckDate = HELPER.validateDate(date_of_birth);
+      if (!date_of_birth) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Please Choose A Date.",
+        });
+      } else if (CheckDate === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect Date .",
+        });
+      }
 
       // Password Encryption
-      const passwordHash = await bcrypt.hash(password, 10);
-      const newUser = new Users({
-        name,
-        email,
-        password: passwordHash,
-        sex,
-        date_of_birth,
-        phone_number,
-      });
+      // const passwordHash = await bcrypt.hash(password, 10);
+      await STORAGE.passwordEncryption(
+        password,
+        CONSTANTS.CHARACTER_NUMBER
+      ).then(async (result) => {
+        const newUser = new Users({
+          name,
+          email,
+          password: result,
+          sex,
+          date_of_birth,
+          phone_number,
+        });
+        // Save mongodb
+        await newUser.save();
+        //url to be used in the email
+        const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
+        // const currentUrl = resetPasswordUrl;
+        const currentUrl = resetPasswordUrl;
 
-      // Save mongodb
-      await newUser.save();
+        const uniqueString = uuidv4() + newUser.id;
 
-      //url to be used in the email
-      const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
-      // const currentUrl = resetPasswordUrl;
-      const currentUrl = resetPasswordUrl;
+        //hash unique string
+        const hashedUniqueString = await PASSWORD.encodePassword(uniqueString);
+        console.log(hashedUniqueString);
+        const newVerification = new UserVerifications({
+          userId: newUser.id,
+          uniqueString: hashedUniqueString,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 3600000,
+        });
 
-      const uniqueString = uuidv4() + newUser.id;
-
-      //hash unique string
-      const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
-
-      const newVerification = new UserVerifications({
-        userId: newUser.id,
-        uniqueString: hashedUniqueString,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 3600000,
-      });
-
-      await newVerification.save();
-      const confirmEmailUrl =
-        currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString;
-      //send email verification
-      await sendEmail({
-        from: process.env.SMPT_MAIL,
-        to: email,
-        subject: `Verify Your Email`,
-        template: "confirm-email",
-        attachments: [
-          {
-            filename: "netflix.png",
-            path: path.resolve("./views", "images", "netflix.jpg"),
-            cid: "netflix_logo",
+        await newVerification
+          .save()
+          .then((item) => {
+            if (item) {
+              return res.json({
+                status: 200,
+                success: true,
+                msg: `Verification email sent to ${email} `,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        const confirmEmailUrl =
+          currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString;
+        //send email verification
+        await sendEmail({
+          from: process.env.SMPT_MAIL,
+          to: email,
+          subject: `Verify Your Email`,
+          template: "confirm-email",
+          attachments: [
+            {
+              filename: "netflix.png",
+              path: path.resolve("./views", "images", "netflix.jpg"),
+              cid: "netflix_logo",
+            },
+          ],
+          context: {
+            confirmEmailUrl,
           },
-        ],
-        context: {
-          confirmEmailUrl,
-        },
-      });
-
-      return res.json({
-        status: 200,
-        success: true,
-        msg: `Verification email sent to ${email} `,
+        });
       });
     } catch (err) {
       return res.json({
@@ -143,7 +215,14 @@ const userCtrl = {
             hashedUniqueString
           );
           if (isMatch) {
-            await Users.findOneAndUpdate({ _id: userId }, { verified: true });
+            await Users.findOneAndUpdate(
+              { _id: userId },
+              {
+                verified: CONSTANTS.DELETED_ENABLE,
+                checkLogin: CONSTANTS.DELETED_ENABLE,
+              }
+            );
+
             await UserVerifications.deleteOne({ userId });
 
             return res.sendFile(path.resolve(__dirname, "../index.html"));
@@ -229,13 +308,51 @@ const userCtrl = {
           msg: "Email hasn't been verified. Please check email inbox",
         });
       }
+      await PASSWORD.comparePassword(password, user.password).then((item) => {
+        if (item) {
+          // If login success , create access token and refresh token
+          const accessToken = STORAGE.createAccessToken({ id: user._id });
+          const refreshtoken = STORAGE.createRefreshToken({ id: user._id });
 
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch)
+          res.cookie("refreshtoken", refreshtoken, {
+            httpOnly: true,
+            path: "/api/auth/refresh_token",
+            maxAge: CONSTANTS._7_DAY,
+          });
+
+          res.status(200).json({
+            status: 200,
+            success: true,
+            accessToken,
+            msg: "Login Successfully 😍 !",
+          });
+        } else {
+          return res.json({
+            status: 400,
+            success: false,
+            msg: "Incorrect password.",
+          });
+        }
+      });
+    } catch (err) {
+      return res.json({
+        status: 400,
+        success: false,
+        msg: err.message,
+      });
+    }
+  },
+  //Login Phone Number
+  loginPhone: async (req, res) => {
+    try {
+      const { phone_number } = req.body;
+
+      const user = await Users.findOne({ phone_number: phone_number, role: 0 });
+      if (!user)
         return res.json({
           status: 400,
           success: false,
-          msg: "Incorrect password.",
+          msg: "User does not exist.",
         });
 
       // If login success , create access token and refresh token
@@ -245,7 +362,7 @@ const userCtrl = {
       res.cookie("refreshtoken", refreshtoken, {
         httpOnly: true,
         path: "/api/auth/refresh_token",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+        maxAge: CONSTANTS._7_DAY,
       });
 
       res.status(200).json({
@@ -262,6 +379,7 @@ const userCtrl = {
       });
     }
   },
+
   //Logout
   logout: async (req, res) => {
     try {
@@ -307,21 +425,85 @@ const userCtrl = {
   updateProfile: async (req, res) => {
     try {
       const { name, image, phone_number, sex, date_of_birth } = req.body;
-      await Users.findOneAndUpdate(
-        { _id: req.user.id },
-        {
-          name,
-          image,
-          phone_number,
-          sex,
-          date_of_birth,
+      const checkPhoneDatabase = await Users.findOne({ phone_number });
+      const user = await Users.findById(req.user.id).select("-password");
+      if (user.phone_number === phone_number) {
+        await Users.findOneAndUpdate(
+          { _id: req.user.id },
+          {
+            name,
+            image,
+            phone_number,
+            sex,
+            date_of_birth,
+          }
+        );
+        res.status(200).json({
+          status: 200,
+          success: true,
+          msg: "Updated Profile Successfully !",
+        });
+      } else if (user.phone_number != phone_number) {
+        if (checkPhoneDatabase == null) {
+          if (phone_number === "") {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Please phone Number.",
+            });
+          }
+          if (isNaN(phone_number)) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Phone is must be number.",
+            });
+          }
+          const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
+          if (CheckPhone === false) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Incorrect phone number.",
+            });
+          }
+          const CheckDate = HELPER.validateDate(date_of_birth);
+          if (!date_of_birth) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Please Choose A Date",
+            });
+          } else if (CheckDate === false) {
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Incorrect Date .",
+            });
+          }
+          await Users.findOneAndUpdate(
+            { _id: req.user.id },
+            {
+              name,
+              image,
+              phone_number,
+              sex,
+              date_of_birth,
+            }
+          );
+          res.status(200).json({
+            status: 200,
+            success: true,
+            msg: "Updated Profile Successfully !",
+          });
+        } else if (checkPhoneDatabase) {
+          return res.json({
+            status: 400,
+            success: false,
+            msg: "Phone Already Exists .",
+          });
         }
-      );
-      res.status(200).json({
-        status: 200,
-        success: true,
-        msg: "Updated Profile Successfully !",
-      });
+      }
     } catch (err) {
       return res.json({
         status: 400,
@@ -363,9 +545,7 @@ const userCtrl = {
           msg: "Password is at least 6 characters long.",
         });
 
-      let reg = new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-      ).test(password);
+      const reg = HELPER.isPassword(password);
       if (!reg) {
         return res.json({
           status: 400,
@@ -389,7 +569,7 @@ const userCtrl = {
         });
       const salt = await bcrypt.genSalt(10);
       const passwordHash = await bcrypt.hash(password, salt);
-      const userPassword = await Users.findByIdAndUpdate(
+      await Users.findByIdAndUpdate(
         { _id: user.id },
         { password: passwordHash },
         { new: true }
@@ -412,14 +592,14 @@ const userCtrl = {
     const user = await Users.findOne({ email: req.body.email, role: 0 });
     const { email } = req.body;
     if (!email) {
-      res.json({
+      return res.json({
         status: 400,
         success: false,
         msg: "Email are not empty. ",
       });
     }
     if (!user) {
-      res.json({
+      return res.json({
         status: 400,
         success: false,
         msg: "Account Not Exit",
@@ -427,7 +607,7 @@ const userCtrl = {
     }
     const resetToken = user.getResetPasswordToken();
 
-    await user.save({ validateBeforeSave: false });
+    await user.save({ validateBeforeSave: CONSTANTS.DELETED_DISABLE });
 
     const resetPasswordUrl = `${req.protocol}://${req.get(
       "host"
@@ -466,7 +646,7 @@ const userCtrl = {
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
 
-      await user.save({ validateBeforeSave: true });
+      await user.save({ validateBeforeSave: CONSTANTS.DELETED_ENABLE });
       console.log(error);
     }
   },
@@ -513,10 +693,7 @@ const userCtrl = {
         success: false,
         msg: "Password is at least 6 characters long.",
       });
-
-    let reg = new RegExp(
-      "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-    ).test(password);
+    const reg = HELPER.isPassword(password);
     if (!reg) {
       return res.json({
         status: 400,
@@ -538,7 +715,7 @@ const userCtrl = {
     user.resetPasswordExpire = undefined;
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(user.password, salt);
-    const userPassword = await Users.findByIdAndUpdate(
+    await Users.findByIdAndUpdate(
       { _id: user.id },
       { password: passwordHash },
       { new: true }
@@ -583,7 +760,7 @@ const userCtrl = {
                 res.cookie("refreshtoken", refreshtoken, {
                   httpOnly: true,
                   path: "/api/auth/refresh_token",
-                  maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+                  maxAge: CONSTANTS._7_DAY, // 7d
                 });
                 const { _id, fullname, email, image } = user;
                 res.json({
@@ -625,7 +802,7 @@ const userCtrl = {
                   res.cookie("refreshtoken", refreshtoken, {
                     httpOnly: true,
                     path: "/api/auth/refresh_token",
-                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+                    maxAge: CONSTANTS._7_DAY, // 7d
                   });
                   const { _id, name, email, image } = newUser;
                   res.json({
@@ -642,6 +819,104 @@ const userCtrl = {
         }
       });
   },
+  //Change password Login Google and Facebook
+  ChangePassWordLoginGgFb: async (req, res) => {
+    try {
+      const user = await Users.findById(req.user.id).select("+password");
+      const { password, confirmPassword, phone_number, date_of_birth } =
+        req.body;
+      const checkPhoneDatabase = await Users.findOne({ phone_number });
+
+      if (!password)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Password are not empty.",
+        });
+
+      if (!confirmPassword)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: " Confirm are not empty.",
+        });
+
+      if (password.length < 6)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Password is at least 6 characters long.",
+        });
+      const reg = HELPER.isPassword(password);
+      console.log(reg);
+      if (!reg) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Includes 6 characters, uppercase, lowercase and some and special characters.",
+        });
+      }
+      if (checkPhoneDatabase) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone number Already Exists.",
+        });
+      } else if (phone_number === "") {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Please phone Number.",
+        });
+      }
+      if (confirmPassword !== password) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Password and confirm password does not match!",
+        });
+      }
+      if (isNaN(phone_number)) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Phone is must be number.",
+        });
+      }
+      const CheckPhone = HELPER.isVietnamesePhoneNumber(phone_number);
+      if (CheckPhone === false) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect phone number.",
+        });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(password, salt);
+      await Users.findByIdAndUpdate(
+        { _id: user.id },
+        {
+          password: passwordHash,
+          checkLogin: CONSTANTS.DELETED_ENABLE,
+          phone_number,
+          date_of_birth,
+        },
+        { new: true }
+      );
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Update Information Successfully 😂!",
+      });
+    } catch (err) {
+      return res.json({
+        status: 400,
+        msg: err.message,
+      });
+    }
+  },
+
   LoginFacebook: async (req, res) => {
     const { userID, accessToken } = req.body;
     let urlGraphFacebook = STORAGE.getURIFromTemplate(
@@ -678,7 +953,7 @@ const userCtrl = {
               res.cookie("refreshtoken", refreshtoken, {
                 httpOnly: true,
                 path: "/api/auth/refresh_token",
-                maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+                maxAge: CONSTANTS._7_DAY, // 7d
               });
               const { _id, name, email, image } = user;
               res.json({
@@ -720,7 +995,7 @@ const userCtrl = {
                 res.cookie("refreshtoken", refreshtoken, {
                   httpOnly: true,
                   path: "/api/auth/refresh_token",
-                  maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+                  maxAge: CONSTANTS._7_DAY, // 7d
                 });
                 const { _id, name, email, image } = newUser;
                 res.json({
@@ -774,553 +1049,6 @@ const userCtrl = {
         success: true,
         msg: "Get History Successfully",
         history,
-      });
-    } catch (error) {
-      return res.status(500).json({ msg: error.message });
-    }
-  },
-  //!Admin
-
-  //Register Admin
-  registerAdmin: async (req, res) => {
-    try {
-      const { name, email, password, sex, date_of_birth, phone_number } =
-        req.body;
-
-      const user = await Users.findOne({ email, role: 1 });
-      if (user)
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "The email already exists",
-        });
-
-      if (password.length < 6)
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Password is at least 6 characters long.",
-        });
-
-      //kiểm tra format password
-      let reg = new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
-      ).test(password);
-      if (!reg) {
-        return res.json({
-          status: 400,
-          success: false,
-          message:
-            "Password must contain at least one number and one uppercase and lowercase and special letter, and at least 6 or more characters ",
-        });
-      }
-
-      // Password Encryption
-      const passwordHash = await bcrypt.hash(password, 10);
-      const newUser = new Users({
-        name,
-        email,
-        password: passwordHash,
-        role: 1,
-        sex,
-        date_of_birth,
-        phone_number,
-      });
-
-      // Save mongodb
-      await newUser.save();
-
-      //url to be used in the email
-      const resetPasswordUrl = `${req.protocol}://${req.get("host")}/`;
-      const currentUrl = resetPasswordUrl;
-      const uniqueString = uuidv4() + newUser.id;
-
-      //hash unique string
-      const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
-
-      const newVerification = new UserVerifications({
-        userId: newUser.id,
-        uniqueString: hashedUniqueString,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 3600000,
-      });
-
-      await newVerification.save();
-
-      //send email verification
-      await sendEmail({
-        from: process.env.SMPT_MAIL,
-        to: email,
-        subject: `Verify Your Email`,
-        html: `<p>Verify your email address to complete the signup and login into your account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Press <a href= ${
-          currentUrl + "api/auth/verify/" + newUser.id + "/" + uniqueString
-        }>here</a> to proceed.</p>`,
-      });
-
-      return res.json({
-        status: 200,
-        success: true,
-        msg: "Verification email sent to your email",
-      });
-    } catch (err) {
-      return res.json({
-        status: 400,
-        success: false,
-        msg: err.message,
-      });
-    }
-  },
-
-  //RefreshToken Admin
-  refreshTokenAdmin: (req, res) => {
-    try {
-      const rf_token = req.cookies.refreshtoken;
-      if (!rf_token)
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Please Login or Register",
-        });
-
-      jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err)
-          return res.json({
-            status: 400,
-            success: false,
-            msg: "Please Login or Register Admin",
-          });
-
-        const accesstoken = STORAGE.createAccessToken({
-          id: user.id,
-          role: user.role,
-        });
-        res.json({
-          status: 200,
-          success: true,
-          msg: "Login Admin Successfully 😉",
-          accessToken: accesstoken,
-        });
-      });
-    } catch (err) {
-      return res.status(400).json({
-        status: 400,
-        success: false,
-        msg: err,
-      });
-    }
-  },
-
-  //Login Admin
-  loginAdmin: async (req, res) => {
-    try {
-      const { email, password } = req.body;
-
-      const user = await Users.findOne({ email: email, role: 1 });
-      if (!user)
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Admin does not exist.",
-        });
-
-      if (user.verified === false) {
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Email hasn't been verified. Please check email inbox",
-        });
-      }
-
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch)
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "Incorrect password.",
-        });
-
-      // If login success , create access token and refresh token
-      const accessToken = STORAGE.createAccessToken({
-        id: user._id,
-        role: user.role,
-      });
-      const refreshtoken = STORAGE.createRefreshToken({
-        id: user._id,
-        role: user.role,
-      });
-
-      res.cookie("refreshtoken", refreshtoken, {
-        httpOnly: true,
-        path: "/api/auth/refreshTokenAdmin",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
-      });
-
-      res.status(200).json({
-        status: 200,
-        success: true,
-        accessToken,
-        msg: "Login Admin Successfully 😍 !",
-      });
-    } catch (err) {
-      return res.json({
-        status: 400,
-        success: false,
-        msg: err,
-      });
-    }
-  },
-
-  //Logout Admin
-  LogoutAdmin: async (req, res) => {
-    try {
-      res.clearCookie("refreshtoken", {
-        path: "/api/auth/refreshTokenAdmin",
-      });
-      return res.json({
-        status: 200,
-        success: true,
-        msg: "Logged Out Admin Success",
-      });
-    } catch (err) {
-      return res.json({
-        status: 400,
-        msg: err,
-      });
-    }
-  },
-
-  //Forget Admin
-  ForgetAdmin: async (req, res) => {
-    const user = await Users.findOne({ email: req.body.email, role: 1 });
-    const { email } = req.body;
-    if (!email) {
-      res.json({
-        status: 400,
-        success: false,
-        msg: "Email are not empty. ",
-      });
-    }
-    if (!user) {
-      res.json({
-        status: 400,
-        success: false,
-        msg: "Account Admin Not Exit",
-      });
-    }
-    const resetToken = user.getResetPasswordToken();
-
-    await user.save({ validateBeforeSave: false });
-
-    const resetPasswordUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/password/admin/reset/${resetToken}`;
-    // const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/admin/reset/${resetToken}`;
-    //const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
-    try {
-      await sendEmail({
-        from: process.env.SMPT_MAIL,
-        to: email,
-        subject: `Forgot Password`,
-        template: "forgot-password",
-        attachments: [
-          {
-            filename: "netflix.jpg",
-            path: path.resolve("./views", "images", "netflix.jpg"),
-            cid: "netflix_logo",
-          },
-          {
-            filename: "question.png",
-            path: path.resolve("./views", "images", "question.png"),
-            cid: "question_img",
-          },
-        ],
-        context: {
-          resetPasswordUrl,
-        },
-      });
-
-      return res.status(200).json({
-        status: 200,
-        success: true,
-        msg: `Email sent to Admin ${user.email} successfully`,
-      });
-    } catch (error) {
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-
-      await user.save({ validateBeforeSave: true });
-      console.log(error);
-    }
-  },
-
-  //Login Google Admin
-  loginGoogleAdmin: async (req, res) => {
-    const { tokenId } = req.body;
-    client
-      .verifyIdToken({
-        idToken: tokenId,
-        audience: process.env.CLIENT_ID,
-      })
-      .then((response) => {
-        const { email_verified, name, email, picture } = response.payload;
-        console.log(response.payload);
-        if (email_verified) {
-          Users.findOne({ email, role: 1 }).exec((error, user) => {
-            if (error) {
-              return res.json({
-                status: 400,
-                success: false,
-                msg: "Invalid Authentication",
-              });
-            } else {
-              if (user) {
-                const accesstoken = STORAGE.createAccessToken({
-                  id: user._id,
-                  role: user.role,
-                });
-                const refreshtoken = STORAGE.createRefreshToken({
-                  id: user._id,
-                  role: user.role,
-                });
-
-                res.cookie("refreshtoken", refreshtoken, {
-                  httpOnly: true,
-                  path: "/api/auth/refreshTokenAdmin",
-                  maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
-                });
-                const { _id, name, email, image } = user;
-                res.json({
-                  status: 200,
-                  success: true,
-                  msg: "Login Admin successfully",
-                  accesstoken,
-                  user: { _id, name, email, image },
-                });
-              } else {
-                let password = email + process.env.ACCESS_TOKEN_SECRET;
-                let newUser = new Users({
-                  name: name,
-                  email,
-                  password,
-                  image: {
-                    public_id: password,
-                    url: picture,
-                  },
-                  role: 1,
-                  verified: true,
-                });
-                newUser.save((err, data) => {
-                  if (err) {
-                    return res.json({
-                      status: 400,
-                      success: false,
-                      msg: "Account No Admin invalid",
-                    });
-                  }
-                  const accesstoken = STORAGE.createAccessToken({
-                    id: data._id,
-                    role: data.role,
-                  });
-                  const refreshtoken = STORAGE.createRefreshToken({
-                    id: data._id,
-                    role: data.role,
-                  });
-
-                  res.cookie("refreshtoken", refreshtoken, {
-                    httpOnly: true,
-                    path: "/api/auth/refreshTokenAdmin",
-                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
-                  });
-                  const { _id, name, email, image } = newUser;
-                  res.json({
-                    status: 200,
-                    success: true,
-                    msg: "Register Admin successfully",
-                    accesstoken,
-                    user: { _id, name, email, image },
-                  });
-                  console.log(user);
-                });
-              }
-            }
-          });
-        }
-      });
-  },
-
-  //Get all User
-  GetAllUser: async (req, res) => {
-    try {
-      const user = await Users.find({ role: 0, verified: true }).select(
-        "-password"
-      );
-      res.json({
-        status: 200,
-        success: true,
-        user,
-      });
-    } catch (error) {
-      return res.status(500).json({ msg: error.message });
-    }
-  },
-  //Get all Uncheck User
-  GetAllUserUnCheck: async (req, res) => {
-    try {
-      const data = await UserVerifications.find({
-        expiresAt: { $lt: Date.now() },
-      }).select("userId");
-
-      const users = await Users.find({ verified: false }).select("_id");
-
-      for (var i = 0; i < data.length; i++) {
-        for (var j = 0; j < users.length; j++) {
-          if (data[i].userId == users[j].id) {
-            await Users.deleteOne({ _id: users[j].id });
-            await UserVerifications.deleteOne({ userId: data[i].userId });
-          }
-        }
-      }
-
-      const usersUncheck = await Users.find({
-        verified: false,
-        role: 0,
-      }).select("-password");
-
-      res.json({
-        status: 200,
-        success: true,
-        user: usersUncheck,
-      });
-    } catch (error) {
-      return res.status(500).json({ msg: error.message });
-    }
-  },
-
-  //Update User or Admin
-  updateUserOrAdmin: async (req, res) => {
-    try {
-      const { name, image, phone_number, role, sex, date_of_birth } = req.body;
-      if (!image)
-        return res.json({
-          status: 400,
-          success: false,
-          msg: "No image upload",
-        });
-
-      await Users.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          name,
-          image,
-          phone_number,
-          role,
-          sex,
-          date_of_birth,
-        }
-      );
-      res.status(200).json({
-        status: 200,
-        success: true,
-        msg: "Updated Successfully !",
-      });
-    } catch (err) {
-      return res.json({
-        status: 400,
-        success: false,
-        msg: err.message,
-      });
-    }
-  },
-
-  //Delete User or Admin
-  deleteUserOrAdmin: async (req, res) => {
-    try {
-      await Users.findByIdAndDelete(req.params.id);
-      const products = await Products.find({});
-      for (var i = 0; i < products.length; i++) {
-        for (var j = 0; j < products[i].reviews.length; j++) {
-          if (products[i].reviews[j].user.toString() === req.params.id) {
-            const a = products[i].reviews.slice(0, j);
-            const b = products[i].reviews.slice(
-              j + 1,
-              products[i].reviews.length
-            );
-            const c = a.concat(b);
-            products[i].reviews = c;
-          }
-        }
-        products[i].numReviews = products[i].reviews.length;
-
-        if (products[i].reviews.length === 0) {
-          products[i].rating = 0;
-        } else {
-          products[i].rating =
-            products[i].reviews.reduce((acc, item) => item.rating + acc, 0) /
-            products[i].reviews.length;
-        }
-        await products[i].save();
-      }
-
-      await Payments.deleteMany({
-        user_id: req.params.id,
-      });
-
-      res.status(200).json({
-        status: 200,
-        success: true,
-        msg: "Deleted a Successfully !",
-      });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-
-  //Get New User 3 date
-  getUserAllday: async (req, res) => {
-    const GetDayNewUser = (d1, d2) => {
-      let value1 = d1.getTime();
-      let value2 = d2.getTime();
-      return Math.ceil((value2 - value1) / (24 * 60 * 60 * 1000));
-    };
-    let user = await Users.find({ role: 0, verified: true }).select(
-      "-password"
-    );
-
-    var today = new Date();
-    var result = [];
-    for (var i = 0; i < user.length; i++) {
-      var time = GetDayNewUser(user[i].createdAt, today);
-      if (time <= 3) {
-        result.push(user[i]);
-      }
-    }
-    if (result.length === 0) {
-      res.json({
-        status: 200,
-        success: true,
-        msg: "No Account New  !!",
-        result,
-      });
-    } else {
-      res.json({
-        status: 200,
-        success: true,
-        msg: "Get New User Successfully !!",
-        result,
-      });
-    }
-  },
-
-  //Get all Admin
-  GetAllAdmin: async (req, res) => {
-    try {
-      const user = await Users.find({ role: 1, verified: true }).select(
-        "-password"
-      );
-      res.json({
-        status: 200,
-        success: true,
-        user,
       });
     } catch (error) {
       return res.status(500).json({ msg: error.message });

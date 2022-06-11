@@ -1,12 +1,11 @@
 import moment from "moment";
-import React, { useEffect, useState, Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { Header, Loading, MetaData } from "../../imports";
 const OrderScreen = () => {
   const { order, loading } = useSelector((state) => ({ ...state.products }));
 
-  const orders = order.history && order.history;
   const [orderItem, setOrderItem] = useState({});
   const [total, setTotal] = useState(0);
   const [quantitys, setQuantitys] = useState(0);

@@ -25,11 +25,21 @@ export const LoginAdminInitial = createAsyncThunk(
 );
 export const RegisterAdminInitial = createAsyncThunk(
   "admin/Register",
-  async ({ name, email, password }) => {
+  async ({
+    name,
+    phone_number,
+    date_of_birth,
+    email,
+    password,
+    confirmPassword,
+  }) => {
     const response = await axios.post("/api/auth/RegisterAdmin", {
       name,
+      phone_number,
+      date_of_birth,
       email,
       password,
+      confirmPassword,
     });
     return response.data;
   }
@@ -77,7 +87,8 @@ export const LogoutAdminInitiate = createAsyncThunk(
 export const ForgetAdminInitiate = createAsyncThunk(
   "auth/ForgetAdmin",
   async ({ email }) => {
-    const response = await axios.post("/api/auth/forgetAdmin", {
+    console.log(email);
+    const response = await axios.post("/api/auth/ForgetAdmin", {
       email,
     });
     return response.data;

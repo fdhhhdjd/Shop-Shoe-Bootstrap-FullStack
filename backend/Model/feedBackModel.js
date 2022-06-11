@@ -21,6 +21,18 @@ const FeedbackSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
+  send_at: {
+    type: Date,
+    required: true,
+  },
+  read_at: {
+    type: Date,
+    default: null,
+  },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -30,5 +42,5 @@ const FeedbackSchema = mongoose.Schema({
     default: Date.now,
   },
 });
-
+FeedbackSchema.index({ fullname: "text", subject: "text", email: "text" });
 module.exports = mongoose.model("Feedback", FeedbackSchema);

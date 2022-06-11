@@ -51,6 +51,6 @@ const ScrollTops = styled.div`
   }
 
   .active11 {
-    top: calc(100% - 6rem);
+    top: calc(100% - 6.2rem);
   }
 `;

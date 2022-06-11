@@ -18,6 +18,12 @@ textarea:focus,
 .paypal {
   background-color: rgb(0, 156, 222) !important;
 }
+.stripe {
+  background-color: rgb(99, 91, 255) !important;
+}
+.stripe1 {
+  background-color: white !important;
+}
 
 a {
   text-decoration: none;
@@ -80,6 +86,14 @@ textarea:focus {
   background-color: black;
   color: white;
   border: 0;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.search-button1 {
+  width: 20%;
+  background-color: white;
+  color: white;
+  border: none;
   text-transform: uppercase;
   font-size: 12px;
 }
@@ -1596,16 +1610,16 @@ ul.row-sm {
   color: white !important;
 }
 
-.lazy-load{
+.lazy-load {
   width: 100%;
   height: 300px;
   display: block;
   object-fit: cover;
-  transform:scale(0.7);
-  transition:0.5s ease-in-out;
+  transform: scale(0.7);
+  transition: 0.5s ease-in-out;
 }
 
-.lazy-load.active{
+.lazy-load.active {
   transform: scale(1);
 }
 
@@ -1704,3 +1718,23 @@ ul.row-sm {
 	font-size: 1.2em;
 	font-weight: 500;
 } */
+
+.box {
+  border: 1px solid #dfdfdf;
+  background-color: #fff;
+  margin-top: 5rem;
+}
+
+.g-btn > div,
+.g-btn > div > svg {
+  width: 40px !important;
+  height: 38px !important;
+}
+.button-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#recaptcha-container {
+  margin: 20px;
+}
