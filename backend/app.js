@@ -38,6 +38,9 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 
 const bodyParser = require("body-parser");
 const compression = require("compression");
+const cron = require("node-cron");
+const CronAdminController = require("./Controllers/CronController");
+
 app.use(
   compression({
     level: 6,
@@ -85,6 +88,10 @@ app.use("/api/voucher", vouchers);
 app.use("/api/carousel", carousel);
 app.use("/api/feedback", feedback);
 
+//! Run Cron
+cron.schedule("*/5 * * * *", function () {
+  CronAdminController.GetAllUserUnCheck();
+});
 //!upload
 app.use("/api", upload);
 

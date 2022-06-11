@@ -23,6 +23,7 @@ const Header = () => {
     e.preventDefault();
     dispatch(LogoutInitiate({ navigate, toast })).then((item) => {
       if (item.payload.status === 200) {
+        localStorage.clear();
         <MetaData title={`Home Page`} />;
         toastHot.loading("Redirecting...");
       }

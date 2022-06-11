@@ -33,10 +33,11 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [state, setState] = useState(initialState);
-  const [token, setToken] = useState("");
   const reCaptcha = useRef();
-  const { email, password } = state;
   const grecaptchaObject = window.grecaptcha;
+  const [token, setToken] = useState("");
+
+  const { email, password } = state;
   const { loading, auth } = useSelector((state) => ({ ...state.data }));
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,16 +46,13 @@ const Login = () => {
   const HandleRemember = () => {
     setRememberMe(!rememberer);
   };
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       return toast.error("Please Enter Input 🥲 !");
     }
-    if (!token) {
-      SwaleMessage("Mời bạn xác thực đầy đủ !", "error");
-      return;
-    }
-    dispatch(LoginInitial({ email, password, toast, rememberer })).then(
+    const token = await reCaptcha.current.executeAsync();
+    dispatch(LoginInitial({ email, password, toast, rememberer, token })).then(
       (item) => {
         if (item.payload.status === 200) {
           toastHot.loading("Redirecting...");
@@ -91,6 +89,7 @@ const Login = () => {
   }, []);
   useEffect(() => {
     if (auth.status === 200) {
+      reCaptcha.current.reset();
       if (location.state?.from) {
         navigate(location.state.from);
         window.location.reload();
@@ -100,6 +99,7 @@ const Login = () => {
       localStorage.setItem("firstLogin", true);
     }
     if (auth.status === 400) {
+      reCaptcha.current.reset();
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
@@ -182,12 +182,11 @@ const Login = () => {
           <br />
           <br />
           <ReCAPTCHA
+            size="invisible"
             ref={reCaptcha}
-            sitekey={process.env.REACT_APP_KEY_RECAPTCHA}
-            onChange={(token) => setToken(token)}
-            onExpired={(e) => setToken("")}
-            size="normal"
+            sitekey={process.env.REACT_APP_KEY_RECAPTCHA_V3}
             theme="light"
+            badge="bottomleft"
             grecaptcha={grecaptchaObject}
           />
           {loading ? <Loading /> : <button type="submit">Login</button>}

@@ -3,6 +3,7 @@ const adminCtrl = require("../Controllers/adminController");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/authAdmin");
 const router = require("express").Router();
+
 //!User
 //Register
 router.post("/register", userCtrl.register);

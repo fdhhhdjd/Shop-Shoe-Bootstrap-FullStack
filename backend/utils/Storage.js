@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Products = require("../Model/ProductModel");
+const fetch = require("node-fetch");
+
 module.exports = {
   /**
    * from String template to URI
@@ -34,20 +36,47 @@ module.exports = {
   },
   //*Stock
   async stock(id, quantity, countInStock) {
-    await Products.findOneAndUpdate(
-      { _id: id },
-      {
-        countInStock: countInStock - quantity,
-      }
-    );
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        {
+          countInStock: countInStock - quantity,
+        }
+      );
+    } catch (error) {
+      console.error(
+        "----------------------Stock--------error------------",
+        error
+      );
+    }
   },
   //*Sold
   async sold(id, quantity, oldSold) {
-    await Products.findOneAndUpdate(
-      { _id: id },
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        {
+          sold: quantity + oldSold,
+        }
+      );
+    } catch (error) {
+      console.error(
+        "----------------------Sold--------error------------",
+        error
+      );
+    }
+  },
+
+  //* RecapCha
+  async validateHuman(token) {
+    const secret = process.env.RECAPTCHA_SECRET_KEY;
+    const response = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,
       {
-        sold: quantity + oldSold,
+        method: "POST",
       }
     );
+    const data = await response.json();
+    return data.success;
   },
 };

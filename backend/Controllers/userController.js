@@ -19,6 +19,7 @@ const PASSWORD = require("../utils/Password");
 require("dotenv").config;
 
 const userCtrl = {
+  //Register
   register: async (req, res) => {
     try {
       const {
@@ -29,8 +30,16 @@ const userCtrl = {
         sex,
         date_of_birth,
         phone_number,
+        token,
       } = req.body;
-
+      const recapCha = await STORAGE.validateHuman(token);
+      if (!recapCha) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "You Check RecapCha Fail ",
+        });
+      }
       const user = await Users.findOne({
         email,
       });
@@ -143,7 +152,7 @@ const userCtrl = {
           userId: newUser.id,
           uniqueString: hashedUniqueString,
           createdAt: Date.now(),
-          expiresAt: Date.now() + 3600000,
+          expiresAt: Date.now() + CONSTANTS._45_MINUTES,
         });
 
         await newVerification
@@ -291,8 +300,15 @@ const userCtrl = {
   //Login
   login: async (req, res) => {
     try {
-      const { email, password } = req.body;
-
+      const { email, password, token } = req.body;
+      const recapCha = await STORAGE.validateHuman(token);
+      if (!recapCha) {
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "You Check RecapCha Fail ",
+        });
+      }
       const user = await Users.findOne({ email: email, role: 0 });
       if (!user)
         return res.json({

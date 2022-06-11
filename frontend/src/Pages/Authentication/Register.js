@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from "react-toastify";
 import { Header, Loading, Message, MetaData } from "../../imports/index";
 import { RegisterInitiate, reset } from "../../Redux/AuthenticationSlice";
@@ -16,6 +17,8 @@ const Register = () => {
   const [state, setState] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const reCaptcha = useRef();
+  const grecaptchaObject = window.grecaptcha;
   const { loading, authRegister } = useSelector((state) => ({ ...state.data }));
   const {
     name,
@@ -25,11 +28,12 @@ const Register = () => {
     date_of_birth,
     phone_number,
   } = state;
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (!name || !email || !password || !confirmPassword) {
       return toast.error("Please Enter Input 🥲");
     }
+    const token = await reCaptcha.current.executeAsync();
     dispatch(
       RegisterInitiate({
         name,
@@ -38,6 +42,7 @@ const Register = () => {
         email,
         password,
         confirmPassword,
+        token,
       })
     );
   };
@@ -47,17 +52,20 @@ const Register = () => {
   };
   useEffect(() => {
     if (authRegister.status === 200) {
+      reCaptcha.current.reset();
       navigate("/login");
       toast.success(authRegister.msg);
       dispatch(reset());
     }
     if (authRegister.status === 400) {
+      reCaptcha.current.reset();
       window.scrollTo(0, 0);
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
     }
-  }, [authRegister, dispatch, navigate]);
+  }, [authRegister, dispatch]);
+
   return (
     <>
       <MetaData title="Register-ShoeShop" />
@@ -111,6 +119,14 @@ const Register = () => {
             value={confirmPassword}
             name="confirmPassword"
             onChange={handleChange}
+          />
+          <ReCAPTCHA
+            size="invisible"
+            ref={reCaptcha}
+            sitekey={process.env.REACT_APP_KEY_RECAPTCHA_V3}
+            theme="light"
+            badge="bottomleft"
+            grecaptcha={grecaptchaObject}
           />
           {loading ? <Loading /> : <button type="submit">Register</button>}
           <p>

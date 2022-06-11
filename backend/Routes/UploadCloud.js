@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const cloudinary = require("cloudinary");
-const auth = require("../middleware/auth");
-const admin = require("../middleware/authAdmin");
 const fs = require("fs");
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
