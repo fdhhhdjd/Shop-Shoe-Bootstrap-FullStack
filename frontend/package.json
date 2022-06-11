@@ -21,6 +21,7 @@
     "jquery": "^3.6.0",
     "lottie-web": "^5.9.1",
     "moment": "^2.29.1",
+    "package.json": "^2.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.3.0",
     "react-chartjs-2": "^4.1.0",
