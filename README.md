@@ -12,11 +12,13 @@
 
 ## Note: Thay localhost bằng Api
 
-## Api Online ( Heroku ): https://shopshoetaiheo.herokuapp.com/
+## Api Online ( Heroku ): https://shopshoetaiheo.herokuapp.com
 
-## Api Online ( Aws ): http://18.138.235.4:5002/
+## Api Online ( Aws ): http://18.138.235.4:5002
 
-## Api Online (Domain):https://khinhdoanhonline.ga/
+## Api Online (Hoting):https://shopshoedev.cf
+
+## Api Online (Hoting Trãi Nghiệm) :https://khinhdoanhonline.ga
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄
 
