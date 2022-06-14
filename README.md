@@ -14,9 +14,7 @@
 
 ## Api Online ( Heroku ): https://shopshoetaiheo.herokuapp.com
 
-## Api Online ( Aws ): http://18.138.235.4:5002
-
-## Api Online (Hoting):https://shopshoedev.cf
+## Api Online (Hoting và Aws ):https://shopshoedev.cf
 
 ## Api Online (Hoting Trãi Nghiệm) :https://khinhdoanhonline.ga
 
