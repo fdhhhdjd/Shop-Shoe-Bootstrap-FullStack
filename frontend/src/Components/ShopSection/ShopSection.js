@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
-import { SwaleMessage } from "../../imports";
+import { SwaleMessage, useDebounce } from "../../imports";
 import { Loading, Message, Rating } from "../../imports/index";
 import { LazyLoadImg } from "../../imports/index";
 import { except } from "../../imports/importConstant";
@@ -12,7 +12,7 @@ const ShopSection = React.forwardRef((props, ref) => {
   }));
   const products = product.products && product.products;
   const state = useContext(GlobalState);
-  const [search] = state.ProductApi.search;
+  const [search, setSearch] = state.ProductApi.search;
   //Pagination
   const [currentPage, setcurrentPage] = useState(1);
   const [itemsPerPage, setitemsPerPage] = useState(12);
@@ -20,11 +20,23 @@ const ShopSection = React.forwardRef((props, ref) => {
   const [pageNumberLimit, setpageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
+
+  //Search
+
+  const debouncedValue = useDebounce(search, 500);
+
+  useEffect(() => {
+    setSearch(debouncedValue);
+    if (!debouncedValue) {
+      return;
+    }
+  }, [debouncedValue]);
+
   const handleClick = (event) => {
     setcurrentPage(Number(event.target.id));
   };
   const pages = [];
-  if (!search) {
+  if (!debouncedValue) {
     for (
       let i = 1;
       i <= Math.ceil(products && products.length / itemsPerPage);
@@ -37,7 +49,7 @@ const ShopSection = React.forwardRef((props, ref) => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentItems = search
+  const currentItems = debouncedValue
     ? products
     : products && products.slice(indexOfFirstItem, indexOfLastItem);
 
@@ -98,44 +110,48 @@ const ShopSection = React.forwardRef((props, ref) => {
         {data &&
           data
             .filter((value) => {
-              if (search === "") {
+              if (debouncedValue === "") {
                 return value;
               } else if (
-                value.name.toLowerCase().includes(search.toLowerCase())
+                value.name.toLowerCase().includes(debouncedValue.toLowerCase())
               ) {
                 return value;
               }
             })
-            .map((product) => (
-              <div
-                className="shop col-lg-4 col-md-6 col-sm-6"
-                key={product._id}
-              >
-                <div className="border-product">
-                  <Link to={`/products/${product._id}`}>
-                    <div className="shopBack">
-                      {product.image && (
-                        <LazyLoadImg url={product?.image.url} />
-                      )}
-                    </div>
-                  </Link>
-
-                  <div className="shoptext">
-                    <p>
+            .map((product) => {
+              return (
+                <React.Fragment>
+                  <div
+                    className="shop col-lg-4 col-md-6 col-sm-6"
+                    key={product._id}
+                  >
+                    <div className="border-product">
                       <Link to={`/products/${product._id}`}>
-                        {except(product.name, 25)}
+                        <div className="shopBack">
+                          {product.image && (
+                            <LazyLoadImg url={product?.image.url} />
+                          )}
+                        </div>
                       </Link>
-                    </p>
 
-                    <Rating
-                      value={product.rating}
-                      text={`${product.numReviews} reviews`}
-                    />
-                    <h3>${product.price}</h3>
+                      <div className="shoptext">
+                        <p>
+                          <Link to={`/products/${product._id}`}>
+                            {except(product.name, 25)}
+                          </Link>
+                        </p>
+
+                        <Rating
+                          value={product.rating}
+                          text={`${product.numReviews} reviews`}
+                        />
+                        <h3>${product.price}</h3>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </React.Fragment>
+              );
+            })}
       </React.Fragment>
     );
   };

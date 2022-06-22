@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from "react-toastify";
 import { Header, Loading, Message, MetaData } from "../../imports/index";
 import { RegisterInitiate, reset } from "../../Redux/AuthenticationSlice";

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, Container, Form } from "react-bootstrap";
+import toastHot from "react-hot-toast";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { setUpRecapCha } from "../../imports/importConstant";
-import { Header, MetaData, Loading } from "../../imports/index";
-import { toast } from "react-toastify";
-import toastHot from "react-hot-toast";
-import { LoginPhoneInitial } from "../../Redux/AuthenticationSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { setUpRecapCha } from "../../imports/importConstant";
+import { Header, Loading, MetaData } from "../../imports/index";
+import { LoginPhoneInitial } from "../../Redux/AuthenticationSlice";
 const LoginPhone = () => {
   const [error, setError] = useState("");
   const [number, setNumber] = useState("");

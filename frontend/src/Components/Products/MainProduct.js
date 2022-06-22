@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
-import { SwaleMessage } from "../../imports";
+import { SwaleMessage, useDebounce } from "../../imports";
 import { Product } from "../../imports/index";
 const MainProduct = () => {
   const { category } = useSelector((state) => ({
@@ -68,11 +68,19 @@ const MainProduct = () => {
   const [pageNumberLimit, setpageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
+  //Search
+  const debouncedValue = useDebounce(search, 500);
+  useEffect(() => {
+    setSearch(debouncedValue);
+    if (!debouncedValue) {
+      return;
+    }
+  }, [debouncedValue]);
   const handleClick = (event) => {
     setcurrentPage(Number(event.target.id));
   };
   const pages = [];
-  if (!search) {
+  if (!debouncedValue) {
     for (
       let i = 1;
       i <= Math.ceil(products && products.length / itemsPerPage);
@@ -84,7 +92,7 @@ const MainProduct = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = search
+  const currentItems = debouncedValue
     ? products
     : products && products.slice(indexOfFirstItem, indexOfLastItem);
   const renderPageNumbers = pages.map((number) => {
@@ -144,14 +152,16 @@ const MainProduct = () => {
           data
             .sort((a, b) => a.name.toString() - b.name.toString())
             .filter((value) => {
-              if (search === "") {
+              if (debouncedValue === "") {
                 return value;
               } else if (
-                value.name.toLowerCase().includes(search.toLowerCase()) ||
+                value.name
+                  .toLowerCase()
+                  .includes(debouncedValue.toLowerCase()) ||
                 (value.categories &&
                   value.categories.name
                     .toLowerCase()
-                    .includes(search.toLowerCase))
+                    .includes(debouncedValue.toLowerCase))
               ) {
                 return value;
               }

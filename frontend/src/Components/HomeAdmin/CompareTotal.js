@@ -5,103 +5,65 @@ const CompareTotal = () => {
   const { RevenueReceivedMonthBefore } = useSelector((state) => ({
     ...state.order,
   }));
+  console.log(RevenueReceivedMonthBefore);
   return (
     <>
-      <div className="row">
-        {RevenueReceivedMonthBefore.data &&
-          RevenueReceivedMonthBefore.data.map((item, index) => {
-            return (
-              <div className="col-lg-4" key={index}>
-                <div className="card card-body mb-4 shadow-sm">
-                  <article className="icontext">
-                    {item && item._id ? (
-                      <span className="icon icon-sm rounded-circle alert-primary">
-                        <i className="text-primary fas fa-usd-circle"></i>
-                      </span>
-                    ) : item.compared === "Increased" ? (
-                      <span className="icon icon-sm rounded-circle alert-success">
-                        <i className="text-success fa-solid fa-arrow-up"></i>
-                      </span>
-                    ) : (
-                      <span className="icon icon-sm rounded-circle alert-danger">
-                        <i className="text-danger fa-solid fa-arrow-down-long"></i>
-                      </span>
-                    )}
+      {RevenueReceivedMonthBefore?.status === 400 ? (
+        <nav className="float-center mt-4" aria-label="Page navigation">
+          <div className="card card-body mb-4 shadow-sm">
+            <ul className="pagination  justify-content-center">
+              <li className="page-item">
+                <h1 style={{ color: "red" }}>
+                  {RevenueReceivedMonthBefore.msg}
+                </h1>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      ) : (
+        <div className="row">
+          {RevenueReceivedMonthBefore.data &&
+            RevenueReceivedMonthBefore.data.map((item, index) => {
+              return (
+                <div className="col-lg-4" key={index}>
+                  <div className="card card-body mb-4 shadow-sm">
+                    <article className="icontext">
+                      {item && item._id ? (
+                        <span className="icon icon-sm rounded-circle alert-primary">
+                          <i className="text-primary fas fa-usd-circle"></i>
+                        </span>
+                      ) : item.compared === "Increased" ? (
+                        <span className="icon icon-sm rounded-circle alert-success">
+                          <i className="text-success fa-solid fa-arrow-up"></i>
+                        </span>
+                      ) : (
+                        <span className="icon icon-sm rounded-circle alert-danger">
+                          <i className="text-danger fa-solid fa-arrow-down-long"></i>
+                        </span>
+                      )}
 
-                    <div className="text">
-                      <h6 className="mb-1">
-                        {item && item._id ? item._id.month : item.compared}
-                      </h6>
-                      <span>
-                        <CountUp
-                          className="count"
-                          start={0}
-                          end={
-                            item && item._id ? item.total_income : item.value
-                          }
-                          duration={5.75}
-                          separator=","
-                        />
-                        {item && item._id ? "$" : "%"}
-                      </span>
-                    </div>
-                  </article>
+                      <div className="text">
+                        <h6 className="mb-1">
+                          {item && item._id ? item._id.month : item.compared}
+                        </h6>
+                        <span>
+                          <CountUp
+                            className="count"
+                            start={0}
+                            end={item && item._id ? item.total_income : 100}
+                            duration={5.75}
+                            separator=","
+                          />
+                          {item && item._id ? "$" : "%"}
+                        </span>
+                      </div>
+                    </article>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-
-        {/* <div className="col-lg-4">
-          <div className="card card-body mb-4 shadow-sm">
-            <article className="icontext">
-              <span className="icon icon-sm rounded-circle alert-success">
-                <i className="text-success fas fa-bags-shopping"></i>
-              </span>
-              <div className="text">
-                <h6 className="mb-1">Total Orders</h6>
-                {orders ? (
-                  <span>
-                    <CountUp
-                      className="count"
-                      start={0}
-                      end={orders.length}
-                      duration={2.75}
-                      separator=","
-                    />
-                  </span>
-                ) : (
-                  <span>0</span>
-                )}
-              </div>
-            </article>
-          </div>
-        </div> */}
-        {/* <div className="col-lg-4">
-          <div className="card card-body mb-4 shadow-sm">
-            <article className="icontext">
-              <span className="icon icon-sm rounded-circle alert-warning">
-                <i className="text-warning fas fa-shopping-basket"></i>
-              </span>
-              <div className="text">
-                <h6 className="mb-1">Total Products</h6>
-                {products ? (
-                  <span>
-                    <CountUp
-                      className="count"
-                      start={0}
-                      end={products.length}
-                      duration={1.75}
-                      separator=","
-                    />
-                  </span>
-                ) : (
-                  <span>0</span>
-                )}
-              </div>
-            </article>
-          </div>
-        </div> */}
-      </div>
+              );
+            })}
+        </div>
+      )}
     </>
   );
 };

@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
+import toastHot from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import toastHot from "react-hot-toast";
 import { GlobalState } from "../../Context/GlobalState";
 import { except } from "../../imports/importConstant";
+import { MetaData } from "../../imports/index";
 import { LogoutInitiate } from "../../Redux/AuthenticationSlice";
 import HeaderData from "../../utils/data/HeaderData";
-import { MetaData } from "../../imports/index";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

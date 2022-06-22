@@ -121,3 +121,4 @@ export { default as LoginPhone } from "../Pages/Authentication/LoginPhone";
 export { default as useUpDesImg } from "../CustomHook/useUpDesImg";
 export { default as useDelete } from "../CustomHook/useDelete";
 export { default as LazyLoadImg } from "../CustomHook/LazingLoading";
+export { default as useDebounce } from "../CustomHook/useDebounce";

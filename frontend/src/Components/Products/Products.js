@@ -10,7 +10,6 @@ const Products = () => {
     <>
       <Sidebar />
       <MetaData title="Manager-Product" />
-
       <main className="main-wrap">
         <HeaderAdmin />
         <MainProduct />

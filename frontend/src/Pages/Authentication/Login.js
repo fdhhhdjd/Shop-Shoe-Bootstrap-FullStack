@@ -1,19 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import FacebookLogin from "react-facebook-login";
 import GoogleLogin from "react-google-login";
 import ReCAPTCHA from "react-google-recaptcha";
+import toastHot from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import toastHot from "react-hot-toast";
 import { GlobalState } from "../../Context/GlobalState";
-import {
-  Header,
-  Loading,
-  Message,
-  MetaData,
-  SwaleMessage,
-} from "../../imports/index";
+import { Header, Loading, Message, MetaData } from "../../imports/index";
 import {
   LoginFacebookInitiate,
   LoginGoogleInitiate,
@@ -99,6 +93,7 @@ const Login = () => {
       localStorage.setItem("firstLogin", true);
     }
     if (auth.status === 400) {
+      window.scrollTo(0, 0);
       reCaptcha.current.reset();
       setTimeout(() => {
         dispatch(reset());
