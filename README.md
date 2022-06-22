@@ -1,6 +1,8 @@
 # BackEnd Code By: Nguyễn Tiến Tài
 
-## WebSite: https://shopshoetaiheo.herokuapp.com/
+## WebSite: https://shopshoetaiheo.herokuapp.com
+
+## WebSite (Hosting):https://shopshoedev.cf
 
 ## Database: Open [database-ShopShoes](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1#R7Vxbc5s4FP41PDrDxVz8GCdp2p3tTmazO22fMgrIthqBqBCOvb9%2BJRDhZrs4waikzkNsji7nII7Ody7CmnUVbm4piFefSQCxZurBRrOuNdM0PMfmH4KyzSnmTJ%2FllCVFgexVEu7Rf1ASdUlNUQCTWkdGCGYorhN9EkXQZzUaoJQ817stCK5zjcEStgj3PsBt6hcUsFVO9Uy3pH%2BEaLkqOBuOvL8QFJ3lnSQrEJDnCsm60awrSgjLv4WbK4jF6hXrko%2F7sKf1RTAKI9ZlwC1cfwmfPOD88c%2B36V8gMj6Dh4mVz7IGOJU3rJkO5vPNYyEy28p1cH6kQs55COgSRZp1yVv1eMP%2Fc2J2t4I%2BYSTO26aVNgY3bAIwWspxPhcY0npzAH1CAUNE9kmjAFKMIliy5t%2BW8jMT8LEgXAFK0gTipGjha%2FDY7M1pcZO2ok3Kq24awwXLGz3R2JR3whse%2BEMoxKbVhhUEAYqWuxu54vsUxWJVkkP30VXq6v99ojog5I9wHj0m4gOF2fa41NyDC9mbAJop1jVOHzHyK2s2AM%2BU4mG4udd98DlWAX0KAYOXTAXvNA6U8G5vqt0SmDXe5hpShjgAXOYW6zqzaXNpv65znnPCey1wZs4XiJtZa74gEZPwZZjy%2BgMIERbI9xHiNRSzCqvDQiw6vfCumnBp1YUMcFMhSZN%2BC0kIGd3yLkWrRBeJrxPTKijPJVwZjqStqlDlSSKQELl8mbxEEf5FAskRoGIY7wJVGFwSiuA4YGXIDR2BECrgW4emglkSg6jotBuuqj3OKPYroVgXh6RX6OrE8DBejRotLLMBF4bbGS7ck8GF%2BQ7g4gOEwSPwn8aBFvU4Y5FirMim6zAEqBebdSzjJH38LhIGKpxxvtnFHj5b0BFaUL3lcOtdLahzKgs6NVqrCoMlvJeXhLIVWZII4JuSOqdE2DcxrVDgss%2BfRDyAbL2%2BQ8a2cpFBykh9NeEGsa%2BV79%2FEVBfGdCavrzdy7uxiW1xE%2FI7FsIl%2BoeteQZGDTasglKOzq9rwO0gRXzluv0sGTVrCAGWXIgPICRGJ4KHnn5CU%2BvAQRnky98g3BGQHOpoSzMT6H9QnCjGHmnU9zdg%2FtrrvAFvvwDbkU44RWtME0t8rSlOH6DHYxgArWm0QBBQmSX%2B50mMEyIM%2FCn0UI75RHlQ8%2BlyGfEfrhhruPmJbNZw52jBFSx4Tzhw%2F%2BCRQIYDPvQgOVGrYK8qlc8dCdLHnYqtzGWw1YvDnroJvgJLsoavgvSapvxKuxfCsGeG7TAVjYVrSXup%2Fx3ImlPtoD%2Br4BxDDQePWc6DcX6A8MabNSFmf2d0iZcuzTxQPFeHZqOOhf3lQMcZg6DeMSJLkmVtRFbwpwUqKdK2inNbpTMm5SNc%2FtyGLdKfxiTvxzjyzh0yCoVj26Id24tenz93tea6g%2F4SJGDooSzjMRpzkrgxaoAEZNr3Ln51LOvubRxVmrJa7WVB%2B6m4WFZz%2B3U37HbibIoedbxYfNM%2BijsX1FPfwSUmaJo3QjxTeM1o55ns2NaM2NbbdMjWda8DmqUzN1FNZAy6qsHkZl5u9TiVgQ6tVf11bO1z8fX391nQ61m%2BLgukvUr8t5B41gEhveRy4MWhOGTElQbpUpzMavQc0chpgZDh2VzAyTgVGtqsSjMTJIqNxKsnseCrJ4EPdOiwZem%2BHkgY4gPSLAVgh96gB7I6SIPVHeQCpr5x7Fyt7fndwFAndY3Wr8hqqCvZi0%2FYTOo%2BHc5SGf8M1gs9K6u4xRb4StzTLcX%2BK7hnxn1TwT8SvA6i47%2F5S30ez3vWa43A7LFNy0Unteapi7moVcs%2BBkF2FynNA0%2Bsrzc2X1Liz1zWTf7L0mm0qiWj2ZMoM09EOhyS7Xn%2FYG6a0M3iHE3hvyMPZHcOY%2Ft%2BjkEPvCBJ11JdcbvOUkjGzGzqU35QcV6pReyrLu3CN2cuf15zYm13M7FZ7wSZfkhabTFtf7vcNCjwdX35Yr2u9605%2FovU7NfwNQbfRUVuLKPfU2uo2ldUxzAv7derarJcanu425zq1Tjrj08nfomaxW2PamUbz1drXehHdM7pqH0c1sK10i0WHZL%2FYLQvvSHDZJ1trgCf3d6n%2BuQwdNwO%2FLH%2FmK%2B9e%2FlqadfM%2F) to view it in the browser.
 
@@ -12,9 +14,11 @@
 
 ## Note: Thay localhost bằng Api
 
-## Api Online ( Heroku ): https://shopshoetaiheo.herokuapp.com/
+## Api Online ( Heroku ): https://shopshoetaiheo.herokuapp.com
 
-## Api Online ( Aws ): http://18.138.235.4:5002/
+## Api Online (Hoting và Aws ) : https://shopshoedev.cf
+
+## Api Online (Hoting Trãi Nghiệm) :https://khinhdoanhonline.ga
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄
 
