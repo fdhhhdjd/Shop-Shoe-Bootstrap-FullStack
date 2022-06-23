@@ -351,7 +351,7 @@ const paymentCtrl = {
     const year_now = new Date().getFullYear();
 
     try {
-      let data = await Payments.aggregate([
+      let statistics = await Payments.aggregate([
         {
           //giong select
           $project: {
@@ -372,22 +372,38 @@ const paymentCtrl = {
         {
           //khai báo nhận giá trị tự đặt
           $group: {
-            _id: {
-              month: "$month",
-            },
+            _id: "$month",
             total_income: { $sum: "$total" },
           },
         },
         { $sort: { _id: 1 } },
       ]);
-      res.status(200).json({
+
+      for (let i = 0; i < statistics.length; i++) {
+        if (monthly.includes(statistics[i]._id)) {
+          var index = monthly.indexOf(statistics[i]._id);
+          monthly.splice(index, 1);
+        }
+      }
+
+      var missing_statistics = [];
+      for (let i = 0; i < monthly.length; i++) {
+        missing_statistics.push({
+          _id: monthly[i],
+          total_income: 0,
+        });
+      }
+
+      var data = statistics.concat(missing_statistics);
+
+      return res.status(200).json({
         status: 200,
         success: true,
         msg: "Get monthly income successfully",
         data,
       });
     } catch (err) {
-      res.status(400).json({
+      return res.status(400).json({
         status: 400,
         success: false,
         msg: "Failed to get monthly income",

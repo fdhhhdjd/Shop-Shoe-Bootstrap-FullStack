@@ -54,8 +54,6 @@ router.get(
 //Get monthly income of orders customer received
 router.get(
   "/orders/customerReceived/getMonthlyIncome",
-  auth,
-  authAdmin,
   paymentCtrl.getMonthlyIncomeCustomerReceived
 );
 //Payment Stripe
