@@ -427,7 +427,7 @@ const paymentCtrl = {
       ]);
 
       if (data.length === 0) {
-        return res.status(400).json({
+        return res.json({
           status: 400,
           success: false,
           msg: "Not data to show",
@@ -552,7 +552,7 @@ const paymentCtrl = {
       ]);
 
       if (data.length === 0) {
-        return res.status(400).json({
+        return res.json({
           status: 400,
           success: false,
           msg: "Not data to show",
