@@ -150,6 +150,8 @@
 
 - Lấy ra những đơn hàng được thanh toán trong 3 ngày gần nhất : get --> http://localhost:5000/api/payment/newPayment
 
+- Thống kê các tài khoản khách hàng đăng ký mỗi tháng: get --> http://localhost:5000/api/auth/getMonthlyRegisteredCustomer
+
 ## 2. API dành cho khách hàng
 
 ## Upload:
