@@ -89,4 +89,10 @@ router.get("/getUserDay", auth, admin, adminCtrl.getUserAllday);
 //Get All Admin
 router.get("/getAllAdmin", auth, admin, adminCtrl.GetAllAdmin);
 
+//Get monthly registered customers
+router.get(
+  "/getMonthlyRegisteredCustomer",
+  userCtrl.getMonthlyRegisteredCustomers
+);
+
 module.exports = router;

@@ -396,6 +396,10 @@ const paymentCtrl = {
 
       var data = statistics.concat(missing_statistics);
 
+      data.sort((a, b) => {
+        return a._id - b._id;
+      });
+
       return res.status(200).json({
         status: 200,
         success: true,

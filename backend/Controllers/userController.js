@@ -1070,5 +1070,76 @@ const userCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
+
+  //get monthly registered customers
+  async getMonthlyRegisteredCustomers(req, res) {
+    const monthly = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const year_now = new Date().getFullYear();
+
+    try {
+      let statistics = await Users.aggregate([
+        {
+          //giong select
+          $project: {
+            month: { $month: "$updatedAt" },
+            year: { $year: "$updatedAt" },
+            role: 1,
+            verified: 1,
+          },
+        },
+        {
+          //kiểm tra
+          $match: {
+            month: { $in: monthly },
+            year: year_now,
+            role: 0,
+            verified: true,
+          },
+        },
+        {
+          //khai báo nhận giá trị tự đặt
+          $group: {
+            _id: "$month",
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+
+      for (let i = 0; i < statistics.length; i++) {
+        if (monthly.includes(statistics[i]._id)) {
+          var index = monthly.indexOf(statistics[i]._id);
+          monthly.splice(index, 1);
+        }
+      }
+
+      var missing_statistics = [];
+      for (let i = 0; i < monthly.length; i++) {
+        missing_statistics.push({
+          _id: monthly[i],
+          count: 0,
+        });
+      }
+
+      var data = statistics.concat(missing_statistics);
+
+      data.sort((a, b) => {
+        return a._id - b._id;
+      });
+
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        msg: "Get monthly registered customers successfully",
+        data,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        msg: "Failed to get monthly registered customers",
+      });
+    }
+  },
 };
 module.exports = userCtrl;
