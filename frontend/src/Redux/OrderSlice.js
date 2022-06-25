@@ -121,6 +121,7 @@ export const StripeInitial = createAsyncThunk(
     return response.data;
   }
 );
+
 const initialState = {
   loading: false,
   error: null,

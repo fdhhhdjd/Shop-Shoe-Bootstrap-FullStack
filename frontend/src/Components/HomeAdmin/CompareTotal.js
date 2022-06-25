@@ -5,7 +5,6 @@ const CompareTotal = () => {
   const { RevenueReceivedMonthBefore } = useSelector((state) => ({
     ...state.order,
   }));
-  console.log(RevenueReceivedMonthBefore);
   return (
     <>
       {RevenueReceivedMonthBefore?.status === 400 ? (

@@ -2,9 +2,10 @@ import React from "react";
 import CountUp from "react-countup";
 import { useSelector } from "react-redux";
 const CompareTotalNotReceived = () => {
-  const { RevenueNotReceivedMonthBefore } = useSelector((state) => ({
-    ...state.order,
-  }));
+  const { RevenueNotReceivedMonthBefore, RevenueReceivedEveryMonth } =
+    useSelector((state) => ({
+      ...state.order,
+    }));
   return (
     <>
       {RevenueNotReceivedMonthBefore.status === 400 ? (

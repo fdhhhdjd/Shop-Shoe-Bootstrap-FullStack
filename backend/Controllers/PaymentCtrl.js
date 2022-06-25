@@ -345,7 +345,7 @@ const paymentCtrl = {
     }
   },
 
-  //Get monthly the income customer have received
+  //Get monthly the income customer have received (12 month)
   async getMonthlyIncomeCustomerReceived(req, res) {
     const monthly = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const year_now = new Date().getFullYear();
@@ -378,7 +378,6 @@ const paymentCtrl = {
         },
         { $sort: { _id: 1 } },
       ]);
-
       for (let i = 0; i < statistics.length; i++) {
         if (monthly.includes(statistics[i]._id)) {
           var index = monthly.indexOf(statistics[i]._id);
@@ -393,8 +392,8 @@ const paymentCtrl = {
           total_income: 0,
         });
       }
-
       var data = statistics.concat(missing_statistics);
+      data.sort((a, b) => a._id - b._id);
 
       return res.status(200).json({
         status: 200,
