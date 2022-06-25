@@ -24,7 +24,7 @@ const SaleStatistics = () => {
         label: `${
           RevenueReceivedMonthBefore.data &&
           RevenueReceivedMonthBefore.data.length
-        } this Month and Last Month`,
+        } this Month `,
         data:
           RevenueReceivedMonthBefore.data &&
           RevenueReceivedMonthBefore.data.map((x) => x.total_income),
@@ -32,6 +32,18 @@ const SaleStatistics = () => {
         backgroundColor: [
           "rgb(255, 99, 132)",
           "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
+        hoverOffset: 4,
+      },
+      {
+        label: `${
+          RevenueReceivedMonthBefore.data &&
+          RevenueReceivedMonthBefore.data.length
+        }  Last Month`,
+        backgroundColor: [
+          // "rgb(255, 99, 132)",
+          // "rgb(54, 162, 235)",
           "rgb(255, 205, 86)",
         ],
         hoverOffset: 4,

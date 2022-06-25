@@ -13,8 +13,8 @@ const PaymentOrderTwelve = () => {
     ...state.order,
   }));
   const data = {
-    maintainAspectRatio: false,
-    responsive: false,
+    maintainAspectRatio: true,
+    responsive: true,
     labels:
       RevenueReceivedEveryMonth.data &&
       RevenueReceivedEveryMonth.data.map((x) => x._id),
@@ -25,14 +25,17 @@ const PaymentOrderTwelve = () => {
           RevenueReceivedEveryMonth.data &&
           RevenueReceivedEveryMonth.data.length
         } Moth PaymentOrder`,
+
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
         data:
           RevenueReceivedEveryMonth.data &&
           RevenueReceivedEveryMonth.data.map((x) => x.total_income),
 
         backgroundColor: [
           "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
+          // "rgb(54, 162, 235)",
+          // "#FF00FF",
+          // "#FFB6C1",
         ],
         hoverOffset: 4,
       },

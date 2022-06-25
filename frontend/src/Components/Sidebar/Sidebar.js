@@ -80,14 +80,14 @@ const Sidebar = () => {
               </li>
               <li className="menu-item">
                 <NavLink end to="/feedback" className="menu-link ">
-                  <i className="fa-solid fa-comment"></i>
+                  <i className="icon fa-solid fa-comment"></i>
                   &nbsp;
                   <span className="text">FeedBack</span>
                 </NavLink>
               </li>
               <li className="menu-item">
                 <NavLink end to="/googlemap" className="menu-link ">
-                  <i className="fa fa-map-marker"></i>
+                  <i className="icon fa fa-map-marker"></i>
                   &nbsp;
                   <span className="text">Google Map</span>
                 </NavLink>
