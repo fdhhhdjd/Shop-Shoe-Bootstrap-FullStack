@@ -18,8 +18,6 @@
 
 ## Api Online (Hoting và Aws ) : https://shopshoedev.cf
 
-## Api Online (Hoting Trãi Nghiệm) :https://khinhdoanhonline.ga
-
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄
 
 ![giphy](https://3.bp.blogspot.com/-SzGvXn2sTmw/V6k-90GH3ZI/AAAAAAAAIsk/Q678Pil-0kITLPa3fD--JkNdnJVKi_BygCLcB/s1600/cf10-fbc08%2B%25281%2529.gif)
