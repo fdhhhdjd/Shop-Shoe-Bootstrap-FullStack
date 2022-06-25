@@ -10,6 +10,7 @@ import {
   TopTotal,
 } from "../../imports/index";
 import PaymentOrderTwelve from "./PaymentOrderTwelve";
+import UserMothTwenty from "./UserMothTwenty";
 const MainHomeAdmin = () => {
   const { order, newUserBuy, loading, error } = useSelector((state) => ({
     ...state.order,
@@ -52,6 +53,7 @@ const MainHomeAdmin = () => {
         {/* 12Moth */}
         <div className="row">
           <PaymentOrderTwelve />
+          <UserMothTwenty />
         </div>
         {/* LATEST ORDER */}
         <div className="card mb-4 shadow-sm">

@@ -165,6 +165,16 @@ export const GetAllUncheckInitiate = createAsyncThunk(
     return response.data;
   }
 );
+//Get All 12 Month
+export const GetAllTwelveMothInitiate = createAsyncThunk(
+  "admin/GetAllTwelveMoth",
+  async ({ refreshTokensAdmin }) => {
+    const response = await axios.get("/api/auth/getMonthlyRegisteredCustomer", {
+      headers: { Authorization: refreshTokensAdmin },
+    });
+    return response.data;
+  }
+);
 const initialState = {
   loading: false,
   admin: [],
@@ -180,6 +190,7 @@ const initialState = {
   adminAll: [],
   verify: [],
   uncheck: [],
+  userMoth: [],
 };
 const AuthenticationAdminSlice = createSlice({
   name: "admin",
@@ -359,6 +370,18 @@ const AuthenticationAdminSlice = createSlice({
       state.uncheck = action.payload;
     },
     [GetAllUncheckInitiate.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //? Get All user 12 moth
+    [GetAllTwelveMothInitiate.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [GetAllTwelveMothInitiate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.userMoth = action.payload;
+    },
+    [GetAllTwelveMothInitiate.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

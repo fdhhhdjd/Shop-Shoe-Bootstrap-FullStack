@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert";
 import {
   GetAllAdminInitiate,
+  GetAllTwelveMothInitiate,
   GetAllUncheckInitiate,
   GetAllUserInitiate,
   NewUserInitiate,
@@ -52,6 +53,7 @@ const UserApi = (token, refreshTokensAdmin) => {
       dispatch(GetAllUserInitiate({ refreshTokensAdmin }));
       dispatch(GetAllUncheckInitiate({ refreshTokensAdmin }));
       dispatch(NewUserInitiate({ tokens }));
+      dispatch(GetAllTwelveMothInitiate({ refreshTokensAdmin }));
     }
   }, [refreshTokensAdmin]);
   useEffect(() => {
