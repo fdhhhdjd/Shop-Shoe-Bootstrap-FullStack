@@ -28,6 +28,7 @@
     "express-session": "^1.17.3",
     "google-auth-library": "^7.11.0",
     "helmet": "^5.1.0",
+    "ioredis": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.4",
     "node-cron": "^3.0.1",

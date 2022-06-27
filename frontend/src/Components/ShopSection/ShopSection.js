@@ -3,9 +3,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { SwaleMessage, useDebounce } from "../../imports";
-import { Loading, Message, Rating } from "../../imports/index";
-import { LazyLoadImg } from "../../imports/index";
 import { except } from "../../imports/importConstant";
+import { LazyLoadImg, Loading, Message, Rating } from "../../imports/index";
 const ShopSection = React.forwardRef((props, ref) => {
   const { loading, product, error } = useSelector((state) => ({
     ...state.products,
@@ -109,7 +108,7 @@ const ShopSection = React.forwardRef((props, ref) => {
       <React.Fragment>
         {data &&
           data
-            .filter((value) => {
+            .filter((value, index) => {
               if (debouncedValue === "") {
                 return value;
               } else if (
@@ -118,38 +117,36 @@ const ShopSection = React.forwardRef((props, ref) => {
                 return value;
               }
             })
-            .map((product) => {
+            .map((product, index) => {
               return (
-                <React.Fragment>
-                  <div
-                    className="shop col-lg-4 col-md-6 col-sm-6"
-                    key={product._id}
-                  >
-                    <div className="border-product">
-                      <Link to={`/products/${product._id}`}>
-                        <div className="shopBack">
-                          {product.image && (
-                            <LazyLoadImg url={product?.image.url} />
-                          )}
-                        </div>
-                      </Link>
-
-                      <div className="shoptext">
-                        <p>
-                          <Link to={`/products/${product._id}`}>
-                            {except(product.name, 25)}
-                          </Link>
-                        </p>
-
-                        <Rating
-                          value={product.rating}
-                          text={`${product.numReviews} reviews`}
-                        />
-                        <h3>${product.price}</h3>
+                <div
+                  className="shop col-lg-4 col-md-6 col-sm-6"
+                  key={product._id}
+                >
+                  <div className="border-product">
+                    <Link to={`/products/${product._id}`}>
+                      <div className="shopBack">
+                        {product.image && (
+                          <LazyLoadImg url={product?.image.url} />
+                        )}
                       </div>
+                    </Link>
+
+                    <div className="shoptext">
+                      <p>
+                        <Link to={`/products/${product._id}`}>
+                          {except(product.name, 25)}
+                        </Link>
+                      </p>
+
+                      <Rating
+                        value={product.rating}
+                        text={`${product.numReviews} reviews`}
+                      />
+                      <h3>${product.price}</h3>
                     </div>
                   </div>
-                </React.Fragment>
+                </div>
               );
             })}
       </React.Fragment>

@@ -16,6 +16,8 @@ const STORAGE = require("../utils/Storage");
 const CONSTANTS = require("../configs/contants");
 const HELPER = require("../utils/helper");
 const PASSWORD = require("../utils/Password");
+const { ttl, incr, expire } = require("../utils/Limited");
+
 require("dotenv").config;
 
 const userCtrl = {
@@ -301,6 +303,24 @@ const userCtrl = {
   login: async (req, res) => {
     try {
       const { email, password, token } = req.body;
+      const GetIPUser =
+        req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+      const numRequests = await incr(GetIPUser);
+      let _ttl;
+      if (numRequests === 6) {
+        await expire(GetIPUser, 60);
+        _ttl = 60;
+      } else {
+        _ttl = await ttl(GetIPUser);
+      }
+      if (numRequests > 5) {
+        return res.json({
+          status: 503,
+          _ttl,
+          msg: `You Block ${_ttl}s,Thank You`,
+          numRequests,
+        });
+      }
       const recapCha = await STORAGE.validateHuman(token);
       if (!recapCha) {
         return res.json({
@@ -324,32 +344,36 @@ const userCtrl = {
           msg: "Email hasn't been verified. Please check email inbox",
         });
       }
-      await PASSWORD.comparePassword(password, user.password).then((item) => {
-        if (item) {
-          // If login success , create access token and refresh token
-          const accessToken = STORAGE.createAccessToken({ id: user._id });
-          const refreshtoken = STORAGE.createRefreshToken({ id: user._id });
+      await PASSWORD.comparePassword(password, user.password).then(
+        async (item) => {
+          if (item) {
+            // If login success , create access token and refresh token
+            const accessToken = STORAGE.createAccessToken({ id: user._id });
+            const refreshtoken = STORAGE.createRefreshToken({ id: user._id });
 
-          res.cookie("refreshtoken", refreshtoken, {
-            httpOnly: true,
-            path: "/api/auth/refresh_token",
-            maxAge: CONSTANTS._7_DAY,
-          });
+            res.cookie("refreshtoken", refreshtoken, {
+              httpOnly: true,
+              path: "/api/auth/refresh_token",
+              maxAge: CONSTANTS._7_DAY,
+            });
 
-          res.status(200).json({
-            status: 200,
-            success: true,
-            accessToken,
-            msg: "Login Successfully 😍 !",
-          });
-        } else {
-          return res.json({
-            status: 400,
-            success: false,
-            msg: "Incorrect password.",
-          });
+            res.status(200).json({
+              status: 200,
+              success: true,
+              accessToken,
+              msg: "Login Successfully 😍 !",
+            });
+          } else {
+            //UserSpam
+
+            return res.json({
+              status: 400,
+              success: false,
+              msg: "Incorrect password.",
+            });
+          }
         }
-      });
+      );
     } catch (err) {
       return res.json({
         status: 400,

@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Products = require("../Model/ProductModel.js");
 const Users = require("../Model/userModel");
+const { get, set } = require("../utils/Limited");
 class APIfeatures {
   constructor(query, queryString) {
     this.query = query;
@@ -83,17 +84,20 @@ const productCtrl = {
   //Get All Product
   getProducts: async (req, res) => {
     try {
+      const product = await get("products");
+      // if exists returns from redis and finish with response
+      if (product) {
+        res.json({
+          status: 200,
+          success: true,
+          products: JSON.parse(product),
+        });
+      }
       const features = new APIfeatures(Products.find(), req.query)
         .filtering()
         .sorting();
-
       const products = await features.query.populate("categories");
-      res.json({
-        status: 200,
-        success: true,
-        result: products.length,
-        products: products,
-      });
+      await set("products", JSON.stringify(products));
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

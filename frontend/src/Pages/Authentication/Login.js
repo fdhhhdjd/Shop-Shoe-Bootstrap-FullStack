@@ -7,7 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GlobalState } from "../../Context/GlobalState";
-import { Header, Loading, Message, MetaData } from "../../imports/index";
+import {
+  Header,
+  Loading,
+  Message,
+  MetaData,
+  SwaleMessage,
+} from "../../imports/index";
 import {
   LoginFacebookInitiate,
   LoginGoogleInitiate,
@@ -83,7 +89,6 @@ const Login = () => {
   }, []);
   useEffect(() => {
     if (auth.status === 200) {
-      reCaptcha.current.reset();
       if (location.state?.from) {
         navigate(location.state.from);
         window.location.reload();
@@ -94,11 +99,16 @@ const Login = () => {
     }
     if (auth.status === 400) {
       window.scrollTo(0, 0);
-      reCaptcha.current.reset();
+      setTimeout(() => {
+        dispatch(reset());
+      }, 3000);
+    } else if (auth.status === 503) {
+      SwaleMessage(`${auth.msg}`, "warning");
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
     }
+    reCaptcha.current.reset();
   }, [auth]);
 
   return (

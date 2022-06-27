@@ -66,7 +66,7 @@ export const DataProvider = ({ children }) => {
     rememberAdmin: [remembererAdmin, setRememberMeAdmin],
     CategoriesApi: CategoriesApi(callbackAdmin),
     InformationApi: InformationApi(callbackAdmin),
-    VoucherApi: VoucherApi(callbackAdmin),
+    VoucherApi: VoucherApi(callbackAdmin, refreshTokens, refreshTokensAdmin),
     FeedbackApi: FeedbackApi(callbackAdmin, refreshTokensAdmin),
   };
   return <GlobalState.Provider value={data}>{children}</GlobalState.Provider>;
