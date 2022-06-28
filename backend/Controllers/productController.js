@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Products = require("../Model/ProductModel.js");
 const Users = require("../Model/userModel");
 const { get, set } = require("../utils/Limited");
+
 class APIfeatures {
   constructor(query, queryString) {
     this.query = query;
@@ -289,6 +290,8 @@ const productCtrl = {
       console.log(error);
     }
   },
+  //delete Cart
+  deleteCartUser: async (req, res) => {},
 };
 
 module.exports = productCtrl;

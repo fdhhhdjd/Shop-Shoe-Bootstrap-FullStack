@@ -79,6 +79,7 @@ const CartScreen = () => {
     setVouchers({ ...vouchers, [name]: value });
   };
   const addToCart = async (cart) => {
+    console.log(cart);
     await axios.patch(
       AddToCart(),
       { cart },

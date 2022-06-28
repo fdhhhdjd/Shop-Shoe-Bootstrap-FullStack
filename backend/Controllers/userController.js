@@ -16,7 +16,7 @@ const STORAGE = require("../utils/Storage");
 const CONSTANTS = require("../configs/contants");
 const HELPER = require("../utils/helper");
 const PASSWORD = require("../utils/Password");
-const { ttl, incr, expire } = require("../utils/Limited");
+const { ttl, incr, expire, addDelayEventOrder } = require("../utils/Limited");
 
 require("dotenv").config;
 
@@ -1069,6 +1069,12 @@ const userCtrl = {
           cart: req.body.cart,
         }
       );
+
+      await addDelayEventOrder({
+        orderId: req.user.id,
+        delay: 10,
+      });
+
       return res
         .status(200)
         .json({ status: 200, success: true, msg: "Added to cart" });

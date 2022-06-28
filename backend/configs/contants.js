@@ -26,6 +26,8 @@ module.exports = {
   _1_HOURS_S: 60 * 60,
   _1_YEAR: 365 * 24 * 60 * 60 * 1000,
 
+  //*Time Redis
+
   //*Password
   PASSWORD_GOOGLE: null,
   //*Character

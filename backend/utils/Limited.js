@@ -42,10 +42,21 @@ const set = async (key, count) => {
     });
   });
 };
+
+//?Delete Event order
+const addDelayEventOrder = ({ orderId, delay }) => {
+  return new Promise((resolve, reject) => {
+    REDIS.set(orderId, "notify-keyspace-events", "EX", delay, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
 module.exports = {
   incr,
   ttl,
   get,
   set,
   expire,
+  addDelayEventOrder,
 };
