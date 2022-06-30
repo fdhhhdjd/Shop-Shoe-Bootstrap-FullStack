@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { GetVoucherInitial } from "../Redux/VoucherSlice";
-const CategoriesApi = (callbackAdmin, refreshTokens, refreshTokensAdmin) => {
+const CategoriesApi = (callbackAdmin) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (refreshTokens || refreshTokensAdmin) {
-      dispatch(GetVoucherInitial());
-    }
+    dispatch(GetVoucherInitial());
   }, [callbackAdmin]);
 
   return {};

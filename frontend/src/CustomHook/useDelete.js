@@ -1,11 +1,15 @@
 import { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import swal from "sweetalert";
 import { GlobalState, SwaleMessage } from "../imports/index";
+import { DeleteCacheRedisInitial } from "../Redux/RedisSlice";
 
 const useDelete = () => {
   const state = useContext(GlobalState);
   const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const [runProduct, setRunProduct] = state.runProduct;
   const [callback, setCallback] = state.callback;
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const mutate = async (url) => {
     try {
@@ -18,10 +22,18 @@ const useDelete = () => {
       }).then((willDelete) => {
         if (willDelete) {
           url();
-          setCallback(!callback);
-          setCallbackAdmin(!callbackAdmin);
-          setLoading(false);
-          SwaleMessage("Delete successfully, wait Loading... 😉 !", "success");
+          dispatch(DeleteCacheRedisInitial({ key: "products" }))
+            .then((items) => {
+              setRunProduct(!runProduct);
+              setLoading(false);
+              SwaleMessage(
+                "Delete successfully, wait Loading... 😉 !",
+                "success"
+              );
+            })
+            .catch((error) => {
+              SwaleMessage("Delete Fail, wait Loading... !", "error");
+            });
         } else {
           SwaleMessage("Thank you for 😆'!");
         }

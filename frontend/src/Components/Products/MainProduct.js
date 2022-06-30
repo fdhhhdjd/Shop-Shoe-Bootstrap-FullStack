@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { SwaleMessage, useDebounce } from "../../imports";
 import { Product } from "../../imports/index";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const MainProduct = () => {
   const { category } = useSelector((state) => ({
     ...state.categories,
@@ -13,9 +14,10 @@ const MainProduct = () => {
   const [product, setProduct] = state.ProductApi.product;
   const products = product;
   const [categoriess, setCategoriess] = state.ProductApi.categoriess;
+  const [runProduct, setRunProduct] = state.runProduct;
   const [sort, setSort] = state.ProductApi.sort;
   const [search, setSearch] = useState("");
-  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const dispatch = useDispatch();
   const [isCheck, setIsCheck] = useState(false);
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
@@ -23,8 +25,10 @@ const MainProduct = () => {
 
   //filter
   const handleCategory = (e) => {
-    setCategoriess(e.target.value);
-    setSearch("");
+    dispatch(DeleteCacheRedisInitial({ key: "products" })).then((items) => {
+      setCategoriess(e.target.value);
+      setSearch("");
+    });
   };
   //check box
   const handleCheck = (id) => {
@@ -45,11 +49,17 @@ const MainProduct = () => {
 
   const DeleteProduct = async (id) => {
     try {
-      const deleteProduct = axios.delete(`/api/product/delete/${id}`, {
-        headers: { Authorization: refreshTokenAdmin.accessToken },
-      });
-      await deleteProduct;
-      setCallbackAdmin(!callbackAdmin);
+      await axios
+        .delete(`/api/product/delete/${id}`, {
+          headers: { Authorization: refreshTokenAdmin.accessToken },
+        })
+        .then((item) => {
+          dispatch(DeleteCacheRedisInitial({ key: "products" })).then(
+            (items) => {
+              setRunProduct(!runProduct);
+            }
+          );
+        });
       SwaleMessage("Delete Product successfully 🤣!", "success");
     } catch (err) {
       SwaleMessage(err.response.data.msg, "error");
@@ -207,10 +217,9 @@ const MainProduct = () => {
                   <select
                     className="form-select"
                     name="categories"
-                    value={categoriess}
                     onChange={handleCategory}
                   >
-                    <option>All category</option>
+                    <option value={"All category"}>All category</option>
                     {category.categories &&
                       category.categories.map((item) => (
                         <option value={"categories=" + item._id} key={item._id}>
@@ -222,8 +231,14 @@ const MainProduct = () => {
                 <div className="col-lg-2 col-6 col-md-3">
                   <select
                     className="form-select"
-                    value={sort}
-                    onChange={(e) => setSort(e.target.value)}
+                    // value={sort}
+                    onChange={(e) => {
+                      dispatch(
+                        DeleteCacheRedisInitial({ key: "products" })
+                      ).then((items) => {
+                        setSort(e.target.value);
+                      });
+                    }}
                   >
                     <option value="sort=oldest">Oldest</option>
                     <option value="sort=-sold">Best sales</option>

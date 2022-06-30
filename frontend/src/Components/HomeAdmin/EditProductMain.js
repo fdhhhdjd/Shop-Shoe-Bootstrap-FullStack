@@ -1,15 +1,16 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { UpdateProduct } from "../../imports/Import";
 import {
   Loading,
+  MetaData,
   SwaleMessage,
   useUpDesImg,
-  MetaData,
 } from "../../imports/index";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   name: "",
   description: "",
@@ -22,21 +23,20 @@ const initialState = {
 const EditProductMain = () => {
   const [states, setState] = useState(initialState);
   const state = useContext(GlobalState);
-  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const dispatch = useDispatch();
+  const [runProduct, setRunProduct] = state.runProduct;
+
   const { category } = useSelector((state) => ({
     ...state.categories,
   }));
   const { id } = useParams();
   const navigate = useNavigate();
-  const { product } = useSelector((state) => ({
-    ...state.products,
-  }));
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
   const { loading, handleUpload, handleDestroy, images, setImages } =
     useUpDesImg(refreshTokenAdmin);
-  const products = product.products;
+  const [product] = state.ProductApi.product;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({ ...states, [name]: value });
@@ -46,27 +46,33 @@ const EditProductMain = () => {
     if (!images) return SwaleMessage("No Image Upload 😅 !", "error");
 
     try {
-      await axios.put(
-        UpdateProduct(id),
-        { ...states, image: images },
-        {
-          headers: {
-            Authorization: `${refreshTokenAdmin.accessToken}`,
-          },
-        }
-      );
-      SwaleMessage("Edit Product Successfully 😉", "success");
-      setCallbackAdmin(!callbackAdmin);
-      navigate("/products");
+      await axios
+        .put(
+          UpdateProduct(id),
+          { ...states, image: images },
+          {
+            headers: {
+              Authorization: `${refreshTokenAdmin.accessToken}`,
+            },
+          }
+        )
+        .then((item) => {
+          dispatch(DeleteCacheRedisInitial({ key: "products" })).then(
+            (items) => {
+              setRunProduct(!runProduct);
+              SwaleMessage("Edit Product Successfully 😉", "success");
+              navigate("/products");
+            }
+          );
+        });
     } catch (error) {
       alert(error.response.data.msg);
     }
   };
-
   useEffect(() => {
     if (id) {
-      products &&
-        products.forEach((product) => {
+      product &&
+        product.forEach((product) => {
           if (product._id == id) {
             setState(product);
             if (product.url === "") {

@@ -1,12 +1,11 @@
-import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import { Line } from "react-chartjs-2";
 
 import { useSelector } from "react-redux";
 Chart.register(...registerables);
 
 const UserMothTwenty = () => {
   const { userMoth } = useSelector((state) => ({ ...state.admin }));
-  console.log(userMoth);
   const data = {
     labels: userMoth?.data && userMoth?.data.map((x) => x._id),
     datasets: [

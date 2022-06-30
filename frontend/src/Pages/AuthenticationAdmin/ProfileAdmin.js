@@ -11,7 +11,7 @@ const ProfileAdmin = () => {
   const { order } = useSelector((state) => ({
     ...state.products,
   }));
-  const [setTotal] = useState(0);
+  const [total, setTotal] = useState(0);
   const orders = order.history && order.history;
   useEffect(() => {
     order.history &&

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getProducts } from "../imports/Import";
 import { GetProductInitial } from "../Redux/ProductSlice";
-const ProductApi = (callback, callbackAdmin) => {
+const ProductApi = (callback, callbackAdmin, runProduct) => {
   const [callbacks, setCallbacks] = useState(false);
   const [search, setSearch] = useState("");
   const [product, setProduct] = useState([]);
@@ -12,14 +12,14 @@ const ProductApi = (callback, callbackAdmin) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetProductInitial());
-  }, [callback, callbacks, callbackAdmin]);
+  }, [callback, callbacks]);
   useEffect(() => {
     const getProduct = async () => {
       const res = await axios.get(getProducts(categoriess, sort));
       setProduct(res.data.products);
     };
     getProduct();
-  }, [callbackAdmin, categoriess, sort]);
+  }, [callbackAdmin, categoriess, sort, runProduct]);
   return {
     callbacks: [callbacks, setCallbacks],
     search: [search, setSearch],

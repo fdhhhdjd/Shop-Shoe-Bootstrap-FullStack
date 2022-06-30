@@ -73,6 +73,7 @@ const productCtrl = {
       });
 
       await newProduct.save();
+
       res.json({
         status: 200,
         success: true,
@@ -85,10 +86,11 @@ const productCtrl = {
   //Get All Product
   getProducts: async (req, res) => {
     try {
-      const product = await get("products");
+      var product = await get("products");
       // if exists returns from redis and finish with response
+
       if (product) {
-        res.json({
+        return res.json({
           status: 200,
           success: true,
           products: JSON.parse(product),
@@ -97,8 +99,16 @@ const productCtrl = {
       const features = new APIfeatures(Products.find(), req.query)
         .filtering()
         .sorting();
+
       const products = await features.query.populate("categories");
+
       await set("products", JSON.stringify(products));
+
+      return res.json({
+        status: 200,
+        success: true,
+        products: products,
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -169,6 +179,7 @@ const productCtrl = {
   deleteProduct: async (req, res) => {
     try {
       await Products.findByIdAndDelete(req.params.id);
+      console.log("delete");
       res.status(200).json({
         status: 200,
         success: true,
@@ -291,7 +302,6 @@ const productCtrl = {
     }
   },
   //delete Cart
-  deleteCartUser: async (req, res) => {},
 };
 
 module.exports = productCtrl;

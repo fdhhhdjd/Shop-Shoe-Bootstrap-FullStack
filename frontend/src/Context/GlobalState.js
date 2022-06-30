@@ -13,6 +13,7 @@ export const GlobalState = createContext();
 export const DataProvider = ({ children }) => {
   const [callback, setCallback] = useState(false);
   const [callbackAdmin, setCallbackAdmin] = useState(false);
+  const [runProduct, setRunProduct] = useState(false);
   const dispatch = useDispatch();
   const { auth, refreshToken } = useSelector((state) => ({ ...state.data }));
   const { admin, refreshTokenAdmin } = useSelector((state) => ({
@@ -54,8 +55,9 @@ export const DataProvider = ({ children }) => {
   const data = {
     callback: [callback, setCallback],
     callbackAdmin: [callbackAdmin, setCallbackAdmin],
+    runProduct: [runProduct, setRunProduct],
     UserApi: UserApi(refreshTokens, refreshTokensAdmin),
-    ProductApi: ProductApi(callback, callbackAdmin),
+    ProductApi: ProductApi(callback, callbackAdmin, runProduct),
     OrderApi: OrderApi(
       refreshTokens,
       refreshTokensAdmin,
@@ -66,7 +68,7 @@ export const DataProvider = ({ children }) => {
     rememberAdmin: [remembererAdmin, setRememberMeAdmin],
     CategoriesApi: CategoriesApi(callbackAdmin),
     InformationApi: InformationApi(callbackAdmin),
-    VoucherApi: VoucherApi(callbackAdmin, refreshTokens, refreshTokensAdmin),
+    VoucherApi: VoucherApi(callbackAdmin),
     FeedbackApi: FeedbackApi(callbackAdmin, refreshTokensAdmin),
   };
   return <GlobalState.Provider value={data}>{children}</GlobalState.Provider>;

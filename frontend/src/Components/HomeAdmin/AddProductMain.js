@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useContext, useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { AddProduct } from "../../imports/Import";
+import { toast } from "react-toastify";
 import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   name: "",
   description: "",
@@ -17,10 +19,12 @@ const initialState = {
 const AddProductMain = () => {
   const [states, setState] = useState(initialState);
   const inputRef = useRef();
+  const dispatch = useDispatch();
 
   const { category } = useSelector((state) => ({
     ...state.categories,
   }));
+
   const { name, description, price, countInStock, categories } = states;
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
@@ -29,7 +33,7 @@ const AddProductMain = () => {
     refreshTokenAdmin.accessToken
   );
   const state = useContext(GlobalState);
-  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const [runProduct, setRunProduct] = state.runProduct;
 
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -38,10 +42,12 @@ const AddProductMain = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if ((e.returnValue = "Are you sure you want to exit?")) {
+    if ((name, description, price, countInStock, categories)) {
       if (!images) return SwaleMessage("No Image Upload 😅 !", "error");
-      try {
-        await axios.post(
+    }
+    try {
+      await axios
+        .post(
           AddProduct(),
           { ...states, image: images },
           {
@@ -49,14 +55,18 @@ const AddProductMain = () => {
               Authorization: `${refreshTokenAdmin.accessToken}`,
             },
           }
-        );
-        SwaleMessage("Create product Successfully", "success");
-
-        setCallbackAdmin(!callbackAdmin);
-        navigate("/products");
-      } catch (error) {
-        SwaleMessage(error.response.data.msg, "error");
-      }
+        )
+        .then((item) => {
+          dispatch(DeleteCacheRedisInitial({ key: "products" })).then(
+            (items) => {
+              setRunProduct(!runProduct);
+              SwaleMessage("Create product Successfully", "success");
+              navigate("/products");
+            }
+          );
+        });
+    } catch (error) {
+      SwaleMessage(error.response.data.msg, "error");
     }
   };
   useEffect(() => {
@@ -67,7 +77,7 @@ const AddProductMain = () => {
         capture: true,
       });
     };
-  }, [handleSubmit]);
+  }, []);
   const styleUpload = {
     display: images ? "block" : "none",
   };

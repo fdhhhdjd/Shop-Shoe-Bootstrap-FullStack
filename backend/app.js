@@ -76,6 +76,7 @@ const upload = require("./Routes/UploadCloud.js");
 const vouchers = require("./Routes/voucherRoute.js");
 const carousel = require("./Routes/carouselRoute.js");
 const feedback = require("./Routes/feedbackRoute");
+const redisCache = require("./Routes/RedisCache.js");
 
 //!Link router Main
 
@@ -87,6 +88,7 @@ app.use("/api/category", category);
 app.use("/api/voucher", vouchers);
 app.use("/api/carousel", carousel);
 app.use("/api/feedback", feedback);
+app.use("/api/redis", redisCache);
 
 //! Run Cron
 cron.schedule("*/5 * * * *", function () {

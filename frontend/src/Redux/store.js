@@ -7,6 +7,7 @@ import AuthenticationAdminSlice from "../Redux/AuthenticationAdminSlice";
 import OrderSlice from "../Redux/OrderSlice";
 import CategorySlice from "../Redux/CategoryAdminSlice";
 import VoucherSlice from "../Redux/VoucherSlice";
+import RedisCachesSlice from "../Redux/RedisSlice";
 import Info from "./InformationAdminSlice";
 import Feedbacks from "./FeedbackSlice";
 const rootReducer = (state, action) => {
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === "development") {
       products: ProductSlice,
       categories: CategorySlice,
       vouchers: VoucherSlice,
+      redis: RedisCachesSlice,
       info: Info,
       feedbacks: Feedbacks,
       reducer: rootReducer,
@@ -41,6 +43,7 @@ if (process.env.NODE_ENV === "development") {
       admin: AuthenticationAdminSlice,
       order: OrderSlice,
       products: ProductSlice,
+      redis: RedisCachesSlice,
       categories: CategorySlice,
       vouchers: VoucherSlice,
       info: Info,

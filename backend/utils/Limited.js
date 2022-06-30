@@ -1,5 +1,5 @@
 "use strict";
-const REDIS = require("../configs/redis.js");
+const REDIS = require("../configs/Redis.js");
 const incr = (key) => {
   return new Promise((resolve, reject) => {
     REDIS.incr(key, (err, result) => {
@@ -42,6 +42,14 @@ const set = async (key, count) => {
     });
   });
 };
+const del = async (key) => {
+  return new Promise((resolve, reject) => {
+    REDIS.del(key, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
 
 //?Delete Event order
 const addDelayEventOrder = ({ orderId, delay }) => {
@@ -59,4 +67,5 @@ module.exports = {
   set,
   expire,
   addDelayEventOrder,
+  del,
 };
