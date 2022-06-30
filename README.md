@@ -12,9 +12,9 @@
 
 ## Note: Thay localhost bằng Api
 
-## Api Online ( Heroku ): https://shopshoetaiheo.herokuapp.com
+## Api Online ( Heroku không dùng Redis-Aws ): https://shopshoetaiheo.herokuapp.com
 
-## Api Online (Hoting và Aws ) : https://shopshoedev.cf
+## Api Online (Hoting và Aws Đầy đủ ) : https://shopshoedev.cf
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄
 
