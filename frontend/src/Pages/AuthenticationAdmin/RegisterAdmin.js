@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { HeaderLoginAdmin, Loading, MetaData } from "../../imports/index";
+import {
+  HeaderLoginAdmin,
+  Loading,
+  MetaData,
+  useDeleteCache,
+} from "../../imports/index";
 import {
   RegisterAdminInitial,
   reset,
@@ -20,6 +25,8 @@ const RegisterAdmin = () => {
   const [state, setState] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { CacheRedis } = useDeleteCache();
+
   const { loading, registerAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
@@ -45,7 +52,9 @@ const RegisterAdmin = () => {
         password,
         confirmPassword,
       })
-    );
+    ).then((item) => {
+      CacheRedis({ key: "users" });
+    });
   };
   const handleChange = (e) => {
     const { name, value } = e.target;

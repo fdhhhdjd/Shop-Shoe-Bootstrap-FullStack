@@ -87,7 +87,6 @@ const productCtrl = {
   getProducts: async (req, res) => {
     try {
       var product = await get("products");
-      // if exists returns from redis and finish with response
 
       if (product) {
         return res.json({

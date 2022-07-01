@@ -1,6 +1,7 @@
 const Users = require("../Model/userModel");
 const UserVerifications = require("../Model/userVerificationModel");
 const CONSTANTS = require("../configs/contants");
+const { del } = require("../utils/Limited");
 module.exports = {
   /**
    * @author Tiến Tài
@@ -10,6 +11,9 @@ module.exports = {
     const data = await UserVerifications.find({
       expiresAt: { $lt: Date.now() },
     }).select("userId");
+    if (data.length > 0) {
+      await del("uncheck");
+    }
     const users = await Users.find({
       verified: CONSTANTS.DELETED_DISABLE,
     }).select("_id");

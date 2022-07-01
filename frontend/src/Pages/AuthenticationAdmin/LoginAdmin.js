@@ -11,6 +11,7 @@ import {
   MetaData,
   Message,
   SwaleMessage,
+  useDeleteCache,
 } from "../../imports/index";
 import {
   LoginAdminInitial,
@@ -33,6 +34,7 @@ const LoginAdmin = () => {
   const states = useContext(GlobalState);
   const [remembererAdmin, setRememberMeAdmin] = states.rememberAdmin;
   const reCaptcha = useRef();
+  const { CacheRedis } = useDeleteCache();
   const [state, setState] = useState(initialState);
   const { email, password } = state;
   const { loading, admin } = useSelector((state) => ({ ...state.admin }));
@@ -65,10 +67,13 @@ const LoginAdmin = () => {
       return toast.error(response.error);
     } else {
       dispatch(LoginGooglAdminInitiate(response)).then((item) => {
-        if(item.payload.status === 200) {
+        if (item.payload.status === 200) {
+          if (item.payload.msg == "Register Admin successfully") {
+            CacheRedis({ key: "users" });
+          }
           toastHot.loading("Redirecting...");
         }
-      })
+      });
     }
   };
   useEffect(() => {
@@ -88,7 +93,6 @@ const LoginAdmin = () => {
     }
     if (admin && admin.status === 400) {
       window.scrollTo(0, 0);
-
       setTimeout(() => {
         dispatch(reset());
       }, 3000);

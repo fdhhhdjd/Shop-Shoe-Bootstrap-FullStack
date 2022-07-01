@@ -122,3 +122,4 @@ export { default as useUpDesImg } from "../CustomHook/useUpDesImg";
 export { default as useDelete } from "../CustomHook/useDelete";
 export { default as LazyLoadImg } from "../CustomHook/LazingLoading";
 export { default as useDebounce } from "../CustomHook/useDebounce";
+export { default as useDeleteCache } from "../CustomHook/UseDeleteCache";

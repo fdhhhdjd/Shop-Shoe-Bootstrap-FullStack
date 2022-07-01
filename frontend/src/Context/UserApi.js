@@ -24,6 +24,7 @@ const UserApi = (token, refreshTokensAdmin) => {
   const [cart, setCart] = useState([]);
   const [users, setUsers] = useState([]);
   const [admins, setAdmins] = useState([]);
+  const [runAllUser, setRunAllUser] = useState(false);
   const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
   const tokens = refreshTokensAdmin;
   useEffect(() => {
@@ -50,15 +51,20 @@ const UserApi = (token, refreshTokensAdmin) => {
     if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
       dispatch(ProfileAdminInitiate({ refreshTokensAdmin }));
       dispatch(GetAllAdminInitiate({ refreshTokensAdmin }));
-      dispatch(GetAllUserInitiate({ refreshTokensAdmin }));
-      dispatch(GetAllUncheckInitiate({ refreshTokensAdmin }));
       dispatch(NewUserInitiate({ tokens }));
       dispatch(GetAllTwelveMothInitiate({ refreshTokensAdmin }));
     }
   }, [refreshTokensAdmin]);
   useEffect(() => {
     if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
-      const getProducts = async () => {
+      dispatch(GetAllUserInitiate({ refreshTokensAdmin }));
+      dispatch(GetAllUncheckInitiate({ refreshTokensAdmin }));
+      dispatch(GetAllAdminInitiate({ refreshTokensAdmin }));
+    }
+  }, [refreshTokensAdmin, runAllUser]);
+  useEffect(() => {
+    if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
+      const getUsers = async () => {
         const res = await axios.get(getAllUser(), {
           headers: { Authorization: refreshTokensAdmin },
         });
@@ -68,9 +74,9 @@ const UserApi = (token, refreshTokensAdmin) => {
         setUsers(res.data.user);
         setAdmins(data.data.user);
       };
-      getProducts();
+      getUsers();
     }
-  }, [refreshTokensAdmin]);
+  }, [refreshTokensAdmin, runAllUser]);
   const addCart = async (product) => {
     if (refreshToken.accessToken === undefined)
       return swal({
@@ -110,6 +116,7 @@ const UserApi = (token, refreshTokensAdmin) => {
     addCart: addCart,
     users: [users, setUsers],
     admins: [admins, setAdmins],
+    runAllUser: [runAllUser, setRunAllUser],
   };
 };
 export default UserApi;

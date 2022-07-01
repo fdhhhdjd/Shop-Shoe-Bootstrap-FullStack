@@ -1,21 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, Link } from "react-router-dom";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { Header, RelationProduct } from "../../imports/index";
+import { Link, useParams } from "react-router-dom";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { GlobalState } from "../../Context/GlobalState";
 import { except } from "../../imports/importConstant";
-import { RelatedProductStyle } from "../../Styles/RelatedProductStyle";
+import {
+  Header,
+  LazyLoadImg,
+  Loading,
+  MetaData,
+  Rating,
+  RelationProduct,
+  SwaleMessage,
+} from "../../imports/index";
+import Message from "../../Pages/Error/Message";
 import {
   GetProductDetailInitial,
   reset,
   ReviewProductDetailInitial,
 } from "../../Redux/ProductSlice";
-import { Loading, Rating, MetaData } from "../../imports/index";
-import Message from "../../Pages/Error/Message";
-import { GlobalState } from "../../Context/GlobalState";
-import Comments from "./Comments";
-import { SwaleMessage, LazyLoadImg } from "../../imports/index";
 import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
+import { RelatedProductStyle } from "../../Styles/RelatedProductStyle";
+import Comments from "./Comments";
 const initialState = {
   comment: "",
   rating: 0,
@@ -25,6 +31,8 @@ const DetailProduct = () => {
   const [reviewState, setReviewState] = useState(initialState);
   const [user, setUser] = useState();
   const [onEdit, setOnEdit] = useState(false);
+  const [flagComment, setFlagComment] = useState(false);
+
   const dispatch = useDispatch();
 
   const state = useContext(GlobalState);
@@ -82,6 +90,7 @@ const DetailProduct = () => {
       (item) => {
         dispatch(DeleteCacheRedisInitial({ key: "products" })).then((items) => {
           setRunProduct(!runProduct);
+          setFlagComment(true);
           setReviewState({ comment: "", rating: 0 });
         });
       }
@@ -241,8 +250,6 @@ const DetailProduct = () => {
                         <Comments
                           key={index}
                           replies={getReplies(review._id)}
-                          setCallback={setCallback}
-                          callback={callback}
                           user={user}
                           productId={productId}
                           token={token}
@@ -260,6 +267,8 @@ const DetailProduct = () => {
                           visible={visible}
                           setRunProduct={setRunProduct}
                           runProduct={runProduct}
+                          flagComment={flagComment}
+                          setFlagComment={setFlagComment}
                         />
                       );
                     })}

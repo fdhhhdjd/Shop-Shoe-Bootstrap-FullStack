@@ -1,13 +1,13 @@
 import moment from "moment";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
+import { SwaleMessage } from "../../imports";
+import { Rating } from "../../imports/index";
 import {
   DeleteProductDetailInitial,
   updateReviewProductDetailInitial,
 } from "../../Redux/ProductSlice";
-import { Rating } from "../../imports/index";
-import { SwaleMessage } from "../../imports";
 import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   comment: "",
@@ -17,25 +17,27 @@ const Comments = ({
   user,
   productId,
   token,
-  setCallback,
-  callback,
   id,
   setOnEdit,
   onEdit,
   setRunProduct,
   runProduct,
+  flagComment,
+  setFlagComment,
 }) => {
   const dispatch = useDispatch();
   const [commentReview, setCommentReview] = useState(initialState);
   const [commentId, setCommentId] = useState();
   const [Review, setReview] = useState();
   const { comment } = commentReview;
+  const messageEndRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCommentReview({ ...commentReview, [name]: value });
   };
   useEffect(() => {
+    setFlagComment(false);
     replies.map((item) => {
       setCommentId(item._id);
       setReview(item.user._id);
@@ -65,6 +67,7 @@ const Comments = ({
           dispatch(DeleteCacheRedisInitial({ key: "products" })).then(
             (items) => {
               setRunProduct(!runProduct);
+              setFlagComment(true);
               SwaleMessage("Delete Comments successfully 😉 !", "success");
             }
           );
@@ -88,6 +91,7 @@ const Comments = ({
       .then((item) => {
         dispatch(DeleteCacheRedisInitial({ key: "products" })).then((items) => {
           setOnEdit(false);
+          setFlagComment(true);
           setRunProduct(!runProduct);
         });
       })
@@ -95,13 +99,23 @@ const Comments = ({
         console.log("Failed to Edit");
       });
   };
+  const ScrollToBottom = () => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => {
+    if (flagComment === true) {
+      setTimeout(() => {
+        ScrollToBottom();
+      }, 500);
+    }
+  }, [flagComment]);
   return (
-    <>
+    <React.Fragment>
       {replies.length > 0 && (
-        <div className="replies">
+        <div className="replies" ref={messageEndRef}>
           {replies.map((review, index) => {
             return (
-              <Fragment key={index}>
+              <React.Fragment key={index}>
                 <div className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded">
                   <strong>
                     {review.user && review.user.image && (
@@ -168,12 +182,12 @@ const Comments = ({
                     )}
                   </div>
                 </div>
-              </Fragment>
+              </React.Fragment>
             );
           })}
         </div>
       )}
-    </>
+    </React.Fragment>
   );
 };
 

@@ -13,6 +13,7 @@ import {
   Message,
   MetaData,
   SwaleMessage,
+  useDeleteCache,
 } from "../../imports/index";
 import {
   LoginFacebookInitiate,
@@ -33,9 +34,10 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [state, setState] = useState(initialState);
+  const { CacheRedis } = useDeleteCache();
   const reCaptcha = useRef();
+
   const grecaptchaObject = window.grecaptcha;
-  const [token, setToken] = useState("");
 
   const { email, password } = state;
   const { loading, auth } = useSelector((state) => ({ ...state.data }));
@@ -66,6 +68,9 @@ const Login = () => {
     } else {
       dispatch(LoginGoogleInitiate(response)).then((item) => {
         if (item.payload.status === 200) {
+          if (item.payload.msg == "Register successfully") {
+            CacheRedis({ key: "users" });
+          }
           toastHot.loading("Redirecting...");
         }
       });
@@ -75,6 +80,9 @@ const Login = () => {
     if (response.accessToken) {
       dispatch(LoginFacebookInitiate(response)).then((item) => {
         if (item.payload.status === 200) {
+          if (item.payload.msg == "Register successfully") {
+            CacheRedis({ key: "users" });
+          }
           toastHot.loading("Redirecting...");
         }
       });

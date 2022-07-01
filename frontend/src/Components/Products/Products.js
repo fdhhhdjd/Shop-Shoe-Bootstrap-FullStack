@@ -1,9 +1,8 @@
-import React from "react";
 import {
-  Sidebar,
   HeaderAdmin,
   MainProduct,
   MetaData,
+  Sidebar,
 } from "../../imports/index";
 const Products = () => {
   return (

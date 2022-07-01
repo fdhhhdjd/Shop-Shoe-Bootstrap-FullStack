@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
+import useDeleteCache from "../../CustomHook/UseDeleteCache";
 import { UpdateUser } from "../../imports/Import";
 import {
   Loading,
@@ -26,7 +27,8 @@ const MainEditAdmin = () => {
     useUpDesImg(refreshTokenAdmin.accessToken);
   const { id } = useParams();
   const state = useContext(GlobalState);
-  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const { CacheRedis } = useDeleteCache();
+
   const navigate = useNavigate();
   const user = adminAll.user;
   const handleChange = (e) => {
@@ -51,20 +53,22 @@ const MainEditAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!images) return SwaleMessage("No Image Upload 😅 !", "error");
-
     try {
-      await axios.patch(
-        UpdateUser(id),
-        { ...states, image: images },
-        {
-          headers: {
-            Authorization: `${refreshTokenAdmin.accessToken}`,
-          },
-        }
-      );
-      setCallbackAdmin(!callbackAdmin);
-      SwaleMessage("Edit User Successfully", "success");
-      navigate("/admins");
+      await axios
+        .patch(
+          UpdateUser(id),
+          { ...states, image: images },
+          {
+            headers: {
+              Authorization: `${refreshTokenAdmin.accessToken}`,
+            },
+          }
+        )
+        .then((item) => {
+          CacheRedis({ key: "users" });
+          SwaleMessage("Edit User Successfully", "success");
+          navigate("/admins");
+        });
     } catch (error) {
       alert(error.response.data.msg);
     }

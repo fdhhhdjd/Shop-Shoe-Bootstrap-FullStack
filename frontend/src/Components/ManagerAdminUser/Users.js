@@ -4,7 +4,12 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { deleteUserAdmin } from "../../imports/Import";
-import { LazyLoadImg, SwaleMessage, useDelete } from "../../imports/index";
+import {
+  LazyLoadImg,
+  SwaleMessage,
+  useDelete,
+  useDeleteCache,
+} from "../../imports/index";
 const Users = (props) => {
   const { orders, visible, search } = props;
   const state = useContext(GlobalState);
@@ -12,17 +17,24 @@ const Users = (props) => {
   const { refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
-  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
   const [isCheck, setIsCheck] = useState(false);
   const { mutate } = useDelete();
+  const { CacheRedis } = useDeleteCache();
+
   const handleDelete = async (id) => {
-    mutate(() => deleteUserAdmin(id, refreshTokenAdmin.accessToken));
+    mutate(() => deleteUserAdmin(id, refreshTokenAdmin.accessToken)).then(
+      (item) => {
+        CacheRedis({ key: "users" });
+        SwaleMessage("Delete User successfully 🤣!", "success");
+      }
+    );
   };
   const deleteUser = async (id) => {
     try {
-      deleteUserAdmin(id, refreshTokenAdmin.accessToken);
-      setCallbackAdmin(!callbackAdmin);
-      SwaleMessage("Delete User successfully 🤣!", "success");
+      deleteUserAdmin(id, refreshTokenAdmin.accessToken).then((item) => {
+        CacheRedis({ key: "users" });
+        SwaleMessage("Delete User successfully 🤣!", "success");
+      });
     } catch (err) {
       SwaleMessage(err.response.data.msg, "error");
     }

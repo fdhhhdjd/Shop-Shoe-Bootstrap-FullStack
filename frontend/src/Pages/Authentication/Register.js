@@ -3,7 +3,13 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Header, Loading, Message, MetaData } from "../../imports/index";
+import {
+  Header,
+  Loading,
+  Message,
+  MetaData,
+  useDeleteCache,
+} from "../../imports/index";
 import { RegisterInitiate, reset } from "../../Redux/AuthenticationSlice";
 const initialState = {
   name: "",
@@ -19,6 +25,7 @@ const Register = () => {
   const navigate = useNavigate();
   const reCaptcha = useRef();
   const grecaptchaObject = window.grecaptcha;
+  const { CacheRedis } = useDeleteCache();
   const { loading, authRegister } = useSelector((state) => ({ ...state.data }));
   const {
     name,
@@ -44,7 +51,9 @@ const Register = () => {
         confirmPassword,
         token,
       })
-    );
+    ).then((item) => {
+      CacheRedis({ key: "uncheck" });
+    });
   };
   const handleChange = (e) => {
     const { name, value } = e.target;

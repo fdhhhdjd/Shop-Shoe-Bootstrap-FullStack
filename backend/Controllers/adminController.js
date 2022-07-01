@@ -8,6 +8,8 @@ const fetch = require("node-fetch");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const sendEmail = require("./SendEmail");
+const { set, get } = require("../utils/Limited");
+
 const CLIENT_ID = process.env.GOOGLE_CLIENT_IDS;
 const client = new OAuth2Client(CLIENT_ID);
 const { v4: uuidv4 } = require("uuid");
@@ -439,11 +441,22 @@ const adminCtrl = {
   //Get all User
   GetAllUser: async (req, res) => {
     try {
+      var users = await get("users");
+      // if exists returns from redis and finish with response
+      if (users) {
+        return res.json({
+          status: 200,
+          success: true,
+          user: JSON.parse(users),
+        });
+      }
       const user = await Users.find({
         role: 0,
         verified: CONSTANTS.DELETED_ENABLE,
       }).select("-password");
-      res.json({
+
+      await set("users", JSON.stringify(user));
+      return res.json({
         status: 200,
         success: true,
         user,
@@ -456,26 +469,20 @@ const adminCtrl = {
   //Get all Uncheck User
   GetAllUserUnCheck: async (req, res) => {
     try {
-      // const data = await UserVerifications.find({
-      //   expiresAt: { $lt: Date.now() },
-      // }).select("userId");
-      // const users = await Users.find({
-      //   verified: CONSTANTS.DELETED_DISABLE,
-      // }).select("_id");
-      // console.log(data, "data");
-      // for (var i = 0; i < data.length; i++) {
-      //   for (var j = 0; j < users.length; j++) {
-      //     if (data[i].userId == users[j].id) {
-      //       await Users.deleteOne({ _id: users[j].id });
-      //       await UserVerifications.deleteOne({ userId: data[i].userId });
-      //     }
-      //   }
-      // }
+      var unCheck = await get("uncheck");
+      if (unCheck) {
+        return res.json({
+          status: 200,
+          success: true,
+          user: JSON.parse(unCheck),
+        });
+      }
       const usersUncheck = await Users.find({
         verified: false,
         role: 0,
       }).select("-password");
-      res.json({
+      await set("uncheck", JSON.stringify(usersUncheck));
+      return res.json({
         status: 200,
         success: true,
         user: usersUncheck,

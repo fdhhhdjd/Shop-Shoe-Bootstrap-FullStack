@@ -1,7 +1,6 @@
 import React from "react";
 const UsersUncheck = (props) => {
   const { orders, visible, search } = props;
-  console.log(orders, "alo");
   return (
     <>
       {orders.length === 0 ? (

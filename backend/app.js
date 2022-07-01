@@ -91,7 +91,7 @@ app.use("/api/feedback", feedback);
 app.use("/api/redis", redisCache);
 
 //! Run Cron
-cron.schedule("*/5 * * * *", function () {
+cron.schedule("5 * * * * *", function () {
   CronAdminController.GetAllUserUnCheck();
 });
 //!upload
