@@ -217,3 +217,8 @@
 - Xóa mem payment : patch -->http://localhost:5000/api/payment/deletePayments/:id
 
 - Check Password khi xóa : Post -->http://localhost:5000/api/payment/checkPass
+
+## Share User and Admin
+
+- Xóa cache redis: Post -->http://localhost:5000/api/redis/cache
+
