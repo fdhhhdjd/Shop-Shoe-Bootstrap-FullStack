@@ -12,7 +12,7 @@ const ProductApi = (callback, callbackAdmin, runProduct) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetProductInitial());
-  }, [callback, callbacks]);
+  }, [callback, callbacks, runProduct]);
   useEffect(() => {
     const getProduct = async () => {
       const res = await axios.get(getProducts(categoriess, sort));

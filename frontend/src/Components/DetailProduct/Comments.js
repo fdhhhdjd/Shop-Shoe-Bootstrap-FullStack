@@ -8,6 +8,7 @@ import {
 } from "../../Redux/ProductSlice";
 import { Rating } from "../../imports/index";
 import { SwaleMessage } from "../../imports";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   comment: "",
 };
@@ -21,6 +22,8 @@ const Comments = ({
   id,
   setOnEdit,
   onEdit,
+  setRunProduct,
+  runProduct,
 }) => {
   const dispatch = useDispatch();
   const [commentReview, setCommentReview] = useState(initialState);
@@ -56,9 +59,16 @@ const Comments = ({
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        dispatch(DeleteProductDetailInitial({ productId, token, commentId }));
-        setCallback(!callback);
-        SwaleMessage("Delete Comments successfully 😉 !", "success");
+        dispatch(
+          DeleteProductDetailInitial({ productId, token, commentId })
+        ).then((item) => {
+          dispatch(DeleteCacheRedisInitial({ key: "products" })).then(
+            (items) => {
+              setRunProduct(!runProduct);
+              SwaleMessage("Delete Comments successfully 😉 !", "success");
+            }
+          );
+        });
       } else {
         SwaleMessage("Thank you for 😆 !");
       }
@@ -74,9 +84,16 @@ const Comments = ({
         commentId,
         comment,
       })
-    );
-    setOnEdit(false);
-    setCallback(!callback);
+    )
+      .then((item) => {
+        dispatch(DeleteCacheRedisInitial({ key: "products" })).then((items) => {
+          setOnEdit(false);
+          setRunProduct(!runProduct);
+        });
+      })
+      .catch(() => {
+        console.log("Failed to Edit");
+      });
   };
   return (
     <>

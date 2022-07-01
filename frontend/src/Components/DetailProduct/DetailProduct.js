@@ -15,6 +15,7 @@ import Message from "../../Pages/Error/Message";
 import { GlobalState } from "../../Context/GlobalState";
 import Comments from "./Comments";
 import { SwaleMessage, LazyLoadImg } from "../../imports/index";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   comment: "",
   rating: 0,
@@ -28,6 +29,7 @@ const DetailProduct = () => {
 
   const state = useContext(GlobalState);
   const addCart = state.UserApi.addCart;
+  const [runProduct, setRunProduct] = state.runProduct;
 
   const [callback, setCallback] = state.callback;
   const { loadings, productDetail, error, reviews, product } = useSelector(
@@ -57,7 +59,7 @@ const DetailProduct = () => {
     return () => {
       dispatch(reset());
     };
-  }, [id, product, callback]);
+  }, [id, runProduct]);
   const getReplies = (commentId) => {
     return (
       productDetail.product &&
@@ -76,9 +78,14 @@ const DetailProduct = () => {
     if (!comment) {
       return SwaleMessage("Please Content Comment 🤗 ", "error");
     }
-    dispatch(ReviewProductDetailInitial({ id, token, rating, comment }));
-    setCallback(!callback);
-    setReviewState({ comment: "", rating: 0 });
+    dispatch(ReviewProductDetailInitial({ id, token, rating, comment })).then(
+      (item) => {
+        dispatch(DeleteCacheRedisInitial({ key: "products" })).then((items) => {
+          setRunProduct(!runProduct);
+          setReviewState({ comment: "", rating: 0 });
+        });
+      }
+    );
   };
   useEffect(() => {
     profile.user && setUser(profile.user._id);
@@ -251,6 +258,8 @@ const DetailProduct = () => {
                           initialState={initialState}
                           handleLoadMore={handleLoadMore}
                           visible={visible}
+                          setRunProduct={setRunProduct}
+                          runProduct={runProduct}
                         />
                       );
                     })}
