@@ -49,7 +49,6 @@ const UserApi = (token, refreshTokensAdmin) => {
   //!Admin
   useEffect(() => {
     if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
-      dispatch(ProfileAdminInitiate({ refreshTokensAdmin }));
       dispatch(GetAllAdminInitiate({ refreshTokensAdmin }));
       dispatch(NewUserInitiate({ tokens }));
       dispatch(GetAllTwelveMothInitiate({ refreshTokensAdmin }));
@@ -64,6 +63,8 @@ const UserApi = (token, refreshTokensAdmin) => {
   }, [refreshTokensAdmin, runAllUser]);
   useEffect(() => {
     if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
+      dispatch(ProfileAdminInitiate({ refreshTokensAdmin }));
+
       const getUsers = async () => {
         const res = await axios.get(getAllUser(), {
           headers: { Authorization: refreshTokensAdmin },
@@ -76,6 +77,7 @@ const UserApi = (token, refreshTokensAdmin) => {
       };
       getUsers();
     }
+    dispatch(ProfileInitiate({ token }));
   }, [refreshTokensAdmin, runAllUser]);
   const addCart = async (product) => {
     if (refreshToken.accessToken === undefined)

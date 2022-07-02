@@ -244,7 +244,7 @@ const adminCtrl = {
         path: "/api/auth/refreshTokenAdmin",
         maxAge: CONSTANTS._7_DAY, // 7d
       });
-
+      await set(`${user._id}`, JSON.stringify(user));
       res.status(200).json({
         status: 200,
         success: true,

@@ -14,6 +14,7 @@ import {
   ChangePasswordLoginGgFbInitiate,
   reset,
 } from "../../Redux/AuthenticationSlice";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 
 const initialState = {
   password: "",
@@ -49,7 +50,11 @@ const RegisterGgFb = () => {
       SwaleMessage("Mời bạn xác thực đầy đủ !", "error");
       return;
     }
-    dispatch(ChangePasswordLoginGgFbInitiate({ tokens, ...state }));
+    dispatch(ChangePasswordLoginGgFbInitiate({ tokens, ...state })).then(
+      (item) => {
+        dispatch(DeleteCacheRedisInitial({ key: `${profile?.user._id}` }));
+      }
+    );
   };
   useEffect(() => {
     if (profile?.user?.checkLogin === true) {

@@ -16,7 +16,14 @@ const STORAGE = require("../utils/Storage");
 const CONSTANTS = require("../configs/contants");
 const HELPER = require("../utils/helper");
 const PASSWORD = require("../utils/Password");
-const { ttl, incr, expire, addDelayEventOrder } = require("../utils/Limited");
+const {
+  ttl,
+  incr,
+  get,
+  expire,
+  addDelayEventOrder,
+  set,
+} = require("../utils/Limited");
 
 require("dotenv").config;
 
@@ -356,7 +363,7 @@ const userCtrl = {
               path: "/api/auth/refresh_token",
               maxAge: CONSTANTS._7_DAY,
             });
-
+            await set(`${user._id}`, JSON.stringify(user));
             res.status(200).json({
               status: 200,
               success: true,
@@ -365,7 +372,6 @@ const userCtrl = {
             });
           } else {
             //UserSpam
-
             return res.json({
               status: 400,
               success: false,
@@ -441,6 +447,14 @@ const userCtrl = {
   //Profile
   profile: async (req, res) => {
     try {
+      var Profile = await get(`${req.user.id}`);
+      if (Profile) {
+        return res.json({
+          status: 200,
+          success: true,
+          user: JSON.parse(Profile),
+        });
+      }
       const user = await Users.findById(req.user.id).select("-password");
       if (!user)
         return res.json({
@@ -448,7 +462,8 @@ const userCtrl = {
           success: false,
           msg: "User does not exist.",
         });
-      res.status(200).json({
+      await set(`${user._id}`, JSON.stringify(user));
+      return res.status(200).json({
         status: 200,
         success: true,
         user,
@@ -777,7 +792,6 @@ const userCtrl = {
       })
       .then((response) => {
         const { email_verified, name, email, picture } = response.payload;
-        console.log(response.payload);
         if (email_verified) {
           Users.findOne({ email, role: 0 }).exec((error, user) => {
             if (error) {
@@ -888,7 +902,6 @@ const userCtrl = {
           msg: "Password is at least 6 characters long.",
         });
       const reg = HELPER.isPassword(password);
-      console.log(reg);
       if (!reg) {
         return res.json({
           status: 400,

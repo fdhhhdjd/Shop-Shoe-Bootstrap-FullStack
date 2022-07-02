@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { GlobalState } from "../../Context/GlobalState";
 import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   name: "",
   phone_number: "",
@@ -12,7 +13,8 @@ const initialState = {
 const ProfileTabAdmin = () => {
   const [states, setState] = useState(initialState);
   const state = useContext(GlobalState);
-  const [callbackAdmin, setCallbackAdmin] = state.callbackAdmin;
+  const [runAllUser, setRunAllUser] = state.UserApi.runAllUser;
+  const dispatch = useDispatch();
   const { refreshTokenAdmin, profileAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
@@ -37,9 +39,13 @@ const ProfileTabAdmin = () => {
           if (response?.data?.status === 400) {
             SwaleMessage(`${response.data.msg}`, "error");
           } else if (response?.data?.status === 200) {
-            SwaleMessage("Edit profile Successfully", "success");
+            dispatch(
+              DeleteCacheRedisInitial({ key: `${profileAdmin?.user._id}` })
+            ).then((items) => {
+              setRunAllUser(!runAllUser);
+              SwaleMessage("Edit profile Successfully", "success");
+            });
           }
-          setCallbackAdmin(!callbackAdmin);
         })
         .catch((err) => {
           SwaleMessage(`${err.data}`, "error");
