@@ -18,6 +18,9 @@ export const AddToCart = () => {
 export const TranSuccess = () => {
   return "/api/payment/payments";
 };
+export const CheckCountInStockAPi = () => {
+  return "/api/payment/countinstock";
+};
 export const UploadImg = () => {
   return "/api/uploadImageUser";
 };

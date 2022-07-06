@@ -1,10 +1,12 @@
 const Payments = require("../Model/PaymentModel");
 const Users = require("../Model/userModel");
+const Products = require("../Model/ProductModel");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const STORAGE = require("../utils/Storage");
 const Stripe = require("stripe");
 const stripe = new Stripe(process.env.STRIPE_KEY);
+const { exists, set, get, setnx, incrby } = require("../utils/Limited");
 const paymentCtrl = {
   //Get All Payment
   getPayments: async (req, res) => {
@@ -197,7 +199,7 @@ const paymentCtrl = {
           msg: "Payments not found !!!",
         });
       }
-      res.status(200).json({
+      return res.status(200).json({
         status: 200,
         success: true,
         msg: "Get Payments Detail Successfully !",
@@ -205,6 +207,38 @@ const paymentCtrl = {
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
+    }
+  },
+  CheckCountInStock: async (req, res) => {
+    try {
+      const { cart } = req.body;
+      const userId = req.user.id;
+      const data = await Products.find();
+      const users = await Users.findById({ _id: userId }).select("cart");
+      let value = 0;
+      for (var i = 0; i < data.length; i++) {
+        for (var j = 0; j < users.cart.length; j++) {
+          if (data[i]._id == users.cart[j]._id) {
+            if (data[i].countInStock === 0) {
+              value++;
+              break;
+            }
+          }
+        }
+      }
+      if (value > 0) {
+        return res.json({
+          status: 400,
+          msg: "fail",
+        });
+      } else {
+        return res.json({
+          status: 200,
+          msg: "success",
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   },
 
@@ -234,7 +268,6 @@ const paymentCtrl = {
         address,
         status: true,
       });
-      console.log(newPayment);
       cart.filter((item) => {
         return STORAGE.sold(item._id, item.quantity, item.sold);
       });

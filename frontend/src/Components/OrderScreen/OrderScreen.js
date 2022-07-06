@@ -177,7 +177,6 @@ const OrderScreen = () => {
                 })}
               {orderItem.cart && (
                 <div className="col-lg-3 d-flex align-items-end flex-column mt-5 subtotal-order">
-                  {console.log(orderItem)}
                   <table className="table table-bordered">
                     <tbody>
                       <tr>

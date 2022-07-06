@@ -45,7 +45,7 @@ const UserApi = (token, refreshTokensAdmin) => {
       getUser();
     }
     profile.user && setCart(profile.user);
-  }, [token]);
+  }, [token, runAllUser]);
   //!Admin
   useEffect(() => {
     if (refreshTokensAdmin && refreshTokensAdmin.length > 0) {
@@ -77,7 +77,6 @@ const UserApi = (token, refreshTokensAdmin) => {
       };
       getUsers();
     }
-    dispatch(ProfileInitiate({ token }));
   }, [refreshTokensAdmin, runAllUser]);
   const addCart = async (product) => {
     if (refreshToken.accessToken === undefined)

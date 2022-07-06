@@ -462,7 +462,7 @@ const userCtrl = {
           success: false,
           msg: "User does not exist.",
         });
-      await set(`${user._id}`, JSON.stringify(user));
+      await set(`${req.user.id}`, JSON.stringify(user));
       return res.status(200).json({
         status: 200,
         success: true,

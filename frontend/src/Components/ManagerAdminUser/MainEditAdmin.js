@@ -26,7 +26,6 @@ const MainEditAdmin = () => {
   const { loading, handleUpload, handleDestroy, images, setImages } =
     useUpDesImg(refreshTokenAdmin.accessToken);
   const { id } = useParams();
-  const state = useContext(GlobalState);
   const { CacheRedis } = useDeleteCache();
 
   const navigate = useNavigate();

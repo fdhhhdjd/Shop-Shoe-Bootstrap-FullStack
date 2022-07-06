@@ -28,7 +28,6 @@ const MainEditUser = () => {
   const { id } = useParams();
   const { CacheRedis } = useDeleteCache();
 
-  const state = useContext(GlobalState);
   const navigate = useNavigate();
   const user = userAll.user;
   const handleChange = (e) => {

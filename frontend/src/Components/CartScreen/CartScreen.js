@@ -15,7 +15,10 @@ import {
   PhoneRight,
   SwaleMessage,
 } from "../../imports/index";
+import { ProfileInitiate } from "../../Redux/AuthenticationSlice";
+import { HistoryProductDetailInitial } from "../../Redux/ProductSlice";
 import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
+import { CheckCountInStockAPi } from "../../utils/Api";
 import PayButton from "../Stripe/PayButton";
 const initialState = {
   voucher_code: "",
@@ -23,6 +26,8 @@ const initialState = {
 const CartScreen = () => {
   const state = useContext(GlobalState);
   const [cart, setCart] = state.UserApi.cart;
+  const [loadingCheck, setLoadingCheck] = useState(false);
+  const [CheckCountInStock, setCheckCountInStock] = useState(false);
   const { refreshToken } = useSelector((state) => ({ ...state.data }));
   const { totals, Message, loadings } = useSelector((state) => ({
     ...state.vouchers,
@@ -34,6 +39,7 @@ const CartScreen = () => {
   const [cost, setCost] = useState(0);
   const [percent, setPercent] = useState();
   const [vouchers, setVouchers] = useState(initialState);
+  const [dataCheck, setDataCheck] = useState([]);
   const { voucher_code } = vouchers;
   const [ToggleVoucher, SetToggleVoucher] = useState(false);
   const dispatch = useDispatch();
@@ -136,18 +142,47 @@ const CartScreen = () => {
   const tranSuccess = async (payment) => {
     const { paymentID, address } = payment;
 
-    await axios.post(
-      TranSuccess(),
-      { cart, paymentID, address },
-      {
-        headers: { Authorization: refreshTokens },
-      }
-    );
-
-    setCart([]);
-    addToCart([]);
-    SwaleMessage("You have successfully placed an order.", "success");
-    window.location.href = "/success";
+    await axios
+      .post(
+        TranSuccess(),
+        { cart, paymentID, address },
+        {
+          headers: { Authorization: refreshTokens },
+        }
+      )
+      .then((item) => {
+        setCart([]);
+        addToCart([]);
+        dispatch(HistoryProductDetailInitial({ token }));
+        SwaleMessage("You have successfully placed an order.", "success");
+        navigate("/success");
+      })
+      .catch((item) => {
+        SwaleMessage("Payment Fail.", "error");
+      });
+  };
+  const checkCountInStock = async () => {
+    setLoadingCheck(true);
+    await axios
+      .post(
+        CheckCountInStockAPi(),
+        {
+          cart,
+        },
+        {
+          headers: { Authorization: refreshTokens },
+        }
+      )
+      .then((item) => {
+        setDataCheck(item?.data);
+        if (item.data.status === 200) {
+          setLoadingCheck(false);
+          setCheckCountInStock(true);
+        } else if (item.data.status === 400) {
+          setLoadingCheck(false);
+          setCheckCountInStock(false);
+        }
+      });
   };
 
   useEffect(() => {
@@ -160,6 +195,17 @@ const CartScreen = () => {
       dispatch(reset());
     }
   }, [totals]);
+  useEffect(() => {
+    if (loadingCheck) {
+      SwaleMessage("Loading,Checking goods", "warning");
+    } else if (loadingCheck === false) {
+      if (dataCheck.status === 200) {
+        SwaleMessage("Can you buy,thank 🤩 ", "success");
+      } else if (dataCheck.status === 400) {
+        SwaleMessage("There are people who buy it 😞.", "error");
+      }
+    }
+  }, [loadingCheck]);
 
   return (
     <>
@@ -169,7 +215,7 @@ const CartScreen = () => {
         <PhoneRight />
         {/* Cart */}
         <div className="container">
-          {cartItems && cartItems.length === 0 ? (
+          {cartItems && cartItems?.length === 0 ? (
             <div className=" alert alert-info text-center mt-3">
               Your cart is empty
               <Link
@@ -187,12 +233,12 @@ const CartScreen = () => {
               <div className=" alert alert-info text-center mt-3">
                 Total Cart Products
                 <Link className="text-success mx-2" to="/cart">
-                  ({cartItems.length})
+                  ({cartItems?.length})
                 </Link>
               </div>
               {/* cartiterm */}
               {cartItems &&
-                cartItems.map((item, index) => (
+                cartItems?.map((item, index) => (
                   <div className="cart-iterm row" key={index}>
                     <div
                       className="remove-button d-flex justify-content-center align-items-center"
@@ -331,9 +377,15 @@ const CartScreen = () => {
                 {/* // */}
 
                 <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
-                  <button className="paypal">
-                    <Paypal total={total} tranSuccess={tranSuccess} />
-                  </button>
+                  {CheckCountInStock ? (
+                    <button className="paypal">
+                      <Paypal total={total} tranSuccess={tranSuccess} />
+                    </button>
+                  ) : (
+                    <button className="paypal" onClick={checkCountInStock}>
+                      Check Count In Stock
+                    </button>
+                  )}
                 </div>
 
                 {/* )} */}
@@ -344,7 +396,7 @@ const CartScreen = () => {
                 {/* // */}
 
                 <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
-                  <PayButton />
+                  <PayButton CheckCountInStock={CheckCountInStock} />
                 </div>
 
                 {/* )} */}
@@ -352,7 +404,7 @@ const CartScreen = () => {
             </>
           )}
         </div>
-        {cart.length > 0 && <Footer />}
+        {cart?.length > 0 && <Footer />}
       </>
     </>
   );

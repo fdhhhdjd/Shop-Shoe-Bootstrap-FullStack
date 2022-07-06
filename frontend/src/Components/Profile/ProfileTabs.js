@@ -42,7 +42,6 @@ const ProfileTabs = () => {
           if (response?.data?.status === 400) {
             SwaleMessage(`${response.data.msg}`, "error");
           } else if (response?.data?.status === 200) {
-            console.log(profile?.user._id);
             dispatch(
               DeleteCacheRedisInitial({ key: `${profile?.user._id}` })
             ).then((items) => {

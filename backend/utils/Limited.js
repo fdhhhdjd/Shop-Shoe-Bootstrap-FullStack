@@ -51,6 +51,38 @@ const del = async (key) => {
   });
 };
 
+const setnx = async (key, count) => {
+  return new Promise((resolve, reject) => {
+    REDIS.setnx(key, count, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
+const decrby = async (key, count) => {
+  return new Promise((resolve, reject) => {
+    REDIS.decrby(key, count, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
+const exists = async (key) => {
+  return new Promise((resolve, reject) => {
+    REDIS.exists(key, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
+const incrby = async (key, count) => {
+  return new Promise((resolve, reject) => {
+    REDIS.incrby(key, count, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
 //?Delete Event order
 const addDelayEventOrder = ({ orderId, delay }) => {
   return new Promise((resolve, reject) => {
@@ -68,4 +100,8 @@ module.exports = {
   expire,
   addDelayEventOrder,
   del,
+  setnx,
+  decrby,
+  exists,
+  incrby,
 };

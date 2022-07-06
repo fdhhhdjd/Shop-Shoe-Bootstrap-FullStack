@@ -6,6 +6,7 @@ import toastHot from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import swal from "sweetalert";
 import { GlobalState } from "../../Context/GlobalState";
 import {
   Header,
@@ -35,6 +36,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [state, setState] = useState(initialState);
   const { CacheRedis } = useDeleteCache();
+  const [count, setCount] = useState();
   const reCaptcha = useRef();
 
   const grecaptchaObject = window.grecaptcha;
@@ -95,6 +97,7 @@ const Login = () => {
       setState(foundUser);
     }
   }, []);
+
   useEffect(() => {
     if (auth.status === 200) {
       if (location.state?.from) {
@@ -109,108 +112,139 @@ const Login = () => {
       window.scrollTo(0, 0);
       setTimeout(() => {
         dispatch(reset());
+        reCaptcha.current.reset();
       }, 3000);
     } else if (auth.status === 503) {
-      SwaleMessage(`${auth.msg}`, "warning");
-      setTimeout(() => {
-        dispatch(reset());
-      }, 3000);
+      setCount(auth?._ttl);
     }
-    reCaptcha.current.reset();
   }, [auth]);
-
+  useEffect(() => {
+    if (count) {
+      const interval = setInterval(() => {
+        setCount((currentCount) => --currentCount);
+      }, 1000);
+      return () => clearInterval(interval);
+    } else if (count === 0) {
+      toastNotification();
+      dispatch(reset());
+      setCount(0);
+    }
+  }, [count !== 0 && count != undefined]);
+  const toastNotification = () => {
+    if (count === 0) {
+      swal(`${`Unlocked Login Account 😊`}`, {
+        icon: "warning",
+        closeOnClickOutside: true,
+        buttons: ["No", "Yes"], //with custom label
+        dangerMode: false,
+      });
+    } else {
+      swal(`${`You Block ${count}s,Thank You 🙃`}`, {
+        icon: "warning",
+        closeOnClickOutside: false,
+        buttons: ["No"], //with custom label
+        dangerMode: true,
+      });
+    }
+  };
   return (
     <>
-      {auth.status === 200 ? (
-        <MetaData title="Redirect Home..." />
+      {count != 0 && count != undefined ? (
+        toastNotification()
       ) : (
-        <MetaData title="Login-ShoeShop" />
-      )}
-      <Header />
-      <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-        {auth.status === 400 && (
-          <Message variant="alert-danger">{auth.msg}</Message>
-        )}
-        <div className="Login col-md-8 col-lg-4 col-11">
-          <GoogleLogin
-            clientId={process.env.REACT_APP_KEY_GOOGLE}
-            buttonText="Login Google +"
-            onSuccess={HandleGoogle}
-            onFailure={HandleGoogle}
-            cookiePolicy={"single_host_origin"}
-          />
-          <FacebookLogin
-            appId={process.env.REACT_APP_KEY_FACEBOOK}
-            // appId={process.env.REACT_APP_KEY_FACEBOOK_TEST}
-            autoLoad={false}
-            callback={responseFacebook}
-            icon="fa-facebook"
-            cssClass="btnFacebook"
-            textButton="&nbsp;&nbsp;Sign In with Facebook"
-          />
-          <button onClick={() => navigate("/loginphone")}>
-            Sign In Phone Number
-          </button>
-        </div>
+        <>
+          {auth.status === 200 ? (
+            <MetaData title="Redirect Home..." />
+          ) : (
+            <MetaData title="Login-ShoeShop" />
+          )}
+          <Header />
+          <div className="container d-flex flex-column justify-content-center align-items-center login-center">
+            {auth.status === 400 && (
+              <Message variant="alert-danger">{auth.msg}</Message>
+            )}
+            <div className="Login col-md-8 col-lg-4 col-11">
+              <GoogleLogin
+                clientId={process.env.REACT_APP_KEY_GOOGLE}
+                buttonText="Login Google +"
+                onSuccess={HandleGoogle}
+                onFailure={HandleGoogle}
+                cookiePolicy={"single_host_origin"}
+              />
+              <FacebookLogin
+                appId={process.env.REACT_APP_KEY_FACEBOOK}
+                // appId={process.env.REACT_APP_KEY_FACEBOOK_TEST}
+                autoLoad={false}
+                callback={responseFacebook}
+                icon="fa-facebook"
+                cssClass="btnFacebook"
+                textButton="&nbsp;&nbsp;Sign In with Facebook"
+              />
+              <button onClick={() => navigate("/loginphone")}>
+                Sign In Phone Number
+              </button>
+            </div>
 
-        <form
-          className="Login col-md-8 col-lg-4 col-11"
-          onSubmit={submitHandler}
-        >
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            name="email"
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            name="password"
-            onChange={handleChange}
-          />
-          <br />
-          <br />
-          <div className="custom-control custom-checkbox">
-            <input
-              className="custom-control-input"
-              type="checkbox"
-              style={{
-                marginTop: "0",
-                padding: "0,0",
-                width: "25px",
-                float: "left",
-              }}
-              onChange={HandleRemember}
-            />
-            <label
-              style={{ float: "left", marginTop: "-5px" }}
-              className="custom-control-label "
-              htmlFor="flexCheckDefault"
+            <form
+              className="Login col-md-8 col-lg-4 col-11"
+              onSubmit={submitHandler}
             >
-              Remember ?
-            </label>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                name="email"
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                name="password"
+                onChange={handleChange}
+              />
+              <br />
+              <br />
+              <div className="custom-control custom-checkbox">
+                <input
+                  className="custom-control-input"
+                  type="checkbox"
+                  style={{
+                    marginTop: "0",
+                    padding: "0,0",
+                    width: "25px",
+                    float: "left",
+                  }}
+                  onChange={HandleRemember}
+                />
+                <label
+                  style={{ float: "left", marginTop: "-5px" }}
+                  className="custom-control-label "
+                  htmlFor="flexCheckDefault"
+                >
+                  Remember ?
+                </label>
+              </div>
+              <br />
+              <br />
+              <ReCAPTCHA
+                size="invisible"
+                ref={reCaptcha}
+                sitekey={process.env.REACT_APP_KEY_RECAPTCHA_V3}
+                theme="light"
+                badge="bottomleft"
+                grecaptcha={grecaptchaObject}
+              />
+              {loading ? <Loading /> : <button type="submit">Login</button>}
+              <p>
+                <Link to="/register">Create Account </Link>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <Link to="/Forget">Forget ?</Link>
+              </p>
+            </form>
           </div>
-          <br />
-          <br />
-          <ReCAPTCHA
-            size="invisible"
-            ref={reCaptcha}
-            sitekey={process.env.REACT_APP_KEY_RECAPTCHA_V3}
-            theme="light"
-            badge="bottomleft"
-            grecaptcha={grecaptchaObject}
-          />
-          {loading ? <Loading /> : <button type="submit">Login</button>}
-          <p>
-            <Link to="/register">Create Account </Link>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <Link to="/Forget">Forget ?</Link>
-          </p>
-        </form>
-      </div>
+        </>
+      )}
     </>
   );
 };

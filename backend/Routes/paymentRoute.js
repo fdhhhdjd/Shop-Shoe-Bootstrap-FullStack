@@ -59,4 +59,8 @@ router.get(
 //Payment Stripe
 router.post("/paymentStripe", paymentCtrl.StripePayments);
 
+//Check CountInStock
+
+router.post("/countinstock", auth, paymentCtrl.CheckCountInStock);
+
 module.exports = router;

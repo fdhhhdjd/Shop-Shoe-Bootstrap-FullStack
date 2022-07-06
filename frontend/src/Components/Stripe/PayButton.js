@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GlobalState } from "../../imports";
 import { StripeInitial } from "../../Redux/OrderSlice";
 import { AddToCart } from "../../utils/Api";
-const PayButton = () => {
+const PayButton = ({ CheckCountInStock }) => {
   const { profile, refreshToken } = useSelector((state) => ({ ...state.data }));
   const { paymentStripe, loading } = useSelector((state) => ({
     ...state.order,
@@ -48,16 +48,20 @@ const PayButton = () => {
   }, [loading]);
   return (
     <>
-      {loading ? (
-        <button className="stripe1">
-          <div className="spinner-grow text-info" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </button>
+      {CheckCountInStock ? (
+        loading ? (
+          <button className="stripe1">
+            <div className="spinner-grow text-info" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </button>
+        ) : (
+          <button onClick={handleCheckout} className="stripe">
+            <i className="fab fa-stripe"></i> {"  "}Stripe
+          </button>
+        )
       ) : (
-        <button onClick={handleCheckout} className="stripe">
-          <i className="fab fa-stripe"></i> {"  "}Stripe
-        </button>
+        ""
       )}
     </>
   );

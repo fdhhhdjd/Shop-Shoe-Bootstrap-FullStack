@@ -19,6 +19,7 @@ export const DataProvider = ({ children }) => {
   const { admin, refreshTokenAdmin } = useSelector((state) => ({
     ...state.admin,
   }));
+  const [runTokenUser, setRunTokenUser] = useState(false);
   const [rememberer, setRememberMe] = useState(false);
   const [remembererAdmin, setRememberMeAdmin] = useState(false);
   const token = auth && auth.accessToken;
@@ -36,7 +37,7 @@ export const DataProvider = ({ children }) => {
       };
       refreshToken();
     }
-  }, [callback]);
+  }, [callback, runTokenUser]);
   //!Admin
   useEffect(() => {
     const firstLogins = localStorage.getItem("firstLoginAdmin");
@@ -54,6 +55,7 @@ export const DataProvider = ({ children }) => {
 
   const data = {
     callback: [callback, setCallback],
+    runTokenUser: [runTokenUser, setRunTokenUser],
     callbackAdmin: [callbackAdmin, setCallbackAdmin],
     runProduct: [runProduct, setRunProduct],
     UserApi: UserApi(refreshTokens, refreshTokensAdmin),

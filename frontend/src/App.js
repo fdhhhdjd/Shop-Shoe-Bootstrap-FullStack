@@ -10,22 +10,22 @@ import "./responsive.css";
 import RoutesDataAdmin from "./utils/RoutesAdmin";
 import RoutesDataUser from "./utils/RoutesUser";
 function App() {
-  const connectInternet = useCallback((online) => {
-    if (online === false) {
-      Swal.fire(
-        "The Internet ?",
-        "No Internet,Please Connection Network",
-        "question"
-      );
-      return setTimeout(() => {
-        window.location.reload(false);
-        window.scrollTo(0, 0);
-      }, [5000]);
-    }
-  }, []);
-  useEffect(() => {
-    connectInternet();
-  }, [connectInternet]);
+  // const connectInternet = useCallback((online) => {
+  //   if (online === false) {
+  //     Swal.fire(
+  //       "The Internet ?",
+  //       "No Internet,Please Connection Network",
+  //       "question"
+  //     );
+  //     return setTimeout(() => {
+  //       window.location.reload(false);
+  //       window.scrollTo(0, 0);
+  //     }, [5000]);
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   connectInternet();
+  // }, [connectInternet]);
 
   return (
     <>
@@ -33,9 +33,9 @@ function App() {
         <ToastContainer position="top-center" />
         <Toaster />
         <ScrollTop />
-        <Detector
+        {/* <Detector
           render={({ online }) => <div onClick={connectInternet(online)}></div>}
-        />
+        /> */}
         <Routes>
           {/* User */}
           {RoutesDataUser.map((item, key) => {

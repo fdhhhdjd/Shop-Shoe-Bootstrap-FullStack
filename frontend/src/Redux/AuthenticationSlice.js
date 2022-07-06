@@ -91,6 +91,7 @@ export const ProfileInitiate = createAsyncThunk(
     const response = await axios.get("/api/auth/profile", {
       headers: { Authorization: token },
     });
+    // return response.data;
     return response.data;
   }
 );
