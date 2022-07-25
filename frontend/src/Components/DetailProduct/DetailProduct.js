@@ -39,7 +39,6 @@ const DetailProduct = () => {
   const addCart = state.UserApi.addCart;
   const [runProduct, setRunProduct] = state.runProduct;
 
-  const [callback, setCallback] = state.callback;
   const { loadings, productDetail, error, reviews, product } = useSelector(
     (state) => ({
       ...state.products,
@@ -201,7 +200,14 @@ const DetailProduct = () => {
                             <span>{productDetail.product.countInStock}</span>
                           </div>
                           <button
-                            onClick={() => addCart(productDetail.product)}
+                            onClick={() => {
+                              addCart(productDetail.product);
+                              dispatch(
+                                DeleteCacheRedisInitial({
+                                  key: `profile${profile?.user?._id}`,
+                                })
+                              );
+                            }}
                             className="round-black-btn"
                           >
                             Add To Cart

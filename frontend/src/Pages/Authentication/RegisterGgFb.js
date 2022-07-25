@@ -52,7 +52,9 @@ const RegisterGgFb = () => {
     }
     dispatch(ChangePasswordLoginGgFbInitiate({ tokens, ...state })).then(
       (item) => {
-        dispatch(DeleteCacheRedisInitial({ key: `${profile?.user._id}` }));
+        dispatch(
+          DeleteCacheRedisInitial({ key: `profile${profile?.user._id}` })
+        );
       }
     );
   };

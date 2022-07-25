@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalState } from "../../imports";
 import { StripeInitial } from "../../Redux/OrderSlice";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 import { AddToCart } from "../../utils/Api";
 const PayButton = ({ CheckCountInStock }) => {
   const { profile, refreshToken } = useSelector((state) => ({ ...state.data }));
@@ -38,14 +39,15 @@ const PayButton = ({ CheckCountInStock }) => {
       toast.loading("Redirecting...");
       setCart([]);
       addToCart([]);
+      dispatch(
+        DeleteCacheRedisInitial({
+          key: `profile${profile?.user?._id}`,
+        })
+      );
       window.location.href = paymentStripe.url;
     }
   }, [paymentStripe?.url]);
-  useEffect(() => {
-    if (loading == true) {
-      toast.loading("Processing Payment...");
-    }
-  }, [loading]);
+
   return (
     <>
       {CheckCountInStock ? (

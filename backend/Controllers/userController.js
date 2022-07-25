@@ -23,6 +23,7 @@ const {
   expire,
   addDelayEventOrder,
   set,
+  del,
 } = require("../utils/Limited");
 
 require("dotenv").config;
@@ -363,7 +364,7 @@ const userCtrl = {
               path: "/api/auth/refresh_token",
               maxAge: CONSTANTS._7_DAY,
             });
-            await set(`${user._id}`, JSON.stringify(user));
+            await set(`profile${user._id}`, JSON.stringify(user));
             res.status(200).json({
               status: 200,
               success: true,
@@ -447,7 +448,7 @@ const userCtrl = {
   //Profile
   profile: async (req, res) => {
     try {
-      var Profile = await get(`${req.user.id}`);
+      var Profile = await get(`profile${req.user.id}`);
       if (Profile) {
         return res.json({
           status: 200,
@@ -462,7 +463,7 @@ const userCtrl = {
           success: false,
           msg: "User does not exist.",
         });
-      await set(`${req.user.id}`, JSON.stringify(user));
+      await set(`profile${req.user.id}`, JSON.stringify(user));
       return res.status(200).json({
         status: 200,
         success: true,
@@ -1086,7 +1087,13 @@ const userCtrl = {
       await addDelayEventOrder({
         orderId: req.user.id,
         delay: 10,
-      });
+      })
+        .then(async (item) => {
+          await del("products");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       return res
         .status(200)
@@ -1102,7 +1109,7 @@ const userCtrl = {
       const history = await Payments.find({
         user_id: req.user.id,
         deleteAt: false,
-      });
+      }).sort({ createdAt: -1 });
       res.json({
         status: 200,
         success: true,

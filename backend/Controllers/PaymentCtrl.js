@@ -11,9 +11,9 @@ const paymentCtrl = {
   //Get All Payment
   getPayments: async (req, res) => {
     try {
-      const payments = await Payments.find({ deleteAt: false }).populate(
-        "user_id"
-      );
+      const payments = await Payments.find({ deleteAt: false })
+        .populate("user_id")
+        .sort({ createdAt: -1 });
       res.json(payments);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -112,9 +112,9 @@ const paymentCtrl = {
   //Get Stripe
   getPaymentDeletes: async (req, res) => {
     try {
-      const payments = await Payments.find({ deleteAt: true }).populate(
-        "user_id"
-      );
+      const payments = await Payments.find({ deleteAt: true })
+        .populate("user_id")
+        .sort({ createdAt: -1 });
       res.json({
         status: 200,
         success: true,
@@ -254,7 +254,6 @@ const paymentCtrl = {
         return prev + item.price * item.quantity;
       }, 0);
       const { _id, name, email } = user;
-
       const newPayment = new Payments({
         user_id: _id,
         name,
@@ -324,7 +323,9 @@ const paymentCtrl = {
       let value2 = d2.getTime();
       return Math.ceil((value2 - value1) / (24 * 60 * 60 * 1000));
     };
-    let payments = await Payments.find({ deleteAt: false }).populate("user_id");
+    let payments = await Payments.find({ deleteAt: false })
+      .populate("user_id")
+      .sort({ createdAt: -1 });
     var today = new Date();
     var result = [];
     for (var i = 0; i < payments.length; i++) {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import useDeleteCache from "../../CustomHook/UseDeleteCache";
@@ -11,6 +11,7 @@ import {
   SwaleMessage,
   useUpDesImg,
 } from "../../imports/index";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   name: "",
   date_of_birth: "",
@@ -27,7 +28,7 @@ const MainEditUser = () => {
     useUpDesImg(refreshTokenAdmin.accessToken);
   const { id } = useParams();
   const { CacheRedis } = useDeleteCache();
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = userAll.user;
   const handleChange = (e) => {
@@ -53,6 +54,7 @@ const MainEditUser = () => {
     e.preventDefault();
     if (!images) return SwaleMessage("No Image Upload 😅.", "error");
     try {
+      DeleteCacheRedisInitial({ key: `profile${id}` });
       await axios
         .patch(
           updateUserAdmin(id),
@@ -65,6 +67,8 @@ const MainEditUser = () => {
         )
         .then((item) => {
           CacheRedis({ key: "users" });
+          dispatch(DeleteCacheRedisInitial({ key: `profile${id}` }));
+
           SwaleMessage("Edit User Successfully", "success");
           navigate("/users");
         });

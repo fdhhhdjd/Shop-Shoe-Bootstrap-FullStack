@@ -453,7 +453,9 @@ const adminCtrl = {
       const user = await Users.find({
         role: 0,
         verified: CONSTANTS.DELETED_ENABLE,
-      }).select("-password");
+      })
+        .select("-password")
+        .sort({ createdAt: -1 });
 
       await set("users", JSON.stringify(user));
       return res.json({
@@ -581,7 +583,9 @@ const adminCtrl = {
     let user = await Users.find({
       role: 0,
       verified: CONSTANTS.DELETED_ENABLE,
-    }).select("-password");
+    })
+      .select("-password")
+      .sort({ createdAt: -1 });
 
     var today = new Date();
     var result = [];

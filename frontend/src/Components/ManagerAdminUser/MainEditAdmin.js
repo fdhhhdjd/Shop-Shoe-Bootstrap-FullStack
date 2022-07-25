@@ -11,6 +11,7 @@ import {
   SwaleMessage,
   useUpDesImg,
 } from "../../imports/index";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   name: "",
   date_of_birth: "",

@@ -4,6 +4,7 @@ import CountUp from "react-countup";
 import { Link } from "react-router-dom";
 const Orders = (props) => {
   const { orders, visible, search } = props;
+  console.log(orders, "orders");
   return (
     <>
       {orders.length === 0 ? (
@@ -53,7 +54,7 @@ const Orders = (props) => {
                     <CountUp
                       className="count"
                       start={0}
-                      end={order.total}
+                      end={order.total === 0 ? order.cost : order.total}
                       duration={2.5}
                       separator=","
                     />

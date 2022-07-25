@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { useContext, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../Context/GlobalState";
 import { deleteUserAdmin } from "../../imports/Import";
@@ -10,6 +10,7 @@ import {
   useDelete,
   useDeleteCache,
 } from "../../imports/index";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const Users = (props) => {
   const { orders, visible, search } = props;
   const state = useContext(GlobalState);
@@ -19,12 +20,15 @@ const Users = (props) => {
   }));
   const [isCheck, setIsCheck] = useState(false);
   const { mutate } = useDelete();
+  const dispatch = useDispatch();
   const { CacheRedis } = useDeleteCache();
 
   const handleDelete = async (id) => {
     mutate(() => deleteUserAdmin(id, refreshTokenAdmin.accessToken)).then(
       (item) => {
         CacheRedis({ key: "users" });
+        dispatch(DeleteCacheRedisInitial({ key: `profile${id}` }));
+
         SwaleMessage("Delete User successfully 🤣!", "success");
       }
     );
@@ -33,6 +37,7 @@ const Users = (props) => {
     try {
       deleteUserAdmin(id, refreshTokenAdmin.accessToken).then((item) => {
         CacheRedis({ key: "users" });
+        DeleteCacheRedisInitial({ key: `profile${id}` });
         SwaleMessage("Delete User successfully 🤣!", "success");
       });
     } catch (err) {

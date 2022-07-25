@@ -2,7 +2,12 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalState } from "../../Context/GlobalState";
-import { Loading, SwaleMessage, useUpDesImg } from "../../imports/index";
+import {
+  Loading,
+  SwaleMessage,
+  useDeleteCache,
+  useUpDesImg,
+} from "../../imports/index";
 import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 const initialState = {
   name: "",
@@ -20,6 +25,7 @@ const ProfileTabs = () => {
   const { profile, refreshToken } = useSelector((state) => ({
     ...state.data,
   }));
+  const { CacheRedis } = useDeleteCache();
 
   const token = refreshToken.accessToken;
   const { loading, handleUpload, handleDestroy, images, setImages } =
@@ -43,8 +49,9 @@ const ProfileTabs = () => {
             SwaleMessage(`${response.data.msg}`, "error");
           } else if (response?.data?.status === 200) {
             dispatch(
-              DeleteCacheRedisInitial({ key: `${profile?.user._id}` })
+              DeleteCacheRedisInitial({ key: `profile${profile?.user._id}` })
             ).then((items) => {
+              CacheRedis({ key: "users" });
               setRunAllUser(!runAllUser);
               SwaleMessage("Edit profile Successfully", "success");
             });

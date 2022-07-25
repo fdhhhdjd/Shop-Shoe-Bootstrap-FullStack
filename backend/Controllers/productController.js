@@ -86,22 +86,22 @@ const productCtrl = {
   //Get All Product
   getProducts: async (req, res) => {
     try {
-      var product = await get("products");
+      // var product = await get("products");
 
-      if (product) {
-        return res.json({
-          status: 200,
-          success: true,
-          products: JSON.parse(product),
-        });
-      }
+      // if (product) {
+      //   return res.json({
+      //     status: 200,
+      //     success: true,
+      //     products: JSON.parse(product),
+      //   });
+      // }
       const features = new APIfeatures(Products.find(), req.query)
         .filtering()
         .sorting();
 
       const products = await features.query.populate("categories");
 
-      await set("products", JSON.stringify(products));
+      // await set("products", JSON.stringify(products));
 
       return res.json({
         status: 200,

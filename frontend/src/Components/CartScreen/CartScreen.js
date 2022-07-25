@@ -17,6 +17,7 @@ import {
 } from "../../imports/index";
 import { ProfileInitiate } from "../../Redux/AuthenticationSlice";
 import { HistoryProductDetailInitial } from "../../Redux/ProductSlice";
+import { DeleteCacheRedisInitial } from "../../Redux/RedisSlice";
 import { GetTotalVoucherInitial, reset } from "../../Redux/VoucherSlice";
 import { CheckCountInStockAPi } from "../../utils/Api";
 import PayButton from "../Stripe/PayButton";
@@ -28,7 +29,7 @@ const CartScreen = () => {
   const [cart, setCart] = state.UserApi.cart;
   const [loadingCheck, setLoadingCheck] = useState(false);
   const [CheckCountInStock, setCheckCountInStock] = useState(false);
-  const { refreshToken } = useSelector((state) => ({ ...state.data }));
+  const { refreshToken, profile } = useSelector((state) => ({ ...state.data }));
   const { totals, Message, loadings } = useSelector((state) => ({
     ...state.vouchers,
   }));
@@ -133,12 +134,18 @@ const CartScreen = () => {
         });
         setCart([...cart]);
         addToCart(cart);
+        dispatch(
+          DeleteCacheRedisInitial({
+            key: `profile${profile?.user?._id}`,
+          })
+        );
         SwaleMessage("Delete Car successfully !", "success");
       } else {
         SwaleMessage("Thank you for 😆 !");
       }
     });
   };
+  console.log(totals.cost, "----");
   const tranSuccess = async (payment) => {
     const { paymentID, address } = payment;
 
@@ -153,6 +160,11 @@ const CartScreen = () => {
       .then((item) => {
         setCart([]);
         addToCart([]);
+        dispatch(
+          DeleteCacheRedisInitial({
+            key: `profile${profile?.user?._id}`,
+          })
+        );
         dispatch(HistoryProductDetailInitial({ token }));
         SwaleMessage("You have successfully placed an order.", "success");
         navigate("/success");

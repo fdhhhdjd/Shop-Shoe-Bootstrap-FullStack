@@ -24,8 +24,13 @@ export const ReplyFeedbacksInitial = createAsyncThunk(
 );
 export const SendFeedbacksInitial = createAsyncThunk(
   "Feedbacks/SendFeedback",
-  async ({ ...state }) => {
-    const response = await axios.post("/api/feedback/send", { ...state });
+  async ({ fullname, email, content, subject }) => {
+    const response = await axios.post("/api/feedback/send", {
+      fullname,
+      email,
+      content,
+      subject,
+    });
     return response.data;
   }
 );

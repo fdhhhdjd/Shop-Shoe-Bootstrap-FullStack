@@ -30,7 +30,7 @@ const Feedback = () => {
     if (!fullname || !email || !subject || !content) {
       return toast.error("Please Enter Input 🥲");
     }
-    dispatch(SendFeedbacksInitial({ ...state }));
+    dispatch(SendFeedbacksInitial({ fullname, email, content, subject }));
   };
   useEffect(() => {
     if (sendFeedback.status === 200) {
@@ -66,7 +66,7 @@ const Feedback = () => {
               className="form-control"
               type="type"
               required
-              value={fullname || ""}
+              value={fullname}
               name="fullname"
               onChange={handleChange}
               disabled={true}
@@ -79,7 +79,7 @@ const Feedback = () => {
             <input
               className="form-control"
               type="type"
-              value={email || ""}
+              value={email}
               name="email"
               onChange={handleChange}
               disabled={true}
