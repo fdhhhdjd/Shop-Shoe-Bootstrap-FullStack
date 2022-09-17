@@ -24,7 +24,7 @@
 
 ## Api Online ( Heroku không dùng Redis-Aws ): https://shopshoetaiheo.herokuapp.com
 
-## Api Online (Hoting và Aws Đầy đủ ) : https://shopshoedev.cf
+## Api Online (Hoting và Aws Đầy đủ ) : https://shopshoedev.cf ( Aws đã hết phí sử dụng  😄 ).
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄
 
