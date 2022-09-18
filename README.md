@@ -20,7 +20,7 @@
 
 ## Mk: Taideptrai123
 
-## Note: Thay localhost bằng Api
+## Note: Thay localhost bằng Api.
 
 ## Api Online ( Heroku không dùng Redis-Aws ): https://shopshoetaiheo.herokuapp.com
 
